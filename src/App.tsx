@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calculator as CalcIcon, Bookmark, Settings, Car, Shield } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import Calculator from './components/Calculator';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
@@ -235,6 +236,7 @@ export default function App() {
         </div>
       </footer>
 
+      <Analytics />
     </div>
   );
 }
