@@ -88,12 +88,11 @@ const VehicleRender = ({ cat, type }: { cat: string; type: string }) => {
         src={imagePath}
         alt={`Generic 3D render of ${type || cat}`}
         referrerPolicy="no-referrer"
+        decoding="async"
         className="w-full h-full object-contain mix-blend-multiply opacity-80"
         onError={(e) => {
-          // If the actual image fails to load, use a placeholder. Prevent infinite loops.
-          if (!e.currentTarget.src.includes('placehold.co')) {
-            e.currentTarget.src = `https://placehold.co/600x450/e2e8f0/64748b?text=Generic+3D+Render%5Cn${encodeURIComponent(type || cat).toUpperCase()}`;
-          }
+          // If the actual image fails to load, simply hide it or show a blank state.
+          e.currentTarget.style.display = 'none';
         }}
       />
     </div>
