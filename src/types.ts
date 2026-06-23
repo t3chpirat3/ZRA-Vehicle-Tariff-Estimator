@@ -27,6 +27,9 @@ export interface CalculatorState {
   vdp: string;    // Motorcycle VDP selection
   cifUSD: number;
   fx: number;
+  // Step 1 — High Performance Gatekeeper (2020 Amendment)
+  hpCC: string;   // Engine capacity input for HP check (cc)
+  hpHP: string;   // Horsepower input for HP check
 }
 
 export interface CIFRates {
@@ -46,6 +49,8 @@ export interface CalculationResult {
   total: number;
   rates?: CIFRates;
   note: string;
+  authority?: string;
+  hsCode?: string;
 }
 
 export interface WatchlistItem {
@@ -128,6 +133,83 @@ export const T_SPECIFIC_RATES: Record<
   }
 };
 
+/**
+ * T_HYBRID_MOTOR_CAR_RATES — Appendix III, Third Schedule (2025 Customs & Excise Amendment Act).
+ * Specific flat Customs Duty (cd) and Excise Duty (ed) for used PETROL-ELECTRIC hybrid passenger cars.
+ * Sourced from official gazette figures. Carbon Emission Surtax is appended separately.
+ *
+ * Body types marked ⚠️ PROVISIONAL still await gazette confirmation — sedan rates used as proxy.
+ */
+export const T_HYBRID_MOTOR_CAR_RATES: Record<
+  '2-5' | '5+',
+  Record<string, Record<string, { cd: number; ed: number }>>
+> = {
+  '2-5': {
+    // ✅ Official gazette figures — Appendix III Third Schedule
+    suv: {
+      '0-1000':    { cd: 17598.22, ed: 15251.79 },
+      '1001-1500': { cd: 20463.05, ed: 17734.64 },
+      '1501-2500': { cd: 23794.24, ed: 30932.51 },
+      '2501-3000': { cd: 27193.42, ed: 35351.45 },
+      '3001+':     { cd: 32292.19, ed: 41979.84 },
+    },
+    sedan: {
+      '0-1000':    { cd: 14113.14, ed: 12231.38 },
+      '1001-1500': { cd: 18145.46, ed: 15726.07 },
+      '1501-2500': { cd: 18695.48, ed: 24304.12 },
+      '2501-3000': { cd: 20395.06, ed: 26513.58 },
+      '3001+':     { cd: 25493.83, ed: 33141.98 },
+    },
+    // ⚠️ PROVISIONAL — awaiting official hatchback/station gazette figures; sedan rates used as proxy
+    hatchback: {
+      '0-1000':    { cd: 14113.14, ed: 12231.38 },
+      '1001-1500': { cd: 18145.46, ed: 15726.07 },
+      '1501-2500': { cd: 18695.48, ed: 24304.12 },
+      '2501-3000': { cd: 20395.06, ed: 26513.58 },
+      '3001+':     { cd: 25493.83, ed: 33141.98 },
+    },
+    station: {
+      '0-1000':    { cd: 14113.14, ed: 12231.38 },
+      '1001-1500': { cd: 18145.46, ed: 15726.07 },
+      '1501-2500': { cd: 18695.48, ed: 24304.12 },
+      '2501-3000': { cd: 20395.06, ed: 26513.58 },
+      '3001+':     { cd: 25493.83, ed: 33141.98 },
+    },
+  },
+  '5+': {
+    // ✅ Official gazette figures — Appendix III Third Schedule
+    suv: {
+      '0-1000':    { cd: 10558.93, ed:  9151.07 },
+      '1001-1500': { cd: 12277.83, ed: 10640.78 },
+      '1501-2500': { cd: 14276.54, ed: 18559.51 },
+      '2501-3000': { cd: 17539.75, ed: 22801.68 },
+      '3001+':     { cd: 20395.06, ed: 26513.58 },
+    },
+    sedan: {
+      '0-1000':    { cd:  8064.65, ed:  6989.36 },
+      '1001-1500': { cd:  9677.58, ed:  8387.24 },
+      '1501-2500': { cd:  9517.70, ed: 12373.01 },
+      '2501-3000': { cd: 11897.12, ed: 15466.26 },
+      '3001+':     { cd: 13596.71, ed: 17675.72 },
+    },
+    // ⚠️ PROVISIONAL — awaiting official hatchback/station gazette figures; sedan rates used as proxy
+    hatchback: {
+      '0-1000':    { cd:  8064.65, ed:  6989.36 },
+      '1001-1500': { cd:  9677.58, ed:  8387.24 },
+      '1501-2500': { cd:  9517.70, ed: 12373.01 },
+      '2501-3000': { cd: 11897.12, ed: 15466.26 },
+      '3001+':     { cd: 13596.71, ed: 17675.72 },
+    },
+    station: {
+      '0-1000':    { cd:  8064.65, ed:  6989.36 },
+      '1001-1500': { cd:  9677.58, ed:  8387.24 },
+      '1501-2500': { cd:  9517.70, ed: 12373.01 },
+      '2501-3000': { cd: 11897.12, ed: 15466.26 },
+      '3001+':     { cd: 13596.71, ed: 17675.72 },
+    },
+  },
+};
+
 export const MOTO_RATES: Record<
   '2-5' | '5+',
   Record<string, number>
@@ -172,9 +254,31 @@ export function zmwFormat(num: number): string {
   });
 }
 
-export function isCIFMode(state: { age: VehicleAge | ''; cat: VehicleCategory | ''; fuel: FuelType | '' }): boolean {
+export function isCIFMode(state: {
+  age: VehicleAge | '';
+  cat: VehicleCategory | '';
+  fuel: FuelType | '';
+  hpCC?: string;
+  hpHP?: string;
+}): boolean {
   if (state.cat === 'motorcycle') return state.age === '0-2';
-  return state.age === '0-2' || state.fuel === 'hybrid' || state.fuel === 'electric';
+
+  // Stage 1 — High Performance Gatekeeper (2020 Amendment)
+  // A passenger car with ≥3800cc AND ≥450hp is excluded from flat-rate duties
+  // and must be assessed ad valorem on its CIF value.
+  const hpCC = parseInt(state.hpCC || '0', 10);
+  const hpHP = parseInt(state.hpHP || '0', 10);
+  if (state.cat === 'motor-car' && hpCC >= 3800 && hpHP >= 450) return true;
+
+  // Pure Electric vehicles: CD = 0%, ED = 0% — always CIF basis
+  if (state.fuel === 'electric') return true;
+
+  // Vehicles under 2 years old → Ad Valorem CIF
+  if (state.age === '0-2') return true;
+
+  // NOTE: Hybrids (2-5yr / 5+) now route to T_HYBRID_MOTOR_CAR_RATES
+  // (Third Schedule, 2025 C&E Amendment Act) — NOT CIF.
+  return false;
 }
 
 export function getEngineBand(cc: number): string {
@@ -228,10 +332,10 @@ export function getBusSeatBand(seatsStr: string): string {
 
 // Global calculation function
 export function calculateDuty(state: CalculatorState): CalculationResult | null {
-  const { age, cat, type, fuel, busFuel, engine, cifEngine, weight, seats, vdp, cifUSD, fx } = state;
+  const { age, cat, type, fuel, busFuel, engine, cifEngine, weight, seats, vdp, cifUSD, fx, hpCC, hpHP } = state;
   if (!age || !cat) return null;
 
-  const isCif = isCIFMode({ age, cat, fuel: fuel || '' as FuelType });
+  const isCif = isCIFMode({ age, cat, fuel: fuel || '' as FuelType, hpCC, hpHP });
 
   if (isCif) {
     if (!cifUSD || !fx || cifUSD <= 0 || fx <= 0) return null;
@@ -252,20 +356,29 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
       carbon = CARBON_RATES[cb] || 0;
     }
 
-    return {
-      mode: 'cif',
-      cifZMW: cz,
-      cd,
-      ed,
-      vat,
-      carbon,
-      cband: cb,
-      total: cd + ed + vat + carbon,
-      rates: cr,
-      note: `CIF-based ad valorem. Customs: ${(cr.cd * 100)}% on CIF | Excise: ${(cr.ed * 100)}% on (CIF+CD) | VAT: 16% on (CIF+CD+ED). Rate: 1 USD = ZMW ${fx}.` +
-        (fuel === 'electric' ? ' EVs exempt from CD & ED.' : '') +
-        (fuel === 'hybrid' ? ' Hybrids get reduced 25% Excise.' : '')
-    };
+      // High-performance note for CIF result
+      const hpCCVal = parseInt(hpCC || '0', 10);
+      const hpHPVal = parseInt(hpHP || '0', 10);
+      const isHighPerfCar = cat === 'motor-car' && hpCCVal >= 3800 && hpHPVal >= 450;
+
+      return {
+        mode: 'cif',
+        cifZMW: cz,
+        cd,
+        ed,
+        vat,
+        carbon,
+        cband: cb,
+        total: cd + ed + vat + carbon,
+        rates: cr,
+        note: (isHighPerfCar
+          ? `⚡ High-Performance Vehicle (2020 Amendment): ≥3,800cc & ≥450hp — excluded from flat-rate duties. `
+          : '') +
+          `CIF-based ad valorem. Customs: ${(cr.cd * 100)}% on CIF | Excise: ${(cr.ed * 100)}% on (CIF+CD) | VAT: 16% on (CIF+CD+ED). Rate: 1 USD = ZMW ${fx}.` +
+          (fuel === 'electric' ? ' EVs exempt from CD & ED.' : ''),
+        authority: 'Zambia Revenue Authority (ZRA) Customs Act, Ad Valorem Valuation',
+        hsCode: cat === 'goods-vehicle' ? 'Chapter 8704 (Motor vehicles for the transport of goods)' : cat === 'bus' ? 'Chapter 8702 (Motor vehicles for the transport of ten or more persons)' : cat === 'motorcycle' ? 'Chapter 8711 (Motorcycles)' : 'Chapter 8703 (Motor cars and other motor vehicles principally designed for the transport of persons)',
+      };
   } else {
     // Specific mode calculations
     if (cat === 'motorcycle') {
@@ -279,7 +392,9 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
         base: d,
         carbon,
         total: d + carbon,
-        note: 'Includes CD, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax. Carbon Surtax added separately.'
+        note: 'Includes CD, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax. Carbon Surtax added separately.',
+        authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
+        hsCode: '8711 (Motorcycles)'
       };
     }
 
@@ -296,28 +411,60 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
         base: v,
         carbon: 0,
         total: v,
-        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.'
+        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.',
+        authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
+        hsCode: '8702 (Motor vehicles for the transport of ten or more persons)'
       };
     }
 
     if (cat === 'motor-car') {
       if (!type || !fuel || !engine) return null;
       if (age === '0-2') return null; // handled under CIF
-      const key = `${type}-${fuel}`;
-      const row = T_SPECIFIC_RATES[age][key];
-      if (!row) return null;
-      const base = row[getEngineBand(parseInt(engine, 10))];
-      if (base === undefined) return null;
-      const cb = getCarbonBand(parseInt(engine, 10));
-      const carbon = CARBON_RATES[cb] || 0;
-      return {
-        mode: 'specific',
-        base,
-        carbon,
-        cband: cb,
-        total: base + carbon,
-        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2. Carbon Surtax added separately.'
-      };
+
+      if (fuel === 'hybrid') {
+        // Stage 2 — Propulsion Fork: Hybrid routes to Third Schedule tables.
+        // The 2025 Revised Specific Duty Rates are NOT applicable to used hybrid vehicles.
+        const band = getEngineBand(parseInt(engine, 10));
+        const cell = T_HYBRID_MOTOR_CAR_RATES[age as '2-5' | '5+']?.[type as MotorCarType]?.[band];
+        if (!cell) return null;
+        const cd = cell.cd;
+        const ed = cell.ed;
+        const cb = getCarbonBand(parseInt(engine, 10));
+        const carbon = CARBON_RATES[cb] || 0;
+        const isProvisional = type === 'hatchback' || type === 'station';
+        return {
+          mode: 'specific',
+          base: cd + ed,
+          cd,
+          ed,
+          carbon,
+          cband: cb,
+          total: cd + ed + carbon,
+          note: `Hybrid — Appendix III Third Schedule (2025 C&E Amendment Act). CD: ZMW ${cd.toFixed(2)} | ED: ZMW ${ed.toFixed(2)}. Carbon Surtax added separately.` +
+            (isProvisional ? ' ⚠️ Hatchback/Station rates are provisional (sedan proxy) — update when gazette is published.' : ''),
+          authority: 'Zambia Revenue Authority (ZRA) Customs and Excise (Amendment) Act, 2025 - Third Schedule (Appendix III)',
+          hsCode: '8703 (Motor cars and other motor vehicles principally designed for the transport of persons)'
+        };
+      } else {
+        // ICE — petrol or diesel: ZRA Revised Specific Duty Rates 2025
+        const key = `${type}-${fuel}`;
+        const row = T_SPECIFIC_RATES[age as '2-5' | '5+'][key];
+        if (!row) return null;
+        const base = row[getEngineBand(parseInt(engine, 10))];
+        if (base === undefined) return null;
+        const cb = getCarbonBand(parseInt(engine, 10));
+        const carbon = CARBON_RATES[cb] || 0;
+        return {
+          mode: 'specific',
+          base,
+          carbon,
+          cband: cb,
+          total: base + carbon,
+          note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2. Carbon Surtax added separately.',
+          authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
+          hsCode: '8703 (Passenger Vehicles)'
+        };
+      }
     }
 
     if (cat === 'goods-vehicle') {
@@ -332,8 +479,11 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
         mode: 'specific',
         base: v,
         carbon: 0,
+        cband: '',
         total: v,
-        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.'
+        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.',
+        authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
+        hsCode: '8704 (Motor vehicles for the transport of goods)'
       };
     }
   }

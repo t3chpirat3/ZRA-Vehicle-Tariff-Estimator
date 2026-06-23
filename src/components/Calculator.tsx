@@ -52,6 +52,8 @@ const INITIAL_STATE: CalculatorState = {
   vdp: '',
   cifUSD: 0,
   fx: 0,
+  hpCC: '',
+  hpHP: '',
 };
 
 const VehicleRender = ({ cat, type }: { cat: string; type: string }) => {
@@ -134,6 +136,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       seats: '',
       vdp: '',
       cifUSD: 0,
+      hpCC: '',
+      hpHP: '',
     }));
   };
 
@@ -158,25 +162,25 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     }));
   };
 
-  // Check if ad valorem CIF mode applies
+  // Check if ad valorem CIF mode applies (now includes HP gatekeeper)
+  const hpCCNum = parseInt(state.hpCC || '0', 10);
+  const hpHPNum = parseInt(state.hpHP || '0', 10);
+  const isHighPerf = state.cat === 'motor-car' && hpCCNum >= 3800 && hpHPNum >= 450;
   const isCif =
+    isHighPerf ||
     state.age === '0-2' ||
-    (state.cat !== 'motorcycle' && (state.fuel === 'hybrid' || state.fuel === 'electric'));
+    (state.cat !== 'motorcycle' && state.fuel === 'electric');
 
   const result = calculateDuty(state);
 
-  // Computed step sequence dynamically updated according to current inputs
+  // ─── 4-Stage Funnel Step Sequence ─────────────────────────────────────────
+  // Motor Cars follow the new funnel architecture:
+  //   Cat → HP Check → Body Style → Propulsion → Age → [CIF or Spec Engine]
+  // All other vehicle types (bus, goods, motorcycle) use the legacy order:
+  //   Age → Cat → [type/fuel/bus-details] → [CIF or Spec]
   const activeSteps = [];
 
-  // 1. Step: Age
-  activeSteps.push({
-    id: 'age',
-    title: 'Vehicle Age',
-    subtitle: 'Duties vary drastically depending on import age',
-    isValid: state.age !== '',
-  });
-
-  // 2. Step: Category
+  // Step 1 (always): Vehicle Category
   activeSteps.push({
     id: 'cat',
     title: 'Vehicle Category',
@@ -184,79 +188,125 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     isValid: state.cat !== '',
   });
 
-  // 3. Step: Body Design/Type (Car or Goods vehicle only)
-  if (state.cat === 'motor-car' || state.cat === 'goods-vehicle') {
+  if (state.cat === 'motor-car') {
+    // ── MOTOR CAR FUNNEL ──────────────────────────────────────────────────
+    // Step 2: HP Gatekeeper — tucked behind a subtle toggle (always passable)
+    activeSteps.push({
+      id: 'hp-check',
+      title: 'Performance Check',
+      subtitle: 'Quick check: 2020 Amendment high-performance rule',
+      isValid: true, // always passable; entering values is optional
+    });
+
+    // Step 3: Body Style
     activeSteps.push({
       id: 'type',
       title: 'Body Style',
-      subtitle: 'Corresponds with lookup custom matrices',
+      subtitle: 'Hatchback · Sedan · Station Wagon · SUV',
       isValid: state.type !== '',
     });
-  }
 
-  // 4. Step: Fuel type (Car or Goods vehicle only)
-  if (state.cat === 'motor-car' || state.cat === 'goods-vehicle') {
+    // Step 4: Propulsion Fork (ICE petrol/diesel vs Hybrid vs EV)
     activeSteps.push({
       id: 'fuel',
-      title: 'Fuel Source',
-      subtitle: 'Subsidies support ecological/green engines',
+      title: 'Propulsion Type',
+      subtitle: 'ICE routes to ZRA 2025 schedule · Hybrid → Third Schedule',
       isValid: state.fuel !== '',
     });
-  }
 
-  // 5. Step: Bus Details (Bus only)
-  if (state.cat === 'bus') {
+    // Step 5: Vehicle Age
     activeSteps.push({
-      id: 'bus-details',
-      title: 'Bus Specifications',
-      subtitle: 'State bus engine type and seat capacities',
-      isValid: state.busFuel !== '' && state.seats !== '',
-    });
-  }
-
-  // 6. Step: Cost Pricing or Technical lookup specifics
-  if (isCif) {
-    activeSteps.push({
-      id: 'valuation-cif',
-      title: 'CIF Valuation',
-      subtitle: 'State cost, insurance & freight and exchange rate',
-      isValid: state.cifUSD > 0 && state.fx > 0,
+      id: 'age',
+      title: 'Vehicle Age',
+      subtitle: 'Under 2 yrs → Ad Valorem · 2–5 yrs / 5+ yrs → Specific Rate',
+      isValid: state.age !== '',
     });
 
-    if (state.cat === 'motor-car' && state.fuel !== 'electric') {
+    // Step 6+: CIF or Specific
+    if (isCif) {
       activeSteps.push({
-        id: 'valuation-cif-engine',
-        title: 'Cylinder Volume',
-        subtitle: 'Required engine capacity calculation for Carbon tax',
-        isValid: state.cifEngine !== '',
+        id: 'valuation-cif',
+        title: 'CIF Valuation',
+        subtitle: 'State cost, insurance & freight and exchange rate',
+        isValid: state.cifUSD > 0 && state.fx > 0,
       });
-    }
-  } else {
-    if (state.cat === 'motor-car') {
+      if (state.fuel !== 'electric') {
+        activeSteps.push({
+          id: 'valuation-cif-engine',
+          title: 'Cylinder Volume',
+          subtitle: 'Required for Carbon Emission Surtax band',
+          isValid: state.cifEngine !== '',
+        });
+      }
+    } else {
       activeSteps.push({
         id: 'spec-engine',
         title: 'Engine Displacement',
-        subtitle: 'Select specific lookup engine capacity Band',
+        subtitle: 'Select CC band — triggers Carbon Tax auto-append',
         isValid: state.engine !== '',
       });
-    } else if (state.cat === 'goods-vehicle') {
+    }
+
+  } else {
+    // ── NON-MOTOR-CAR LEGACY FLOW ─────────────────────────────────────────
+    activeSteps.push({
+      id: 'age',
+      title: 'Vehicle Age',
+      subtitle: 'Duties vary drastically depending on import age',
+      isValid: state.age !== '',
+    });
+
+    if (state.cat === 'goods-vehicle') {
       activeSteps.push({
-        id: 'spec-weight',
-        title: 'Cargo Weight',
-        subtitle: 'Specify Gross Vehicle Weight lookup Band',
-        isValid: state.weight !== '',
+        id: 'type',
+        title: 'Body Style',
+        subtitle: 'Corresponds with lookup custom matrices',
+        isValid: state.type !== '',
       });
-    } else if (state.cat === 'motorcycle') {
       activeSteps.push({
-        id: 'spec-vdp',
-        title: 'ZRA Valuation',
-        subtitle: 'Select depreciated motorcycle VDP valuation range',
-        isValid: state.vdp !== '',
+        id: 'fuel',
+        title: 'Fuel Source',
+        subtitle: 'Subsidies support ecological/green engines',
+        isValid: state.fuel !== '',
       });
+    }
+
+    if (state.cat === 'bus') {
+      activeSteps.push({
+        id: 'bus-details',
+        title: 'Bus Specifications',
+        subtitle: 'State bus engine type and seat capacities',
+        isValid: state.busFuel !== '' && state.seats !== '',
+      });
+    }
+
+    if (isCif) {
+      activeSteps.push({
+        id: 'valuation-cif',
+        title: 'CIF Valuation',
+        subtitle: 'State cost, insurance & freight and exchange rate',
+        isValid: state.cifUSD > 0 && state.fx > 0,
+      });
+    } else {
+      if (state.cat === 'goods-vehicle') {
+        activeSteps.push({
+          id: 'spec-weight',
+          title: 'Cargo Weight',
+          subtitle: 'Specify Gross Vehicle Weight lookup Band',
+          isValid: state.weight !== '',
+        });
+      } else if (state.cat === 'motorcycle') {
+        activeSteps.push({
+          id: 'spec-vdp',
+          title: 'ZRA Valuation',
+          subtitle: 'Select depreciated motorcycle VDP valuation range',
+          isValid: state.vdp !== '',
+        });
+      }
     }
   }
 
-  // 7. Step: Appraisal Results Output
+  // Always last: Results
   activeSteps.push({
     id: 'results',
     title: 'Duties Summary',
@@ -403,6 +453,99 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   // Render individual wizards components within fixed workspace
   const renderStepContent = () => {
     switch (currentStep.id) {
+
+      case 'hp-check': {
+        const ccVal = parseInt(state.hpCC || '0', 10);
+        const hpVal = parseInt(state.hpHP || '0', 10);
+        const triggered = ccVal >= 3800 && hpVal >= 450;
+        const ccMet = ccVal >= 3800;
+        const hpMet = hpVal >= 450;
+        return (
+          <div className="w-full flex flex-col max-w-md mx-auto space-y-4">
+            <div className="text-center">
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">Are you importing a performance car?</h3>
+              <p className="text-xs text-slate-500 font-medium px-4">Most vehicles do not fall in this category. You can safely skip this step for standard vehicles.</p>
+            </div>
+
+            {/* Prominent Skip Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setState((prev) => ({ ...prev, hpCC: '', hpHP: '' }));
+                setTimeout(() => {
+                  setCurrentStepIndex((prev) => Math.min(prev + 1, activeSteps.length - 1));
+                }, 180);
+              }}
+              className="w-full p-3.5 bg-slate-50 hover:bg-emerald-50 border-2 border-slate-200 hover:border-emerald-400 rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm outline-none cursor-pointer group"
+            >
+              <span className="font-extrabold text-slate-700 group-hover:text-emerald-800 text-sm transition-colors">No, Standard Vehicle</span>
+              <span className="text-[10px] text-slate-500 group-hover:text-emerald-650 font-semibold mt-0.5 transition-colors">Skip this step and continue calculation</span>
+            </button>
+
+            <div className="flex items-center gap-3 py-1">
+              <div className="flex-1 h-px bg-slate-100"></div>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Or Provide Specs</span>
+              <div className="flex-1 h-px bg-slate-100"></div>
+            </div>
+
+            {/* Demoted Inputs */}
+            <div className={`p-4 rounded-2xl border transition-all ${triggered ? 'bg-amber-50 border-amber-200' : 'bg-white border-slate-200 shadow-sm'}`}>
+              <div className="mb-3 text-xs text-slate-600 leading-relaxed">
+                <p className="font-extrabold text-[10px] uppercase tracking-wider text-slate-400 mb-1">2020 Amendment Rule</p>
+                <p>Cars with <strong>≥ 3,800cc</strong> <em>and</em> <strong>≥ 450hp</strong> are taxed ad valorem.</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Engine (cc)</label>
+                  <div className="relative">
+                    <input
+                      id="hp-cc-input"
+                      type="number"
+                      min="0"
+                      placeholder="e.g. 4500"
+                      value={state.hpCC}
+                      onChange={(e) => setState((prev) => ({ ...prev, hpCC: e.target.value }))}
+                      className={`w-full border rounded-xl px-3 py-2.5 text-xs font-mono font-bold outline-none transition-all ${
+                        state.hpCC ? (ccMet ? 'border-amber-400 bg-amber-50 text-amber-900 ring-1 ring-amber-400' : 'border-slate-300 bg-white text-slate-800') : 'border-slate-200 bg-slate-50 text-slate-800'
+                      }`}
+                    />
+                    {state.hpCC && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${ccMet ? 'text-amber-600' : 'text-slate-400'}`}>{ccMet ? '✓ ≥3800' : '< 3800'}</span>}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Power (hp)</label>
+                  <div className="relative">
+                    <input
+                      id="hp-power-input"
+                      type="number"
+                      min="0"
+                      placeholder="e.g. 500"
+                      value={state.hpHP}
+                      onChange={(e) => setState((prev) => ({ ...prev, hpHP: e.target.value }))}
+                      className={`w-full border rounded-xl px-3 py-2.5 text-xs font-mono font-bold outline-none transition-all ${
+                        state.hpHP ? (hpMet ? 'border-amber-400 bg-amber-50 text-amber-900 ring-1 ring-amber-400' : 'border-slate-300 bg-white text-slate-800') : 'border-slate-200 bg-slate-50 text-slate-800'
+                      }`}
+                    />
+                    {state.hpHP && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${hpMet ? 'text-amber-600' : 'text-slate-400'}`}>{hpMet ? '✓ ≥450' : '< 450'}</span>}
+                  </div>
+                </div>
+              </div>
+
+              {triggered && (
+                <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-800 font-semibold flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
+                  <span className="text-sm leading-none mt-0.5">⚡</span>
+                  <div>
+                    <p className="font-extrabold text-[11px] uppercase tracking-wide">High-Performance Detected</p>
+                    <p className="text-[10px] mt-0.5 text-rose-700 font-medium">Click Next to proceed with ad valorem assessment.</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
       case 'age':
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
@@ -890,6 +1033,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     <tbody className="text-slate-705 font-medium divide-y divide-slate-100">
                       {result.mode === 'cif' ? (
                         <>
+                          <tr className="hover:bg-slate-50/50 bg-slate-50/50 border-b border-slate-100">
+                            <td className="px-3 py-2.5 font-bold text-slate-800">CIF Value Base</td>
+                            <td className="px-3 py-2.5 font-mono text-[9px] text-slate-400">Valuation Base</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.cifZMW ? result.cifZMW.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
+                          </tr>
                           <tr className="hover:bg-slate-50/50">
                             <td className="px-3 py-2.5">Customs Duty (CD)</td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">{(result.rates?.cd || 0) * 100}%</td>
@@ -906,7 +1054,28 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                             <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.vat ? result.vat.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                           </tr>
                         </>
+                      ) : result.mode === 'specific' && result.cd !== undefined && result.ed !== undefined ? (
+                        // Hybrid Third Schedule — flat CD + ED amounts
+                        <>
+                          <tr className="hover:bg-slate-50/50">
+                            <td className="px-3 py-2.5">
+                              Customs Duty (CD)
+                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-emerald-100 text-emerald-700 uppercase tracking-wide">3rd Sched</span>
+                            </td>
+                            <td className="px-3 py-2.5 font-mono text-slate-400">Flat Rate</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.cd.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          </tr>
+                          <tr className="hover:bg-slate-50/50">
+                            <td className="px-3 py-2.5">
+                              Excise Duty (ED)
+                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-emerald-100 text-emerald-700 uppercase tracking-wide">3rd Sched</span>
+                            </td>
+                            <td className="px-3 py-2.5 font-mono text-slate-400">Flat Rate</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.ed.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          </tr>
+                        </>
                       ) : (
+                        // ICE composite scheduled lookup
                         <tr className="hover:bg-slate-50/50">
                           <td className="px-3 py-3">Composite Specific Base Duty</td>
                           <td className="px-3 py-3 text-slate-405 font-bold">Scheduled Lookup</td>
@@ -924,6 +1093,24 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Authority and HS Code Footer */}
+                {(result.hsCode || result.authority) && (
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-1.5 mt-2">
+                    {result.hsCode && (
+                      <div className="flex justify-between items-center text-[9px]">
+                        <span className="font-bold text-slate-500 uppercase tracking-wider">HS Code Classification</span>
+                        <span className="font-mono font-medium text-slate-700">{result.hsCode}</span>
+                      </div>
+                    )}
+                    {result.authority && (
+                      <div className="flex justify-between items-center text-[9px]">
+                        <span className="font-bold text-slate-500 uppercase tracking-wider">Valuation Authority</span>
+                        <span className="font-medium text-slate-700">{result.authority}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Save Watchlist and inclusion help */}
                 <div className="space-y-2 flex-shrink-0 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
@@ -1079,6 +1266,48 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             );
           })}
         </div>
+
+        {/* ── BUDGET HERO — Live Estimate Strip ───────────────────────────────── */}
+        {/* Visible once enough data exists to produce any estimate; hidden on Results step */}
+        {currentStep.id !== 'results' && (state.cat !== '' || result) && (
+          <div className="border-b border-slate-100 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-4 py-2.5 flex items-center justify-between gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+              <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 flex-shrink-0">Live Estimate</span>
+                {/* Routing path chips */}
+                {isHighPerf && (
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 flex-shrink-0">⚡ HIGH PERF → CIF</span>
+                )}
+                {!isHighPerf && state.fuel === 'hybrid' && (
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex-shrink-0">⚡ HYBRID → 3RD SCHED</span>
+                )}
+                {!isHighPerf && state.fuel === 'electric' && (
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30 flex-shrink-0">EV → CIF 0%</span>
+                )}
+                {!isHighPerf && state.age === '0-2' && (
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-slate-500/30 text-slate-300 border border-slate-500/30 flex-shrink-0">UNDER 2YR → CIF</span>
+                )}
+                {/* Carbon band chip when available */}
+                {result && result.carbon > 0 && result.cband && (
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex-shrink-0">
+                    🌿 Carbon {result.cband}cc +{zmwFormat(result.carbon)}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex-shrink-0 text-right">
+              {result ? (
+                <div>
+                  <p className="text-lg font-black font-mono text-emerald-400 leading-none tracking-tighter">{zmwFormat(result.total)}</p>
+                  <p className="text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">{result.mode === 'cif' ? 'Ad Valorem Estimate' : 'Specific Rate Total'}</p>
+                </div>
+              ) : (
+                <p className="text-[10px] font-bold text-slate-500 italic">Fill steps to unlock total</p>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* ACTIVE WIZARD STEP BODY CANVAS */}
         <div className="flex-grow p-4 md:p-6 bg-white relative min-h-[460px]">
