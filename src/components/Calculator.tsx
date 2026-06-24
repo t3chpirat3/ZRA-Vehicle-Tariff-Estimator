@@ -34,6 +34,7 @@ import {
   CARBON_RATES,
   WEIGHT_OPTIONS_MAP,
 } from '../types';
+import SpecResolver, { ResolvedSpecs } from './SpecResolver';
 
 interface CalculatorProps {
   onSaveToWatchlist: (total: number, cifUSD: number, fx: number) => void;
@@ -109,6 +110,9 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   
   // Results tab view for mobile (Breakdown vs Help/Resources) to ensure zero scrolling
   const [mobileResultsTab, setMobileResultsTab] = useState<'breakdown' | 'resources'>('breakdown');
+
+  // SpecResolver: flag that triggers a jump to results after state is applied
+  const [pendingJumpToResults, setPendingJumpToResults] = useState(false);
 
   // Master Sync inputs with state checks
   const handleAgeChange = (age: VehicleAge) => {
@@ -321,6 +325,17 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     }
   }, [activeSteps.length, currentStepIndex]);
 
+  // SpecResolver: jump to results step after AI pre-fill resolves activeSteps
+  useEffect(() => {
+    if (pendingJumpToResults) {
+      const resultsIdx = activeSteps.findIndex((s) => s.id === 'results');
+      if (resultsIdx !== -1) {
+        setCurrentStepIndex(resultsIdx);
+        setPendingJumpToResults(false);
+      }
+    }
+  }, [pendingJumpToResults, activeSteps.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const currentStep = activeSteps[Math.min(currentStepIndex, activeSteps.length - 1)] || activeSteps[0];
   const isCurrentStepValid = currentStep ? currentStep.isValid : false;
 
@@ -341,6 +356,37 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     setState(INITIAL_STATE);
     setCurrentStepIndex(0);
     setMobileResultsTab('breakdown');
+  };
+
+  // SpecResolver: map AI-resolved specs into CalculatorState and jump to results
+  const handleSpecsResolved = (specs: ResolvedSpecs) => {
+    // Map engineCC to the engine band key used by the tariff tables
+    const cc = specs.engineCC;
+    let engineBand: string;
+    if (cc <= 1000) engineBand = '1000';
+    else if (cc <= 1500) engineBand = '1500';
+    else if (cc <= 2500) engineBand = '2500';
+    else if (cc <= 3000) engineBand = '3000';
+    else engineBand = '3500';
+
+    // Map bodyType to cat + type
+    let cat: string = 'motor-car';
+    let type: string = specs.bodyType;
+    if (specs.bodyType === 'truck') { cat = 'goods-vehicle'; type = 'truck'; }
+    else if (specs.bodyType === 'bus') { cat = 'bus'; type = ''; }
+    else if (specs.bodyType === 'motorcycle') { cat = 'motorcycle'; type = ''; }
+
+    setState({
+      ...INITIAL_STATE,
+      cat: cat as CalculatorState['cat'],
+      type,
+      fuel: specs.fuelType,
+      age: specs.ageBracket,
+      engine: engineBand,
+      hpCC: '',
+      hpHP: '',
+    });
+    setPendingJumpToResults(true);
   };
 
   // Specific buttons selections with automated interactive fluid forwarding
@@ -586,6 +632,9 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       case 'cat':
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
+            {/* AI Spec Resolver hint — subtle, optional, lives above the category grid */}
+            <SpecResolver onSpecsResolved={handleSpecsResolved} />
+
             <div className="text-center">
               <h3 className="font-extrabold text-slate-900 text-base md:text-lg">What category of vehicle?</h3>
               <p className="text-xs text-slate-500 font-medium font-sans">Choose classification that corresponds with ZRA structural schedules.</p>
