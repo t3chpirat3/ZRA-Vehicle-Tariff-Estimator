@@ -8,6 +8,7 @@ import { Calculator as CalcIcon, Bookmark, Settings, Car, Shield } from 'lucide-
 import Calculator from './components/Calculator';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
+import ImportGuide from './components/ImportGuide';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
 import { WatchlistItem, zmwFormat } from './types';
@@ -17,7 +18,7 @@ const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'watchlist' | 'agents' | 'privacy' | 'terms'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -158,6 +159,12 @@ export default function App() {
               >
                 Clearing Agents
               </button>
+              <button
+                onClick={() => setActiveTab('guide')}
+                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'guide' ? 'text-slate-900' : ''}`}
+              >
+                Import Guide
+              </button>
             </div>
           </div>
         </header>
@@ -184,6 +191,11 @@ export default function App() {
           {activeTab === 'agents' && (
             <div className="animate-fadeIn">
               <ClearingAgents />
+            </div>
+          )}
+          {activeTab === 'guide' && (
+            <div className="animate-fadeIn">
+              <ImportGuide />
             </div>
           )}
           {activeTab === 'privacy' && (
