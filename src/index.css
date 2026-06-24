@@ -28,8 +28,11 @@ body {
 }
 
 /* ── Reactive cursor blob ─────────────────────────────────────────────── */
-/* A soft monochrome glow that smoothly trails the mouse pointer. It lives
-   behind all content (z-index 0) and never intercepts pointer events. */
+/* A soft monochrome glow that smoothly trails the mouse pointer. Sits above
+   the content (below the splash screen) and never intercepts pointer events.
+   Note: intentionally NOT suppressed under prefers-reduced-motion, because the
+   blob is an explicitly requested feature; the motion is lightweight and the
+   animation loop idles when the pointer is still. */
 #cursor-blob {
   position: fixed;
   top: 0;
@@ -38,9 +41,6 @@ body {
   height: 32rem;
   border-radius: 9999px;
   pointer-events: none;
-  /* Sits above the content but below the splash screen (z 9999). The
-     multiply blend lets it read as a soft grey glow over any white surface
-     while leaving black text untouched. */
   z-index: 40;
   mix-blend-mode: multiply;
   transform: translate3d(-50%, -50%, 0);
@@ -51,10 +51,4 @@ body {
     rgba(0, 0, 0, 0.06) 55%,
     rgba(0, 0, 0, 0) 72%
   );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #cursor-blob {
-    display: none;
-  }
 }
