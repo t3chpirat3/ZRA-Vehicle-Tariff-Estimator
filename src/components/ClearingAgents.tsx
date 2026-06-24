@@ -301,15 +301,11 @@ export default function ClearingAgents() {
         </div>
 
         {/* BOTTOM INFORMATIONAL STATUS BANNER */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 flex-shrink-0 flex items-center justify-between text-[9.5px] font-sans font-medium text-slate-500">
-          <div className="flex items-center gap-1.5">
-            <Shield className="w-4 h-4 text-slate-450" />
-            <span>ZRA registered: All listed agents correspond with authentic authority matrices.</span>
-          </div>
-          <div className="hidden sm:flex items-center gap-1 text-slate-450 font-semibold">
-            <span>Zambia Revenue Authority</span>
-            <ArrowRight className="w-3 h-3" />
-          </div>
+        <div className="p-3 bg-slate-50 border-t border-slate-200 flex-shrink-0 flex items-start sm:items-center gap-2 text-[9.5px] font-sans font-medium text-slate-500">
+          <Info className="w-4 h-4 text-slate-450 flex-shrink-0" />
+          <span>
+            <strong>Disclaimer:</strong> This list is based on the ZRA Licensed Clearing Agents Schedule as of <strong>May 31, 2024</strong>. The information provided may not be 100% correct or up to date. Users must always verify and confirm the current licensing status of a clearing agent with the relevant authorities before engaging their services.
+          </span>
         </div>
       </div>
     </div>
