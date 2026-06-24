@@ -1,14 +1,13 @@
 /// <reference types="vite/client" />
 /**
  * SpecResolver.tsx
- * AI-powered vehicle spec resolver using the DeepSeek API.
+ * Vehicle spec resolver using the DeepSeek API.
  * Designed as an optional in-calculator helper — not a separate tab.
  * Users can type Zambian street names like "Vitz 1KR" or "Allion 1NZ"
  * and get back structured specs that pre-fill the duty calculator.
  */
 
 import React, { useState, useRef } from 'react';
-import { Sparkles, ChevronDown, ChevronUp, Loader2, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -77,6 +76,7 @@ Common engine codes and their CC:
 - 2TR-FE = 2693cc petrol
 - 3UR-FE = 5663cc petrol
 - 2GR-FE = 3456cc petrol
+- 4GR-FSE = 2499cc petrol
 - 1ZR-FE = 1598cc petrol
 - 2ZR-FE = 1797cc petrol
 - K3-VE = 989cc petrol (Daihatsu)
@@ -84,7 +84,7 @@ Common engine codes and their CC:
 
 Age bracket logic (calculate from current year 2025):
 - If production ended before 2020 → "5+"
-- If produced 2020–2022 → "2-5"  
+- If produced 2020–2022 → "2-5"
 - If produced 2023+ → "0-2"
 - Default for old JDM classics → "5+"
 
@@ -96,7 +96,7 @@ For confidence use ONLY one of: high, medium, low
 Return EXACTLY this JSON structure and nothing else:
 {
   "make": "string",
-  "model": "string", 
+  "model": "string",
   "engineCode": "string",
   "engineCC": number,
   "bodyType": "sedan|hatchback|station|suv|truck|motorcycle|bus",
@@ -112,7 +112,7 @@ If you absolutely cannot identify the vehicle, return:
 
 async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
   if (!DEEPSEEK_API_KEY) {
-    throw new Error('DeepSeek API key not configured. Add VITE_DEEPSEEK_API_KEY to your .env file.');
+    throw new Error('Spec Resolver is not configured. Add VITE_DEEPSEEK_API_KEY to your .env file.');
   }
 
   const response = await fetch(DEEPSEEK_API_URL, {
@@ -135,12 +135,12 @@ async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`DeepSeek API error ${response.status}: ${err}`);
+    throw new Error(`API error ${response.status}: ${err}`);
   }
 
   const data = await response.json();
   const raw = data.choices?.[0]?.message?.content;
-  if (!raw) throw new Error('Empty response from DeepSeek API.');
+  if (!raw) throw new Error('Empty response from resolver.');
 
   const parsed = JSON.parse(raw);
   if (parsed.error) throw new Error(parsed.error);
@@ -150,38 +150,38 @@ async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const confidenceColor: Record<ResolvedSpecs['confidence'], string> = {
-  high: 'text-emerald-600 bg-emerald-50 border-emerald-200',
-  medium: 'text-amber-600 bg-amber-50 border-amber-200',
-  low: 'text-rose-600 bg-rose-50 border-rose-200',
+const confidenceStyle: Record<ResolvedSpecs['confidence'], string> = {
+  high:   'text-emerald-700 bg-emerald-50 border-emerald-200',
+  medium: 'text-amber-700 bg-amber-50 border-amber-200',
+  low:    'text-rose-700 bg-rose-50 border-rose-200',
 };
 
 const confidenceLabel: Record<ResolvedSpecs['confidence'], string> = {
-  high: 'High confidence',
+  high:   'High confidence',
   medium: 'Best guess',
-  low: 'Low confidence — verify',
+  low:    'Low confidence — verify',
 };
 
 const bodyTypeLabel: Record<string, string> = {
-  sedan: 'Sedan',
-  hatchback: 'Hatchback',
-  station: 'Station Wagon',
-  suv: 'SUV / 4×4',
-  truck: 'Truck / Pickup',
+  sedan:      'Sedan',
+  hatchback:  'Hatchback',
+  station:    'Station Wagon',
+  suv:        'SUV / 4×4',
+  truck:      'Truck / Pickup',
   motorcycle: 'Motorcycle',
-  bus: 'Bus',
+  bus:        'Bus',
 };
 
 const ageBracketLabel: Record<string, string> = {
   '0-2': 'New (Under 2 years)',
   '2-5': '2 to 5 years old',
-  '5+': 'Over 5 years old',
+  '5+':  'Over 5 years old',
 };
 
 const fuelLabel: Record<string, string> = {
-  petrol: 'Petrol (ICE)',
-  diesel: 'Diesel (ICE)',
-  hybrid: 'Hybrid (Petrol-Electric)',
+  petrol:   'Petrol (ICE)',
+  diesel:   'Diesel (ICE)',
+  hybrid:   'Hybrid (Petrol-Electric)',
   electric: 'Electric (EV)',
 };
 
@@ -189,10 +189,10 @@ const fuelLabel: Record<string, string> = {
 
 export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [query, setQuery] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'resolved' | 'error'>('idle');
-  const [result, setResult] = useState<ResolvedSpecs | null>(null);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [query, setQuery]           = useState('');
+  const [status, setStatus]         = useState<'idle' | 'loading' | 'resolved' | 'error'>('idle');
+  const [result, setResult]         = useState<ResolvedSpecs | null>(null);
+  const [errorMsg, setErrorMsg]     = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const EXAMPLES = ['Vitz 1KR', 'Allion 1NZ', 'Aqua hybrid', 'Hilux 1GD'];
@@ -243,66 +243,51 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
         <button
           type="button"
           onClick={handleExpand}
-          className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-200 hover:border-indigo-400 rounded-2xl text-left transition-all group cursor-pointer outline-none shadow-sm hover:shadow-md"
+          className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 border border-slate-200 hover:border-slate-400 hover:bg-white rounded-2xl text-left transition-all cursor-pointer outline-none"
         >
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-7 h-7 rounded-xl bg-indigo-600 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-700 transition-colors">
-              <Sparkles className="w-3.5 h-3.5 text-white" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-extrabold text-indigo-900 leading-none">Not sure of the specs?</p>
-              <p className="text-[10px] text-indigo-600 font-medium mt-0.5 truncate">
-                Describe the car — e.g. <span className="font-bold">"Vitz 1KR"</span> or <span className="font-bold">"Allion 1NZ"</span>
-              </p>
-            </div>
+          <div className="min-w-0">
+            <p className="text-xs font-extrabold text-slate-700 leading-none">Not sure of the specs?</p>
+            <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
+              Describe the car — e.g. <span className="font-bold text-slate-600">"Vitz 1KR"</span> or <span className="font-bold text-slate-600">"Allion 1NZ"</span>
+            </p>
           </div>
-          <ChevronDown className="w-4 h-4 text-indigo-500 flex-shrink-0 group-hover:text-indigo-700 transition-colors" />
+          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex-shrink-0">Spec Resolver</span>
         </button>
       ) : (
         /* ── Expanded resolver panel ── */
-        <div className="w-full bg-gradient-to-b from-indigo-50/80 to-white border border-indigo-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="w-full bg-white border border-slate-200 rounded-2xl overflow-hidden">
+
           {/* Header */}
-          <div className="px-4 py-3 flex items-center justify-between bg-indigo-600">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-200" />
-              <p className="text-xs font-extrabold text-white tracking-wide uppercase">AI Spec Resolver</p>
-              <span className="text-[9px] font-bold px-1.5 py-0.5 bg-indigo-500 rounded text-indigo-200 uppercase tracking-wide">DeepSeek</span>
-            </div>
+          <div className="px-4 py-3 flex items-center justify-between bg-slate-900 border-b border-slate-800">
+            <p className="text-xs font-extrabold text-white tracking-widest uppercase">Spec Resolver</p>
             <button
               type="button"
               onClick={handleCollapse}
-              className="text-indigo-200 hover:text-white transition-colors p-0.5 cursor-pointer"
+              className="text-slate-400 hover:text-white transition-colors text-[10px] font-bold uppercase tracking-wider cursor-pointer"
             >
-              <ChevronUp className="w-4 h-4" />
+              Close
             </button>
           </div>
 
           <div className="p-4 space-y-3">
             {/* Search Input */}
             <div className="flex gap-2">
-              <div className="flex-1 relative">
-                <input
-                  ref={inputRef}
-                  id="spec-resolver-input"
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder='e.g. "Vitz 1KR" or "Premio 1NZ 2015"'
-                  className="w-full border border-indigo-200 rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 bg-white placeholder:text-slate-400 text-slate-800 transition-all"
-                />
-              </div>
+              <input
+                ref={inputRef}
+                id="spec-resolver-input"
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder='e.g. "Vitz 1KR" or "Premio 1NZ 2015"'
+                className="flex-1 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-slate-400 focus:border-slate-400 bg-slate-50 placeholder:text-slate-400 text-slate-800 transition-all"
+              />
               <button
                 type="button"
                 onClick={handleResolve}
                 disabled={!query.trim() || status === 'loading'}
-                className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-xs font-extrabold rounded-xl transition-all flex items-center gap-1.5 outline-none cursor-pointer flex-shrink-0"
+                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none flex-shrink-0"
               >
-                {status === 'loading' ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Sparkles className="w-3.5 h-3.5" />
-                )}
                 {status === 'loading' ? 'Resolving…' : 'Resolve'}
               </button>
             </div>
@@ -316,7 +301,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                     key={ex}
                     type="button"
                     onClick={() => { setQuery(ex); setTimeout(handleResolve, 50); }}
-                    className="text-[10px] font-bold px-2 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-700 hover:bg-indigo-50 transition-all cursor-pointer"
+                    className="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-all cursor-pointer"
                   >
                     {ex}
                   </button>
@@ -326,37 +311,32 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
 
             {/* Loading state */}
             {status === 'loading' && (
-              <div className="flex items-center justify-center gap-2.5 py-6 text-indigo-600">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <div>
-                  <p className="text-xs font-extrabold">Resolving vehicle specs…</p>
-                  <p className="text-[10px] text-indigo-500 font-medium">Checking engine codes, body type, and production years</p>
-                </div>
+              <div className="text-center py-6">
+                <p className="text-xs font-extrabold text-slate-700">Resolving vehicle specs…</p>
+                <p className="text-[10px] text-slate-400 font-medium mt-1">Checking engine codes, body type, and production years</p>
               </div>
             )}
 
             {/* Error state */}
             {status === 'error' && (
-              <div className="flex items-start gap-2 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800">
-                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-xs font-extrabold">Could not resolve specs</p>
-                  <p className="text-[10px] font-medium text-rose-700 mt-0.5">{errorMsg}</p>
-                  <p className="text-[10px] text-rose-600 mt-1">Try being more specific, e.g. <em>"Toyota Vitz 1KR-FE 2008"</em></p>
-                </div>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                <p className="text-xs font-extrabold text-slate-800">Could not resolve specs</p>
+                <p className="text-[10px] font-medium text-slate-600 mt-0.5">{errorMsg}</p>
+                <p className="text-[10px] text-slate-500 mt-1">Try being more specific, e.g. <em>"Toyota Vitz 1KR-FE 2008"</em></p>
               </div>
             )}
 
             {/* Result card */}
             {status === 'resolved' && result && (
-              <div className="border border-indigo-200 rounded-xl overflow-hidden bg-white">
+              <div className="border border-slate-200 rounded-xl overflow-hidden">
+
                 {/* Result header */}
-                <div className="px-3 py-2.5 bg-indigo-600 flex items-center justify-between">
+                <div className="px-3 py-2.5 bg-slate-900 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-black text-white leading-none">{result.make} {result.model}</p>
-                    <p className="text-[10px] text-indigo-200 font-medium mt-0.5">{result.engineCode} · {result.productionYears}</p>
+                    <p className="text-[10px] text-slate-400 font-medium mt-0.5">{result.engineCode} · {result.productionYears}</p>
                   </div>
-                  <div className={`text-[9px] font-extrabold px-2 py-1 rounded-lg border uppercase tracking-wide ${confidenceColor[result.confidence]}`}>
+                  <div className={`text-[9px] font-extrabold px-2 py-1 rounded-lg border uppercase tracking-wide ${confidenceStyle[result.confidence]}`}>
                     {confidenceLabel[result.confidence]}
                   </div>
                 </div>
@@ -364,15 +344,15 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                 {/* Spec grid */}
                 <div className="grid grid-cols-2 gap-0 divide-x divide-y divide-slate-100">
                   {[
-                    { label: 'Engine', value: `${result.engineCode}`, sub: `${result.engineCC.toLocaleString()}cc` },
-                    { label: 'Body Type', value: bodyTypeLabel[result.bodyType] || result.bodyType, sub: '' },
-                    { label: 'Fuel', value: fuelLabel[result.fuelType] || result.fuelType, sub: '' },
+                    { label: 'Engine',      value: result.engineCode,                              sub: `${result.engineCC.toLocaleString()}cc` },
+                    { label: 'Body Type',   value: bodyTypeLabel[result.bodyType] || result.bodyType, sub: '' },
+                    { label: 'Fuel',        value: fuelLabel[result.fuelType] || result.fuelType,  sub: '' },
                     { label: 'Age Bracket', value: ageBracketLabel[result.ageBracket] || result.ageBracket, sub: '' },
                   ].map((item) => (
-                    <div key={item.label} className="px-3 py-2">
+                    <div key={item.label} className="px-3 py-2.5">
                       <p className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">{item.label}</p>
                       <p className="text-[11px] font-extrabold text-slate-800 mt-0.5 leading-tight">{item.value}</p>
-                      {item.sub && <p className="text-[9px] font-mono text-indigo-600 font-bold">{item.sub}</p>}
+                      {item.sub && <p className="text-[9px] font-mono text-slate-500 font-bold mt-0.5">{item.sub}</p>}
                     </div>
                   ))}
                 </div>
@@ -381,7 +361,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                 {result.notes && (
                   <div className="px-3 py-2 bg-slate-50 border-t border-slate-100">
                     <p className="text-[9.5px] text-slate-500 font-medium leading-relaxed">
-                      <span className="font-bold text-slate-600">AI note: </span>{result.notes}
+                      <span className="font-bold text-slate-600">Note: </span>{result.notes}
                     </p>
                   </div>
                 )}
@@ -391,11 +371,9 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                   <button
                     type="button"
                     onClick={handleUseSpecs}
-                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
+                    className="flex-1 px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5" />
                     Use These Specs
-                    <ArrowRight className="w-3 h-3" />
                   </button>
                   <button
                     type="button"
