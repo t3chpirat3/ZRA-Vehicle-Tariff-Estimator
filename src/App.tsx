@@ -188,12 +188,12 @@ export default function App() {
           )}
           {activeTab === 'privacy' && (
             <div className="animate-fadeIn">
-              <PrivacyPolicy />
+              <PrivacyPolicy onClose={() => setActiveTab('calc')} />
             </div>
           )}
           {activeTab === 'terms' && (
             <div className="animate-fadeIn">
-              <TermsOfUse />
+              <TermsOfUse onClose={() => setActiveTab('calc')} />
             </div>
           )}
         </main>

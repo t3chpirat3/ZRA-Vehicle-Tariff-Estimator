@@ -1,10 +1,24 @@
 import React from 'react';
+import { X } from 'lucide-react';
 
-export default function PrivacyPolicy() {
+interface PrivacyPolicyProps {
+  onClose?: () => void;
+}
+
+export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10">
-        <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-2">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10 relative">
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+        <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-2 pr-8">
           Privacy Policy
         </h2>
         <p className="text-sm text-slate-500 font-medium mb-8">
@@ -88,7 +102,7 @@ export default function PrivacyPolicy() {
             <h3 className="text-lg font-bold text-slate-800 mb-2">9. Contact Us</h3>
             <p>If you have any questions about this Privacy Policy or how our platform handles technical data, please contact us at:</p>
             <p className="mt-2">
-              <strong>Email:</strong> <a href="mailto:shadreck@tuta.io" className="text-emerald-600 hover:text-emerald-700 font-medium">shadreck@tuta.io</a>
+              <strong>Email:</strong> <a href="mailto:t3chpirat3@zradutycalculator.xyz" className="text-emerald-600 hover:text-emerald-700 font-medium">t3chpirat3@zradutycalculator.xyz</a>
             </p>
           </section>
         </div>

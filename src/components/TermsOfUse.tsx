@@ -1,10 +1,24 @@
 import React from 'react';
+import { X } from 'lucide-react';
 
-export default function TermsOfUse() {
+interface TermsOfUseProps {
+  onClose?: () => void;
+}
+
+export default function TermsOfUse({ onClose }: TermsOfUseProps) {
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10">
-        <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-2">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10 relative">
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
+        <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-2 pr-8">
           Terms of Use
         </h2>
         <p className="text-sm text-slate-500 font-medium mb-8">
