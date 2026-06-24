@@ -271,11 +271,11 @@ export default function Watchlist({
 
   const getSourceBadgeClass = (src: string) => {
     const maps: Record<string, string> = {
-      SBT: 'bg-amber-100 text-amber-800 border border-amber-200',
-      BeForward: 'bg-emerald-100 text-emerald-800 border border-emerald-200',
-      'TC-V': 'bg-blue-100 text-blue-800 border border-blue-200',
-      SBI: 'bg-purple-100 text-purple-800 border border-purple-200',
-      'Cars.co.za': 'bg-rose-100 text-rose-800 border border-rose-250',
+      SBT: 'bg-slate-100 text-slate-800 border border-slate-200',
+      BeForward: 'bg-slate-100 text-slate-800 border border-slate-200',
+      'TC-V': 'bg-slate-100 text-slate-800 border border-slate-200',
+      SBI: 'bg-slate-100 text-slate-800 border border-slate-200',
+      'Cars.co.za': 'bg-slate-100 text-slate-800 border border-slate-200',
     };
     return maps[src] || 'bg-slate-100 text-slate-800 border border-slate-200';
   };
@@ -295,7 +295,7 @@ export default function Watchlist({
         <div className="bg-slate-50 px-5 py-4 border-b border-slate-150 flex items-center justify-between">
           <h2 className="font-bold text-slate-800 flex items-center gap-2.5 text-sm md:text-base">
             <Plus className="w-5 h-5 text-slate-950" />
-            Add Vehicle to Watchlist Registry
+            {'{Add Vehicle to Watchlist Registry}'}
           </h2>
           <button
             id="watchlist-form-collapse-btn"
@@ -313,7 +313,7 @@ export default function Watchlist({
               
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5 font-sans">
-                  Vehicle Description <span className="text-rose-500 font-black">*</span>
+                  Vehicle Description <span className="text-black font-black">*</span>
                 </label>
                 <input
                   id="wl-form-desc-input"
@@ -437,7 +437,7 @@ export default function Watchlist({
                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-800 focus:ring-2 focus:ring-slate-920 focus:bg-white outline-none text-sm transition-all font-medium"
                 />
                 {dcIdMessage && (
-                  <p id="wl-dc-preview" className={`text-xs mt-1.5 font-bold ${dcIdMessage.isError ? 'text-rose-600' : 'text-emerald-700'}`}>
+                  <p id="wl-dc-preview" className={`text-xs mt-1.5 font-bold ${dcIdMessage.isError ? 'text-slate-500 italic' : 'text-black'}`}>
                     {dcIdMessage.text}
                   </p>
                 )}
@@ -505,7 +505,7 @@ export default function Watchlist({
             </div>
 
             {formError && (
-              <div id="wl-form-error" className="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-3">
+              <div id="wl-form-error" className="text-xs font-semibold text-black bg-slate-100 border border-slate-300 rounded-lg p-3">
                 ⚠️ {formError}
               </div>
             )}
@@ -529,7 +529,7 @@ export default function Watchlist({
               </button>
             </div>
             {addFlash && (
-              <div className="text-xs text-emerald-900 bg-emerald-50 border border-emerald-250 rounded-xl p-3 text-center font-bold animate-pulse">
+              <div className="text-xs text-black bg-slate-100 border border-slate-300 rounded-xl p-3 text-center font-bold animate-pulse">
                 ✓ Vehicle successfully committed to your secure browser registry!
               </div>
             )}
@@ -541,13 +541,13 @@ export default function Watchlist({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-slate-800 text-sm md:text-base">
-            Saved Watchlist ({watchlist.length})
+            {'{'}Saved Watchlist ({watchlist.length}){'}'}
           </h3>
           {watchlist.length > 0 && (
             <button
               id="watchlist-clear-all-btn"
               onClick={handleClearAll}
-              className="text-xs text-rose-600 hover:text-rose-800 font-semibold flex items-center gap-1 hover:underline"
+              className="text-xs text-slate-600 hover:text-black font-semibold flex items-center gap-1 hover:underline"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Clear entire list
@@ -607,8 +607,8 @@ export default function Watchlist({
                           Saved: {formatDate(item.savedAt)}
                         </span>
                         {stale && (
-                          <span className="inline-flex items-center gap-1 font-bold text-[9px] text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 uppercase tracking-wider animate-pulse">
-                            <AlertTriangle className="w-2.5 h-2.5 text-amber-700" />
+                          <span className="inline-flex items-center gap-1 font-bold text-[9px] text-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300 uppercase tracking-wider animate-pulse">
+                            <AlertTriangle className="w-2.5 h-2.5 text-black" />
                             Exchange stale (&gt;7d)
                           </span>
                         )}
@@ -618,7 +618,7 @@ export default function Watchlist({
                     <button
                       onClick={() => handleRemove(item.id)}
                       title="Remove from Watchlist"
-                      className="text-slate-400 hover:text-red-700 hover:bg-slate-100 transition-colors p-1.5 rounded-lg cursor-pointer"
+                      className="text-slate-400 hover:text-black hover:bg-slate-100 transition-colors p-1.5 rounded-lg cursor-pointer"
                     >
                       <Trash className="w-4 h-4" />
                     </button>
@@ -911,8 +911,8 @@ export default function Watchlist({
 
                           {/* Mode CIF settings of inline calculator */}
                           {isInlineCif && (
-                            <div className="p-3 bg-emerald-50 border border-emerald-150 rounded-lg space-y-3">
-                              <p className="text-[10.5px] font-semibold text-emerald-800 leading-normal">
+                            <div className="p-3 bg-slate-100 border border-slate-300 rounded-lg space-y-3">
+                              <p className="text-[10.5px] font-semibold text-black leading-normal">
                                 Ad Valorem Mode Inputs (USD / ZMW Rates)
                               </p>
                               <div className="grid grid-cols-2 gap-3">
@@ -1003,10 +1003,10 @@ export default function Watchlist({
 
                           {/* Mini result block inside inline calc panel */}
                           {inlineResult ? (
-                            <div className="p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
+                            <div className="p-4 bg-slate-100 rounded-xl border border-slate-300 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
                               <div>
-                                <p className="font-bold text-blue-900 text-sm">
-                                  Recalculated Duty: <span className="font-black text-blue-950 text-base">{zmwFormat(inlineResult.total)}</span>
+                                <p className="font-bold text-black text-sm">
+                                  Recalculated Duty: <span className="font-black text-black text-base">{zmwFormat(inlineResult.total)}</span>
                                 </p>
                                 {inlineResult.cd !== undefined && (
                                   <p className="text-[10px] text-slate-500 mt-0.5">
@@ -1017,7 +1017,7 @@ export default function Watchlist({
                               <button
                                 type="button"
                                 onClick={() => saveInlineDuty(item.id, inlineResult.total, inlineState.fx)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-2 rounded-lg transition-all text-[11px] hover:shadow flex items-center gap-1 cursor-pointer self-start sm:self-center"
+                                className="bg-black hover:bg-neutral-800 text-white font-bold px-3 py-2 rounded-lg transition-all text-[11px] hover:shadow flex items-center gap-1 cursor-pointer self-start sm:self-center"
                               >
                                 <Check className="w-3.5 h-3.5" />
                                 Save as saved duty

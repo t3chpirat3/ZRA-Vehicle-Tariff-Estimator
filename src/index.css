@@ -5,6 +5,13 @@
   --font-display: "Outfit", sans-serif;
 }
 
+/* ── Monochrome base: pure white canvas, pure black ink ───────────────── */
+html,
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -18,4 +25,36 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Reactive cursor blob ─────────────────────────────────────────────── */
+/* A soft monochrome glow that smoothly trails the mouse pointer. It lives
+   behind all content (z-index 0) and never intercepts pointer events. */
+#cursor-blob {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32rem;
+  height: 32rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  /* Sits above the content but below the splash screen (z 9999). The
+     multiply blend lets it read as a soft grey glow over any white surface
+     while leaving black text untouched. */
+  z-index: 40;
+  mix-blend-mode: multiply;
+  transform: translate3d(-50%, -50%, 0);
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.30) 0%,
+    rgba(0, 0, 0, 0.16) 32%,
+    rgba(0, 0, 0, 0.06) 55%,
+    rgba(0, 0, 0, 0) 72%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-blob {
+    display: none;
+  }
 }

@@ -18,16 +18,16 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
             <X className="w-5 h-5" />
           </button>
         )}
-        <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-2 pr-8">
-          Privacy Policy
+        <h2 className="text-2xl sm:text-3xl font-black font-display text-black tracking-tight mb-2 pr-8">
+          {'{Privacy Policy}'}
         </h2>
         <p className="text-sm text-slate-500 font-medium mb-8">
-          Effective Date: 14th June, 2026
+          {'{Effective Date: 14th June, 2026}'}
         </p>
 
         <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-600 leading-relaxed space-y-6">
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">1. Introduction</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{1. Introduction}'}</h3>
             <p>
               Welcome to ZRA Vehicle Tariff Estimator. We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
             </p>
@@ -37,7 +37,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">2. Information We Collect</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{2. Information We Collect}'}</h3>
             <p>When you use our platform, the data involved falls into two specific categories:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
@@ -50,7 +50,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">3. How We Use This Information</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{3. How We Use This Information}'}</h3>
             <p>We use the automatically collected analytics data exclusively for operational purposes:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>To monitor website traffic and server performance.</li>
@@ -60,7 +60,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">4. Third-Party Services</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{4. Third-Party Services}'}</h3>
             <p>We do not sell, rent, or trade any user data to third parties.</p>
             <p className="mt-2">
               We utilize Vercel Web Analytics to help us analyze website traffic. Vercel processes basic technical information (like IP addresses and referrer data) securely and in compliance with global privacy standards to provide us with aggregated, anonymized performance metrics.
@@ -68,7 +68,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">5. Cookies and Local Storage</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{5. Cookies and Local Storage}'}</h3>
             <p>Instead of using tracking cookies to monitor your behavior across the internet, we use your browser's local storage solely to provide core functionality:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
@@ -78,31 +78,31 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">6. Data Security</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{6. Data Security}'}</h3>
             <p>
               Even though we do not collect personal profiles or payment information, we take standard security measures to protect the integrity of the site, including utilizing secure hosting environments and SSL encryption for all web traffic.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">7. Children's Privacy</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{"{7. Children's Privacy}"}</h3>
             <p>
               Our platform is built for users researching vehicle importation and is not directed at children under the age of 13. We do not knowingly collect any data from children.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">8. Changes to This Policy</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{8. Changes to This Policy}'}</h3>
             <p>
               We may update this Privacy Policy occasionally if we introduce new features or integrate different technical tools. If changes are made, we will update the "Effective Date" at the top of this page.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">9. Contact Us</h3>
+            <h3 className="text-lg font-bold text-slate-800 mb-2">{'{9. Contact Us}'}</h3>
             <p>If you have any questions about this Privacy Policy or how our platform handles technical data, please contact us at:</p>
             <p className="mt-2">
-              <strong>Email:</strong> <a href="mailto:t3chpirat3@zradutycalculator.xyz" className="text-emerald-600 hover:text-emerald-700 font-medium">t3chpirat3@zradutycalculator.xyz</a>
+              <strong>Email:</strong> <a href="mailto:t3chpirat3@zradutycalculator.xyz" className="text-black underline hover:no-underline font-medium">t3chpirat3@zradutycalculator.xyz</a>
             </p>
           </section>
         </div>

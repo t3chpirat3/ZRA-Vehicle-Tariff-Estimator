@@ -151,9 +151,9 @@ async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const confidenceStyle: Record<ResolvedSpecs['confidence'], string> = {
-  high:   'text-emerald-700 bg-emerald-50 border-emerald-200',
-  medium: 'text-amber-700 bg-amber-50 border-amber-200',
-  low:    'text-rose-700 bg-rose-50 border-rose-200',
+  high:   'text-black bg-slate-100 border-slate-300',
+  medium: 'text-slate-700 bg-slate-50 border-slate-200',
+  low:    'text-slate-500 bg-white border-slate-200',
 };
 
 const confidenceLabel: Record<ResolvedSpecs['confidence'], string> = {
@@ -246,12 +246,12 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
           className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-slate-50 border border-slate-200 hover:border-slate-400 hover:bg-white rounded-2xl text-left transition-all cursor-pointer outline-none"
         >
           <div className="min-w-0">
-            <p className="text-xs font-extrabold text-slate-700 leading-none">Not sure of the specs?</p>
+            <p className="text-xs font-extrabold text-slate-700 leading-none">{'{Not sure of the specs?}'}</p>
             <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
               Describe the car — e.g. <span className="font-bold text-slate-600">"Vitz 1KR"</span> or <span className="font-bold text-slate-600">"Allion 1NZ"</span>
             </p>
           </div>
-          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex-shrink-0">Spec Resolver</span>
+          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider flex-shrink-0">{'{Spec Resolver}'}</span>
         </button>
       ) : (
         /* ── Expanded resolver panel ── */
@@ -259,7 +259,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
 
           {/* Header */}
           <div className="px-4 py-3 flex items-center justify-between bg-slate-900 border-b border-slate-800">
-            <p className="text-xs font-extrabold text-white tracking-widest uppercase">Spec Resolver</p>
+            <p className="text-xs font-extrabold text-white tracking-widest uppercase">{'{Spec Resolver}'}</p>
             <button
               type="button"
               onClick={handleCollapse}
@@ -333,7 +333,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                 {/* Result header */}
                 <div className="px-3 py-2.5 bg-slate-900 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-black text-white leading-none">{result.make} {result.model}</p>
+                    <p className="text-sm font-black text-white leading-none">{'{'}{result.make} {result.model}{'}'}</p>
                     <p className="text-[10px] text-slate-400 font-medium mt-0.5">{result.engineCode} · {result.productionYears}</p>
                   </div>
                   <div className={`text-[9px] font-extrabold px-2 py-1 rounded-lg border uppercase tracking-wide ${confidenceStyle[result.confidence]}`}>
@@ -371,7 +371,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                   <button
                     type="button"
                     onClick={handleUseSpecs}
-                    className="flex-1 px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
+                    className="flex-1 px-3 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
                   >
                     Use These Specs
                   </button>

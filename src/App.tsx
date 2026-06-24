@@ -3,17 +3,81 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { Calculator as CalcIcon, Bookmark, Settings, Car, Shield } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import Calculator from './components/Calculator';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
-import { WatchlistItem, zmwFormat } from './types';
+import { WatchlistItem } from './types';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
+
+/** Monochrome brand mark — pure black shield with a grey inner plate. */
+const BrandMark = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#000000" />
+    <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#525252" />
+    <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round" />
+    <rect x="30" y="55" width="40" height="15" rx="3" fill="white" />
+    <circle cx="38" cy="62" r="3" fill="#000000" />
+    <circle cx="62" cy="62" r="3" fill="#000000" />
+  </svg>
+);
+
+/** A soft monochrome glow that smoothly trails the mouse pointer. */
+function CursorBlob() {
+  const blobRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const blob = blobRef.current;
+    if (!blob) return;
+
+    // Start centred so it is visible before the first pointer move.
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let frame = 0;
+    let running = false;
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+      blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+
+      // Stop the loop once the blob has effectively caught up with the pointer.
+      // This keeps the rAF loop idle (zero main-thread cost) when the mouse is still.
+      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+        frame = requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
+    };
+
+    const onMove = (e: PointerEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!running) {
+        running = true;
+        frame = requestAnimationFrame(render);
+      }
+    };
+
+    // Position once on mount, then wait for movement.
+    blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+    window.addEventListener('pointermove', onMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return <div id="cursor-blob" ref={blobRef} aria-hidden="true" />;
+}
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -77,7 +141,10 @@ export default function App() {
   const watchlistCount = watchlist.length;
 
   return (
-    <div className="bg-slate-50 min-h-[100dvh] font-sans flex flex-col justify-between pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <div className="text-black h-[100dvh] font-sans flex flex-col overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+      {/* Reactive cursor-tracking blob */}
+      <CursorBlob />
+
       {/* Splash Screen */}
       {showSplash && (
         <div
@@ -86,93 +153,76 @@ export default function App() {
           }`}
         >
           <div className="flex flex-col items-center justify-center animate-pulse">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24 drop-shadow-sm mb-6">
-              <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#1e293b"/>
-              <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#10b981"/>
-              <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round"/>
-              <rect x="30" y="55" width="40" height="15" rx="3" fill="white"/>
-              <circle cx="38" cy="62" r="3" fill="#1e293b"/>
-              <circle cx="62" cy="62" r="3" fill="#1e293b"/>
-            </svg>
-            <h1 className="text-4xl font-black font-display text-slate-800 tracking-tight text-center">
-              ZRA
+            <BrandMark className="w-24 h-24 mb-6" />
+            <h1 className="text-4xl font-black font-display text-black tracking-tight text-center">
+              {'{ZRA}'}
             </h1>
-            <p className="text-xs text-slate-500 font-bold tracking-widest uppercase mt-2">
-              Vehicle Tariff Estimator
+            <p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">
+              {'{Vehicle Tariff Estimator}'}
             </p>
           </div>
         </div>
       )}
 
-      <div>
-        
-        {/* App Header Bar */}
-        <header id="main-app-header" className="bg-white py-3 border-b border-slate-200">
-          <div className="container mx-auto px-4 max-w-7xl flex items-center gap-6 sm:gap-8 md:gap-10 overflow-x-auto scrollbar-none">
-            <button 
-              className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none"
-              onClick={() => setActiveTab('calc')}
-            >
-              <div className="flex-shrink-0">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 drop-shadow-sm">
-                  <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#1e293b"/>
-                  <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#10b981"/>
-                  <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-                  <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round"/>
-                  <rect x="30" y="55" width="40" height="15" rx="3" fill="white"/>
-                  <circle cx="38" cy="62" r="3" fill="#1e293b"/>
-                  <circle cx="62" cy="62" r="3" fill="#1e293b"/>
-                </svg>
-              </div>
-              <div className="flex flex-col justify-center border-r border-slate-200 pr-6 group">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display text-slate-800 leading-none group-hover:text-emerald-600 transition-colors">
-                  ZRA
-                </h1>
-                <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap group-hover:text-emerald-500 transition-colors">
-                  Vehicle Tariff Estimator
-                </p>
-              </div>
-            </button>
-
-            <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold text-slate-500">
-              <button
-                onClick={() => setActiveTab('calc')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'calc' ? 'text-slate-900' : ''}`}
-              >
-                Calculate Duty
-              </button>
-              <button
-                onClick={() => setActiveTab('watchlist')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'text-slate-900' : ''}`}
-              >
-                Watchlist
-                {watchlistCount > 0 && (
-                  <span className={`text-[9px] font-black rounded-full px-1.5 py-0.5 ${activeTab === 'watchlist' ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-500'}`}>
-                    {watchlistCount}
-                  </span>
-                )}
-              </button>
-              <button
-                onClick={() => setActiveTab('agents')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'agents' ? 'text-slate-900' : ''}`}
-              >
-                Clearing Agents
-              </button>
-              <button
-                onClick={() => setActiveTab('guide')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'guide' ? 'text-slate-900' : ''}`}
-              >
-                Import Guide
-              </button>
+      {/* App Header Bar */}
+      <header id="main-app-header" className="relative z-10 bg-white py-3 border-b border-neutral-200 flex-shrink-0">
+        <div className="container mx-auto px-4 max-w-7xl flex items-center gap-6 sm:gap-8 md:gap-10 overflow-x-auto scrollbar-none">
+          <button
+            className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none"
+            onClick={() => setActiveTab('calc')}
+          >
+            <div className="flex-shrink-0">
+              <BrandMark className="w-10 h-10" />
             </div>
-          </div>
-        </header>
+            <div className="flex flex-col justify-center border-r border-neutral-200 pr-6 group">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display text-black leading-none group-hover:text-neutral-500 transition-colors">
+                {'{ZRA}'}
+              </h1>
+              <p className="text-[10px] sm:text-[11px] text-neutral-500 font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap group-hover:text-neutral-700 transition-colors">
+                {'{Vehicle Tariff Estimator}'}
+              </p>
+            </div>
+          </button>
 
-        {/* Main Workspace Panels */}
-        <main className="container mx-auto px-4 max-w-7xl pt-5 pb-12 transition-all duration-300">
+          <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold text-neutral-500">
+            <button
+              onClick={() => setActiveTab('calc')}
+              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'calc' ? 'text-black' : ''}`}
+            >
+              {'{Calculate Duty}'}
+            </button>
+            <button
+              onClick={() => setActiveTab('watchlist')}
+              className={`transition-colors whitespace-nowrap hover:text-black flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'text-black' : ''}`}
+            >
+              {'{Watchlist}'}
+              {watchlistCount > 0 && (
+                <span className={`text-[9px] font-black rounded-full px-1.5 py-0.5 ${activeTab === 'watchlist' ? 'bg-black text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                  {watchlistCount}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab('agents')}
+              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'agents' ? 'text-black' : ''}`}
+            >
+              {'{Clearing Agents}'}
+            </button>
+            <button
+              onClick={() => setActiveTab('guide')}
+              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'guide' ? 'text-black' : ''}`}
+            >
+              {'{Import Guide}'}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Workspace Panels — fills remaining height; only scrolls when content demands it */}
+      <main className="relative z-10 flex-1 min-h-0 overflow-y-auto">
+        <div className="container mx-auto px-4 max-w-7xl py-4 h-full">
           {activeTab === 'calc' && (
-            <div className="animate-fadeIn">
+            <div className="animate-fadeIn h-full">
               <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
             </div>
           )}
@@ -189,7 +239,7 @@ export default function App() {
             </div>
           )}
           {activeTab === 'agents' && (
-            <div className="animate-fadeIn">
+            <div className="animate-fadeIn h-full">
               <ClearingAgents />
             </div>
           )}
@@ -208,41 +258,23 @@ export default function App() {
               <TermsOfUse onClose={() => setActiveTab('calc')} />
             </div>
           )}
-        </main>
+        </div>
+      </main>
 
-      </div>
-
-      {/* Custom Monochrome Footer */}
-      <footer className="bg-slate-900 border-t border-slate-950 py-8 text-center sm:text-left text-slate-500 text-xs mt-auto">
-        <div className="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 grayscale opacity-80 flex-shrink-0">
-              <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#cbd5e1" opacity="0.3"/>
-              <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#94a3b8" opacity="0.2"/>
-              <path d="M30 55 L 70 55" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-slate-300"/>
-              <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" className="text-slate-300"/>
-              <rect x="30" y="55" width="40" height="15" rx="3" fill="currentColor" className="text-slate-300"/>
-              <circle cx="38" cy="62" r="3" fill="currentColor" className="text-slate-900"/>
-              <circle cx="62" cy="62" r="3" fill="currentColor" className="text-slate-900"/>
-            </svg>
-            <div>
-              <p className="font-extrabold text-slate-200 text-sm tracking-tight font-display mb-1">
-                ZRA <span className="font-medium text-[11px] text-slate-400 uppercase tracking-widest ml-1">Vehicle Tariff Estimator</span>
-              </p>
-              <p className="text-[10px] text-slate-500">
-                &copy; 2026 ZRA VEHICLE TARIFF ESTIMATOR. All rights reserved.
-              </p>
-              <p className="text-[10px] text-slate-500 mt-2">
-                Created independently by <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-emerald-500 hover:text-emerald-400 font-medium transition-colors">t3chpirat3</a>.
-              </p>
-              <p className="text-[10px] text-slate-500 mt-0.5">
-                Not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All calculation outputs are estimates for informational purposes only.
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 font-medium text-slate-400">
-            <button onClick={() => setActiveTab('privacy')} className="hover:text-white transition-colors cursor-pointer">Privacy Policy</button>
-            <button onClick={() => setActiveTab('terms')} className="hover:text-white transition-colors cursor-pointer">Terms of Use</button>
+      {/* Slim Monochrome Footer */}
+      <footer className="relative z-10 bg-white border-t border-neutral-200 py-2 flex-shrink-0">
+        <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[10px] text-neutral-500">
+          <p className="text-center sm:text-left leading-tight">
+            <span className="font-extrabold text-black font-display">{'{ZRA Vehicle Tariff Estimator}'}</span>
+            <span className="mx-1.5 hidden sm:inline">·</span>
+            <span className="block sm:inline">&copy; 2026 · Independent estimator by{' '}
+              <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-black underline hover:no-underline font-semibold">t3chpirat3</a>.
+              Not affiliated with the ZRA. Estimates only.
+            </span>
+          </p>
+          <div className="flex gap-4 font-semibold text-black flex-shrink-0">
+            <button onClick={() => setActiveTab('privacy')} className="hover:underline cursor-pointer">{'{Privacy}'}</button>
+            <button onClick={() => setActiveTab('terms')} className="hover:underline cursor-pointer">{'{Terms}'}</button>
           </div>
         </div>
       </footer>

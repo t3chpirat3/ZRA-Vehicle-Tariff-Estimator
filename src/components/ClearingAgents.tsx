@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Search,
   MapPin,
@@ -63,11 +63,18 @@ const LICENSE_TYPES = [
   'FULL LICENCE',
 ];
 
+// How many agent cards to reveal per "page". The full list is ~1,369 entries,
+// so rendering them all at once blocks the main thread. We window the list
+// instead, revealing more as the user scrolls.
+const PAGE_SIZE = 30;
+
 export default function ClearingAgents() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [selectedLicense, setSelectedLicense] = useState('All');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleCopyText = (text: string, type: 'tpin' | 'phone' | 'email', id: string) => {
     navigator.clipboard.writeText(text);
@@ -77,53 +84,74 @@ export default function ClearingAgents() {
     }, 1800);
   };
 
-  const filteredAgents = AGENTS_DATA.filter((agent) => {
-    const matchesSearch =
-      agent.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      agent.tpin.includes(searchTerm) ||
-      agent.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      agent.phone.includes(searchTerm) ||
-      agent.email.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredAgents = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    return AGENTS_DATA.filter((agent) => {
+      const matchesSearch =
+        agent.company.toLowerCase().includes(term) ||
+        agent.tpin.includes(searchTerm) ||
+        agent.address.toLowerCase().includes(term) ||
+        agent.phone.includes(searchTerm) ||
+        agent.email.toLowerCase().includes(term);
 
-    const matchesLocation =
-      selectedLocation === 'All' ||
-      agent.location.toLowerCase() === selectedLocation.toLowerCase();
+      const matchesLocation =
+        selectedLocation === 'All' ||
+        agent.location.toLowerCase() === selectedLocation.toLowerCase();
 
-    const matchesLicense =
-      selectedLicense === 'All' ||
-      agent.licenseType.toLowerCase() === selectedLicense.toLowerCase();
+      const matchesLicense =
+        selectedLicense === 'All' ||
+        agent.licenseType.toLowerCase() === selectedLicense.toLowerCase();
 
-    return matchesSearch && matchesLocation && matchesLicense;
-  });
+      return matchesSearch && matchesLocation && matchesLicense;
+    });
+  }, [searchTerm, selectedLocation, selectedLicense]);
+
+  // Reset the window (and scroll position) whenever the filters change.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [searchTerm, selectedLocation, selectedLicense]);
+
+  const visibleAgents = filteredAgents.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredAgents.length;
+
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Reveal the next page once the user nears the bottom of the list.
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 500) {
+      setVisibleCount((c) => Math.min(c + PAGE_SIZE, filteredAgents.length));
+    }
+  };
 
   const getLicenseStyle = (lic: string) => {
     if (lic === 'FULL LICENCE') {
-      return 'bg-emerald-100 text-emerald-800 border border-emerald-250';
+      return 'bg-black text-white border border-black';
     }
     if (lic.includes('RIT')) {
-      return 'bg-purple-100 text-purple-800 border border-purple-200';
+      return 'bg-slate-200 text-black border border-slate-300';
     }
-    return 'bg-blue-100 text-blue-800 border border-blue-200';
+    return 'bg-slate-100 text-slate-700 border border-slate-200';
   };
 
   return (
     <div
       id="clearing-agents-tab-view"
-      className="w-full flex justify-center items-start py-2 md:py-4 select-none min-h-0"
+      className="w-full h-full flex justify-center items-stretch py-2 md:py-4 select-none min-h-0"
     >
       <div
         id="agents-frame-container"
-        className="w-full max-w-4xl flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm transition-all"
+        className="w-full max-w-4xl h-full flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm transition-all overflow-hidden"
       >
         {/* SECTION HEADER */}
         <div className="p-4 bg-slate-900 text-white border-b border-slate-950 flex-shrink-0 flex items-center justify-between">
           <div className="min-w-0">
             <h2 className="font-extrabold text-xs sm:text-sm tracking-tight flex items-center gap-1.5 uppercase">
-              <span className="w-2 h-2 rounded bg-indigo-400 animate-pulse"></span>
-              ZRA Registered Clearing Agents
+              <span className="w-2 h-2 rounded bg-white animate-pulse"></span>
+              {'{ZRA Registered Clearing Agents}'}
             </h2>
             <p className="text-[10px] text-slate-400 font-medium truncate mt-0.5">
-              Verified list of ZRA Licensed Customs clearing agents as of 31.05.2024
+              {'{Verified list of ZRA Licensed Customs clearing agents as of 31.05.2024}'}
             </p>
           </div>
           <div className="bg-white/10 px-2.5 py-1 rounded-lg text-[9px] uppercase tracking-wide font-mono font-bold text-slate-300">
@@ -201,11 +229,15 @@ export default function ClearingAgents() {
           </div>
         </div>
 
-        {/* CONTAINER AREA FOR THE DATA (Flows naturally with the page layout) */}
-        <div className="p-4 bg-slate-50 space-y-3">
+        {/* CONTAINER AREA FOR THE DATA — scrolls internally so the rest of the frame stays put */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex-1 min-h-0 overflow-y-auto p-4 bg-slate-50 space-y-3"
+        >
           {filteredAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {filteredAgents.map((agent) => (
+              {visibleAgents.map((agent) => (
                 <div
                   key={agent.tpin}
                   className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-sm hover:border-slate-300 transition-all duration-150"
@@ -214,7 +246,7 @@ export default function ClearingAgents() {
                     {/* Company Names & Badges row */}
                     <div className="flex justify-between items-start gap-2 mb-1.5">
                       <h4 className="font-extrabold text-[11px] md:text-[12px] text-slate-900 leading-snug uppercase min-w-0 flex-grow font-display">
-                        {agent.company}
+                        {'{'}{agent.company}{'}'}
                       </h4>
                       <span className="bg-slate-100 text-slate-800 text-[8.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded border border-slate-200/50 flex-shrink-0">
                         {agent.location}
@@ -242,7 +274,7 @@ export default function ClearingAgents() {
                             title="Copy TPIN"
                           >
                             {copiedId === `tpin-${agent.tpin}` ? (
-                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              <Check className="w-3.5 h-3.5 text-black" />
                             ) : (
                               <Copy className="w-3.5 h-3.5" />
                             )}
@@ -267,7 +299,7 @@ export default function ClearingAgents() {
                     >
                       <Phone className="w-3 h-3 text-slate-500" />
                       {copiedId === `phone-${agent.tpin}` ? (
-                        <span className="text-emerald-700 font-bold uppercase text-[9px]">Copied!</span>
+                        <span className="text-black font-bold uppercase text-[9px]">Copied!</span>
                       ) : (
                         <span className="truncate">{agent.phone}</span>
                       )}
@@ -280,7 +312,7 @@ export default function ClearingAgents() {
                     >
                       <Mail className="w-3 h-3 text-slate-500" />
                       {copiedId === `email-${agent.tpin}` ? (
-                        <span className="text-emerald-700 font-bold uppercase text-[9px]">Copied!</span>
+                        <span className="text-black font-bold uppercase text-[9px]">Copied!</span>
                       ) : (
                         <span className="truncate text-left block max-w-full">{agent.email}</span>
                       )}
@@ -289,10 +321,27 @@ export default function ClearingAgents() {
                 </div>
               ))}
             </div>
-          ) : (
+          ) : null}
+
+          {filteredAgents.length > 0 && hasMore && (
+            <div className="pt-3 flex flex-col items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setVisibleCount((c) => Math.min(c + PAGE_SIZE, filteredAgents.length))}
+                className="px-4 py-2 text-[10px] font-extrabold uppercase tracking-wider rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-black hover:text-black transition-all cursor-pointer"
+              >
+                Load more agents
+              </button>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                Showing {visibleAgents.length} of {filteredAgents.length}
+              </span>
+            </div>
+          )}
+
+          {filteredAgents.length === 0 && (
             <div className="text-center py-12 bg-white border border-slate-200 rounded-2xl">
               <Building className="w-12 h-12 mx-auto mb-2 text-slate-350" />
-              <p className="font-bold text-xs uppercase text-slate-400">No agents fit search filters</p>
+              <p className="font-bold text-xs uppercase text-slate-400">{'{No agents fit search filters}'}</p>
               <p className="text-[10px] text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
                 Check details and locations of filters. Some border outposts might have fewer registered agents.
               </p>
