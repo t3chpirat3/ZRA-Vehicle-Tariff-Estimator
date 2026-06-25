@@ -27,56 +27,150 @@ const BrandMark = ({ className }: { className?: string }) => (
   </svg>
 );
 
-/** A soft monochrome glow that smoothly trails the mouse pointer. */
+/**
+ * A spiky, rippling monochrome blob that trails the pointer.
+ *
+ * The body is a closed membrane whose radius is driven by layered sine waves,
+ * so it gently undulates at rest. Pointer velocity pumps "ripple energy" into a
+ * traveling wave that rolls around the rim — biased toward the direction of
+ * travel — so moving the cursor sends a wash of spikes rippling around it,
+ * echoing the Antigravity feel. Rendered on a full-viewport canvas.
+ */
 function CursorBlob() {
-  const blobRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const blob = blobRef.current;
-    if (!blob) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    // Start centred so it is visible before the first pointer move.
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
-    let frame = 0;
-    let running = false;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
-    const render = () => {
-      currentX += (targetX - currentX) * 0.15;
-      currentY += (targetY - currentY) * 0.15;
-      blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
-
-      // Stop the loop once the blob has effectively caught up with the pointer.
-      // This keeps the rAF loop idle (zero main-thread cost) when the mouse is still.
-      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
-        frame = requestAnimationFrame(render);
-      } else {
-        running = false;
-      }
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    resize();
+
+    // A soft radial body fill, defined once at the origin and reused every
+    // frame (the per-frame translate maps it onto the blob's current centre).
+    const bodyGrad = ctx.createRadialGradient(0, 0, 8, 0, 0, 110);
+    bodyGrad.addColorStop(0, 'rgba(0,0,0,0.20)');
+    bodyGrad.addColorStop(0.6, 'rgba(0,0,0,0.11)');
+    bodyGrad.addColorStop(1, 'rgba(0,0,0,0)');
+
+    let targetX = width / 2;
+    let targetY = height / 2;
+    let x = targetX;
+    let y = targetY;
+    let prevX = x;
+    let prevY = y;
+    let ripple = 0; // movement-driven energy that decays over time
+    let moveAngle = 0; // direction of the most recent movement
+    let t = 0;
+    let raf = 0;
+
+    const SPIKES = 220;
+    const BASE = 78; // resting body radius (px)
+    const SPIKE = 34; // max spike length (px)
+    const TWO_PI = Math.PI * 2;
 
     const onMove = (e: PointerEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      if (!running) {
-        running = true;
-        frame = requestAnimationFrame(render);
+    };
+
+    const render = () => {
+      t += 0.016;
+
+      x += (targetX - x) * 0.16;
+      y += (targetY - y) * 0.16;
+
+      const dx = x - prevX;
+      const dy = y - prevY;
+      const speed = Math.hypot(dx, dy);
+      prevX = x;
+      prevY = y;
+      if (speed > 0.4) moveAngle = Math.atan2(dy, dx);
+      // Inject energy on movement, then bleed it off so ripples fade out.
+      ripple = Math.min(ripple + speed * 0.5, 26) * 0.95;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.beginPath();
+      const tips: number[] = [];
+      for (let i = 0; i <= SPIKES; i++) {
+        const a = (i / SPIKES) * TWO_PI;
+        const cos = Math.cos(a);
+        const sin = Math.sin(a);
+
+        // Ambient breathing of the membrane.
+        const ambient =
+          Math.sin(a * 4 + t * 0.8) * 6 +
+          Math.sin(a * 7 - t * 1.3) * 4 +
+          Math.sin(a * 2 + t * 0.5) * 3;
+        // Traveling ripple, strongest on the side the cursor is heading toward.
+        const dir = 0.5 + 0.5 * Math.cos(a - moveAngle);
+        const wave = Math.sin(a * 9 - t * 6) * ripple * dir;
+
+        const membrane = BASE + ambient + wave * 0.5;
+        const spikeLen =
+          SPIKE * (0.45 + 0.55 * (0.5 + 0.5 * Math.sin(a * 14 + t * 2.2))) + wave;
+        const tip = membrane + spikeLen;
+
+        tips.push(cos * membrane, sin * membrane);
+
+        // Each spike is a thin radial line from membrane to tip.
+        ctx.moveTo(cos * membrane, sin * membrane);
+        ctx.lineTo(cos * tip, sin * tip);
+      }
+      ctx.strokeStyle = 'rgba(0,0,0,0.14)';
+      ctx.lineWidth = 1.1;
+      ctx.stroke();
+
+      // Soft body filling the membrane outline.
+      ctx.beginPath();
+      ctx.moveTo(tips[0], tips[1]);
+      for (let i = 2; i < tips.length; i += 2) ctx.lineTo(tips[i], tips[i + 1]);
+      ctx.closePath();
+      ctx.fillStyle = bodyGrad;
+      ctx.fill();
+
+      ctx.restore();
+      raf = requestAnimationFrame(render);
+    };
+
+    const onVisibility = () => {
+      cancelAnimationFrame(raf);
+      if (!document.hidden) {
+        prevX = x;
+        prevY = y;
+        raf = requestAnimationFrame(render);
       }
     };
 
-    // Position once on mount, then wait for movement.
-    blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
     window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', onVisibility);
+    raf = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('pointermove', onMove);
-      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', onVisibility);
+      cancelAnimationFrame(raf);
     };
   }, []);
 
-  return <div id="cursor-blob" ref={blobRef} aria-hidden="true" />;
+  return <canvas id="cursor-blob" ref={canvasRef} aria-hidden="true" />;
 }
 
 export default function App() {

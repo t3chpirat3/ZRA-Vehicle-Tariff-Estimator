@@ -28,27 +28,18 @@ body {
 }
 
 /* ── Reactive cursor blob ─────────────────────────────────────────────── */
-/* A soft monochrome glow that smoothly trails the mouse pointer. Sits above
-   the content (below the splash screen) and never intercepts pointer events.
-   Note: intentionally NOT suppressed under prefers-reduced-motion, because the
-   blob is an explicitly requested feature; the motion is lightweight and the
-   animation loop idles when the pointer is still. */
+/* A full-viewport canvas on which a spiky, rippling monochrome membrane is
+   drawn each frame, trailing the pointer (see CursorBlob in App.tsx). The
+   multiply blend lets the black spikes read as soft grey over white surfaces
+   while leaving content legible; it never intercepts pointer events.
+   Intentionally NOT suppressed under prefers-reduced-motion, because the blob
+   is an explicitly requested feature and the loop pauses when the tab hidden. */
 #cursor-blob {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 32rem;
-  height: 32rem;
-  border-radius: 9999px;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 40;
   mix-blend-mode: multiply;
-  transform: translate3d(-50%, -50%, 0);
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 0.30) 0%,
-    rgba(0, 0, 0, 0.16) 32%,
-    rgba(0, 0, 0, 0.06) 55%,
-    rgba(0, 0, 0, 0) 72%
-  );
 }
