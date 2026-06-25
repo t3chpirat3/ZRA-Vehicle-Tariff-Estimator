@@ -188,7 +188,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   activeSteps.push({
     id: 'cat',
     title: 'Vehicle Category',
-    subtitle: 'Define the imported vehicle classification',
+    subtitle: 'Select the category that best describes the vehicle.',
     isValid: state.cat !== '',
   });
 
@@ -198,7 +198,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     activeSteps.push({
       id: 'hp-check',
       title: 'Performance Check',
-      subtitle: 'Quick check: 2020 Amendment high-performance rule',
+      subtitle: 'A quick check for the 2020 high-performance rule.',
       isValid: true, // always passable; entering values is optional
     });
 
@@ -206,7 +206,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     activeSteps.push({
       id: 'type',
       title: 'Body Style',
-      subtitle: 'Hatchback · Sedan · Station Wagon · SUV',
+      subtitle: 'Hatchback, sedan, station wagon or SUV.',
       isValid: state.type !== '',
     });
 
@@ -214,7 +214,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     activeSteps.push({
       id: 'fuel',
       title: 'Propulsion Type',
-      subtitle: 'ICE routes to ZRA 2025 schedule · Hybrid → Third Schedule',
+      subtitle: 'Petrol and diesel follow the 2025 schedule; hybrids use the Third Schedule.',
       isValid: state.fuel !== '',
     });
 
@@ -222,7 +222,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     activeSteps.push({
       id: 'age',
       title: 'Vehicle Age',
-      subtitle: 'Under 2 yrs → Ad Valorem · 2–5 yrs / 5+ yrs → Specific Rate',
+      subtitle: 'Under 2 years is taxed ad valorem; 2 years and older use a specific rate.',
       isValid: state.age !== '',
     });
 
@@ -231,14 +231,14 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       activeSteps.push({
         id: 'valuation-cif',
         title: 'CIF Valuation',
-        subtitle: 'State cost, insurance & freight and exchange rate',
+        subtitle: 'Enter the cost, insurance and freight (CIF) value and exchange rate.',
         isValid: state.cifUSD > 0 && state.fx > 0,
       });
       if (state.fuel !== 'electric') {
         activeSteps.push({
           id: 'valuation-cif-engine',
           title: 'Cylinder Volume',
-          subtitle: 'Required for Carbon Emission Surtax band',
+          subtitle: 'Used to determine the Carbon Emission Surtax band.',
           isValid: state.cifEngine !== '',
         });
       }
@@ -246,7 +246,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       activeSteps.push({
         id: 'spec-engine',
         title: 'Engine Displacement',
-        subtitle: 'Select CC band — triggers Carbon Tax auto-append',
+        subtitle: 'Select the engine size band; the Carbon Tax is added automatically.',
         isValid: state.engine !== '',
       });
     }
@@ -256,7 +256,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     activeSteps.push({
       id: 'age',
       title: 'Vehicle Age',
-      subtitle: 'Duties vary drastically depending on import age',
+      subtitle: "Duties vary significantly with the vehicle's age.",
       isValid: state.age !== '',
     });
 
@@ -264,13 +264,13 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       activeSteps.push({
         id: 'type',
         title: 'Body Style',
-        subtitle: 'Corresponds with lookup custom matrices',
+        subtitle: 'Determines which ZRA duty table applies.',
         isValid: state.type !== '',
       });
       activeSteps.push({
         id: 'fuel',
         title: 'Fuel Source',
-        subtitle: 'Subsidies support ecological/green engines',
+        subtitle: 'Greener engines may qualify for reduced duties.',
         isValid: state.fuel !== '',
       });
     }
@@ -279,7 +279,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       activeSteps.push({
         id: 'bus-details',
         title: 'Bus Specifications',
-        subtitle: 'State bus engine type and seat capacities',
+        subtitle: 'Provide the bus engine type and seating capacity.',
         isValid: state.busFuel !== '' && state.seats !== '',
       });
     }
@@ -288,7 +288,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       activeSteps.push({
         id: 'valuation-cif',
         title: 'CIF Valuation',
-        subtitle: 'State cost, insurance & freight and exchange rate',
+        subtitle: 'Enter the cost, insurance and freight (CIF) value and exchange rate.',
         isValid: state.cifUSD > 0 && state.fx > 0,
       });
     } else {
@@ -296,14 +296,14 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         activeSteps.push({
           id: 'spec-weight',
           title: 'Cargo Weight',
-          subtitle: 'Specify Gross Vehicle Weight lookup Band',
+          subtitle: 'Select the Gross Vehicle Weight (GVW) band.',
           isValid: state.weight !== '',
         });
       } else if (state.cat === 'motorcycle') {
         activeSteps.push({
           id: 'spec-vdp',
           title: 'ZRA Valuation',
-          subtitle: 'Select depreciated motorcycle VDP valuation range',
+          subtitle: "Select the motorcycle's depreciated value (VDP) range.",
           isValid: state.vdp !== '',
         });
       }
@@ -314,7 +314,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   activeSteps.push({
     id: 'results',
     title: 'Duties Summary',
-    subtitle: 'Official lookup duty assessment schedule',
+    subtitle: 'Your estimated duty assessment, based on ZRA schedules.',
     isValid: true,
   });
 
@@ -482,11 +482,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
 
   // Engine band label details for specs lookup
   const motorCarEngineOptions = [
-    { v: '1000', l: 'Under 1,000cc', desc: 'Sip-fuel compact hatchbacks' },
-    { v: '1500', l: '1,001cc to 1,500cc', desc: 'Standard sedans & town cars' },
-    { v: '2500', l: '1,501cc to 2,500cc', desc: 'Wagons, medium sedans, cross SUVs' },
-    { v: '3000', l: '2,501cc to 3,000cc', desc: 'Utility trucks, larger performance' },
-    { v: '3500', l: 'Exceeding 3,000cc', desc: 'Heavy sports SUVs & luxury liners' },
+    { v: '1000', l: 'Under 1,000cc', desc: 'Small, fuel-efficient hatchbacks' },
+    { v: '1500', l: '1,001cc to 1,500cc', desc: 'Standard sedans and town cars' },
+    { v: '2500', l: '1,501cc to 2,500cc', desc: 'Wagons, mid-size sedans and crossovers' },
+    { v: '3000', l: '2,501cc to 3,000cc', desc: 'Utility vehicles and larger engines' },
+    { v: '3500', l: 'Exceeding 3,000cc', desc: 'Large performance SUVs and luxury cars' },
   ];
 
   const carbonSurtaxOptions = [
@@ -509,8 +509,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{Are you importing a performance car?}'}</h3>
-              <p className="text-xs text-slate-500 font-medium px-4">{'{Most vehicles do not fall in this category. You can safely skip this step for standard vehicles.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Are you importing a performance car?'}</h3>
+              <p className="text-xs text-slate-500 font-medium px-4">{'Most vehicles do not fall into this category, so you can safely skip this step.'}</p>
             </div>
 
             {/* Prominent Skip Button */}
@@ -524,20 +524,20 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               }}
               className="w-full p-3.5 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 hover:border-black rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm outline-none cursor-pointer group"
             >
-              <span className="font-extrabold text-slate-700 group-hover:text-black text-sm transition-colors">No, Standard Vehicle</span>
-              <span className="text-[10px] text-slate-500 group-hover:text-black font-semibold mt-0.5 transition-colors">Skip this step and continue calculation</span>
+              <span className="font-extrabold text-slate-700 group-hover:text-black text-sm transition-colors">No, this is a standard vehicle</span>
+              <span className="text-[10px] text-slate-500 group-hover:text-black font-semibold mt-0.5 transition-colors">Skip this step and continue</span>
             </button>
 
             <div className="flex items-center gap-3 py-1">
               <div className="flex-1 h-px bg-slate-100"></div>
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Or Provide Specs</span>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Or enter the details</span>
               <div className="flex-1 h-px bg-slate-100"></div>
             </div>
 
             {/* Demoted Inputs */}
             <div className={`p-4 rounded-2xl border transition-all ${triggered ? 'bg-slate-100 border-black' : 'bg-white border-slate-200 shadow-sm'}`}>
               <div className="mb-3 text-xs text-slate-600 leading-relaxed">
-                <p className="font-extrabold text-[10px] uppercase tracking-wider text-slate-400 mb-1">{'{2020 Amendment Rule}'}</p>
+                <p className="font-extrabold text-[10px] uppercase tracking-wider text-slate-400 mb-1">{'2020 Amendment Rule'}</p>
                 <p>Cars with <strong>≥ 3,800cc</strong> <em>and</em> <strong>≥ 450hp</strong> are taxed ad valorem.</p>
               </div>
 
@@ -579,11 +579,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               </div>
 
               {triggered && (
-                <div className="p-2.5 bg-slate-100 border border-black rounded-lg text-xs text-black font-semibold flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
-                  <span className="text-sm leading-none mt-0.5">⚡</span>
+                <div className="p-2.5 bg-[color:var(--primary-soft)] border border-[color:var(--primary-border)] rounded-lg text-xs text-[color:var(--primary-hover)] font-semibold flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
                   <div>
                     <p className="font-extrabold text-[11px] uppercase tracking-wide">High-Performance Detected</p>
-                    <p className="text-[10px] mt-0.5 text-slate-600 font-medium">Click Next to proceed with ad valorem assessment.</p>
+                    <p className="text-[10px] mt-0.5 text-slate-600 font-medium">Select "Continue" to proceed with an ad valorem assessment.</p>
                   </div>
                 </div>
               )}
@@ -596,8 +595,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{How old is the vehicle?}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Tariff schedules depend strictly on the age lookup of the import.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'How old is the vehicle?'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{"Tariff schedules depend heavily on the vehicle's age."}</p>
             </div>
             <div className="grid grid-cols-3 gap-3 py-2">
               {[
@@ -622,9 +621,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 </button>
               ))}
             </div>
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[10.5px] text-slate-500 leading-normal font-medium max-w-md mx-auto text-center flex items-center justify-center gap-2">
-              <span>⚠️</span>
-              <span>Vehicles less than 2 years old require Invoice CIF calculation. Older imports use ZRA fixed rate schedules.</span>
+            <div className="p-3 bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl text-[11px] text-[color:var(--text-muted)] leading-normal font-medium max-w-md mx-auto text-center">
+              Vehicles less than 2 years old require Invoice CIF calculation. Older imports use ZRA fixed rate schedules.
             </div>
           </div>
         );
@@ -636,15 +634,15 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             <SpecResolver onSpecsResolved={handleSpecsResolved} />
 
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{What category of vehicle?}'}</h3>
-              <p className="text-xs text-slate-500 font-medium font-sans">{'{Choose classification that corresponds with ZRA structural schedules.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'What category of vehicle?'}</h3>
+              <p className="text-xs text-slate-500 font-medium font-sans">{'Choose the classification that matches the ZRA schedules.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
               {[
                 { id: 'motor-car', label: 'Motor Car', icon: Car, hint: 'Sedan, SUV, Hatchback' },
-                { id: 'goods-vehicle', label: 'Goods Truck', icon: Truck, hint: 'Cab pickups, Cargo trucks' },
-                { id: 'bus', label: 'Bus / Shuttle', icon: Users, hint: 'Multi-seat passengers' },
-                { id: 'motorcycle', label: 'Motorcycle', icon: Compass, hint: 'Two-wheelers & Scooters' },
+                { id: 'goods-vehicle', label: 'Goods Truck', icon: Truck, hint: 'Pickups and cargo trucks' },
+                { id: 'bus', label: 'Bus / Shuttle', icon: Users, hint: 'Passenger buses and shuttles' },
+                { id: 'motorcycle', label: 'Motorcycle', icon: Compass, hint: 'Two-wheelers and scooters' },
               ].map((opt) => {
                 const Icon = opt.icon;
                 const isSelected = state.cat === opt.id;
@@ -659,10 +657,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-800'
                     }`}
                   >
-                    <Icon className={`w-8 h-8 flex-shrink-0 ${isSelected ? 'text-white' : 'text-slate-550'}`} />
+                    <Icon className={`w-8 h-8 flex-shrink-0 ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-500'}`} />
                     <div className="min-w-0">
                       <p className="font-bold text-xs md:text-sm leading-tight">{opt.label}</p>
-                      <p className={`text-[10px] truncate leading-tight mt-0.5 ${isSelected ? 'text-slate-350' : 'text-slate-400'}`}>
+                      <p className={`text-[10px] truncate leading-tight mt-0.5 ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-400'}`}>
                         {opt.hint}
                       </p>
                     </div>
@@ -678,8 +676,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{Select vehicle body style}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Body style maps the lookup specifics database arrays correctly.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select vehicle body style'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'The body style determines which ZRA rate table is used.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
               {listTypes.map((opt) => {
@@ -707,15 +705,15 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{Select engine power source}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Zambia provides heavy policy duty rebates for green technology imports.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select engine power source'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'Zambia offers significant duty rebates for greener vehicles.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
               {[
-                { v: 'petrol', l: 'Petrol', b: 'P', desc: 'Standard Gasoline' },
-                { v: 'diesel', l: 'Diesel', b: 'D', desc: 'Heavy compression' },
-                { v: 'hybrid', l: 'Hybrid Drive', b: 'H', desc: 'Reduced 25% Excise' },
-                { v: 'electric', l: 'Pure Electric', b: 'EV', desc: 'Zero Customs & Excise' },
+                { v: 'petrol', l: 'Petrol', b: 'P', desc: 'Standard petrol engine' },
+                { v: 'diesel', l: 'Diesel', b: 'D', desc: 'Diesel engine' },
+                { v: 'hybrid', l: 'Hybrid Drive', b: 'H', desc: 'Reduced excise (25%)' },
+                { v: 'electric', l: 'Pure Electric', b: 'EV', desc: 'No customs or excise duty' },
               ].map((opt) => {
                 const isSelected = state.fuel === opt.v;
                 const isGreen = opt.v === 'hybrid' || opt.v === 'electric';
@@ -733,11 +731,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     }`}
                   >
                     <span className={`text-sm font-black w-7 h-7 rounded flex items-center justify-center flex-shrink-0 ${
-                      isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+                      isSelected ? 'bg-[color:var(--primary)] text-white' : 'bg-slate-100 text-slate-500'
                     }`}>{opt.b}</span>
                     <div className="min-w-0">
                       <p className="font-bold text-xs leading-none">{opt.l}</p>
-                      <p className={`text-[9.5px] font-semibold block mt-0.5 leading-none ${isSelected ? 'text-slate-350' : 'text-slate-450'}`}>
+                      <p className={`text-[9.5px] font-semibold block mt-0.5 leading-none ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-450'}`}>
                         {opt.desc}
                       </p>
                     </div>
@@ -752,8 +750,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{State bus specifications}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Buses are assessed according to seating capacity and engine class.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State bus specifications'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'Buses are assessed according to seating capacity and engine class.'}</p>
             </div>
             <div className="space-y-3.5 py-1">
               {/* Bus Engine select */}
@@ -773,7 +771,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                         className={`p-2.5 border rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
                           isSel
                             ? 'bw-active'
-                            : ''
+                            : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
                         }`}
                       >
                         <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">{opt.code}</span>
@@ -814,8 +812,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-sm mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{State CIF pricing & rate}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Under 2 years or green imports are calculated ad valorem on Kwacha value.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State CIF pricing & rate'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'Vehicles under 2 years old and electric imports are assessed ad valorem on the Kwacha value.'}</p>
             </div>
             
             <div className="grid grid-cols-2 gap-3 py-1">
@@ -851,12 +849,12 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
 
             {kwachaVal > 0 ? (
               <div className="p-3 bg-slate-100 border border-slate-300 rounded-xl text-center">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-black block">ZMW Conversion CIF</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-black block">CIF Value in Kwacha (ZMW)</span>
                 <span className="text-sm font-black font-mono text-black mt-0.5 block">{zmwFormat(kwachaVal)}</span>
               </div>
             ) : (
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-                Awaiting valid numerical figures
+                Enter both values to see the converted total
               </div>
             )}
           </div>
@@ -866,8 +864,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{State engine displacement (cc)}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Required separately to capture the fixed Carbon tax levy schedules under CIF.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State engine displacement (cc)'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'This is needed to apply the fixed Carbon Surtax under the CIF method.'}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 py-1">
               {carbonSurtaxOptions.map((opt) => {
@@ -884,7 +882,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     }`}
                   >
                     <span className="text-xs font-extrabold font-mono block">{opt.l}</span>
-                    <span className={`text-[9px] mt-1 font-semibold leading-none ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
+                    <span className={`text-[9px] mt-1 font-semibold leading-none ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-400'}`}>
                       {opt.v === '1000' ? 'ZMW 123.20' : opt.v === '2000' ? 'ZMW 246.40' : opt.v === '3000' ? 'ZMW 352.00' : 'ZMW 484.00'}
                     </span>
                   </button>
@@ -898,8 +896,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{Select vehicle engine capacity band}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{Lookup tariffs depend heavily on the vehicle cc cylinder capacity.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select vehicle engine capacity band'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{"Tariffs depend heavily on the engine's cylinder capacity (cc)."}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 py-1">
               {motorCarEngineOptions.map((opt) => {
@@ -917,7 +915,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   >
                     <span className="text-xs font-extrabold font-mono text-center leading-none">{opt.l}</span>
                     <span className={`text-[8.5px] leading-tight font-semibold mt-1 text-center block ${
-                      isSelected ? 'text-slate-350' : 'text-slate-400'
+                      isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-400'
                     }`}>
                       {opt.v === '1000' ? '<1.0L' : opt.v === '1500' ? '1.0L–1.5L' : opt.v === '2500' ? '1.5L–2.5L' : opt.v === '3000' ? '2.5L–3.0L' : '3.0L+'}
                     </span>
@@ -933,8 +931,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-lg mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{State gross vehicle weight (gvw)}'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'{ZRA Goods Vehicle Lookup schedules evaluate weight ranges as tonnage parameters.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State gross vehicle weight (gvw)'}</h3>
+              <p className="text-xs text-slate-500 font-medium">{'ZRA goods-vehicle schedules assess duty by weight range.'}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 py-1 max-w-md mx-auto w-full">
               {goodsWeightOptions.map((opt) => {
@@ -962,8 +960,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'{Select motorcycle ZRA valuation range}'}</h3>
-              <p className="text-xs text-slate-500 font-medium font-sans">{'{Lookup fixed taxation leverages depreciated price (VDP) lookups.}'}</p>
+              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select motorcycle ZRA valuation range'}</h3>
+              <p className="text-xs text-slate-500 font-medium font-sans">{'Fixed duties are based on the depreciated value (VDP) of the motorcycle.'}</p>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 py-1">
               {motorcycleVDPOptions.map((opt) => {
@@ -1006,19 +1004,19 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 type="button"
                 onClick={() => setMobileResultsTab('breakdown')}
                 className={`flex-1 py-1.5 text-[10px] font-extrabold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  mobileResultsTab === 'breakdown' ? 'bw-active' : ''
+                  mobileResultsTab === 'breakdown' ? 'bw-active' : 'text-[color:var(--text-muted)]'
                 }`}
               >
-                📊 Duty Breakdown
+                Duty Breakdown
               </button>
               <button
                 type="button"
                 onClick={() => setMobileResultsTab('resources')}
                 className={`flex-1 py-1.5 text-[10px] font-extrabold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  mobileResultsTab === 'resources' ? 'bw-active' : ''
+                  mobileResultsTab === 'resources' ? 'bw-active' : 'text-[color:var(--text-muted)]'
                 }`}
               >
-                ⚖️ Rules & resources
+                Rules & Resources
               </button>
             </div>
 
@@ -1036,7 +1034,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   
                   <div className="flex items-start justify-between gap-3 relative z-10 w-full mb-1">
                     <div className="text-left">
-                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">{'{ZMW Total Duty Payable}'}</p>
+                      <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">{'Total Duty Payable (ZMW)'}</p>
                       <p id="total-duty-value_res" className="text-3xl md:text-5xl font-black text-black font-mono mt-1 tracking-tighter drop-shadow-sm">{zmwFormat(result.total)}</p>
                     </div>
                     <div className="bg-slate-100 px-2.5 py-1.5 rounded-lg border border-slate-300 text-[9px] uppercase tracking-wide font-extrabold text-black flex-shrink-0 font-mono">
@@ -1071,7 +1069,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     <thead>
                       <tr className="bg-slate-50 text-slate-500 font-bold text-[8.5px] uppercase tracking-wider border-b border-slate-150">
                         <th className="px-3 py-2.5">Tax Element</th>
-                        <th className="px-3 py-2.5">Rate Ratio</th>
+                        <th className="px-3 py-2.5">Rate</th>
                         <th className="px-3 py-2.5 text-right">Tax Charge (ZMW)</th>
                       </tr>
                     </thead>
@@ -1165,14 +1163,14 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => {
                       onSaveToWatchlist(result.total, state.cifUSD, state.fx);
                     }}
-                    className="w-full flex items-center justify-center gap-2 bw-active text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 rounded-xl cursor-pointer transition-all active:scale-[0.99]"
+                    className="w-full flex items-center justify-center gap-2 btn-primary text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 cursor-pointer"
                   >
                     <BookmarkPlus className="w-3.5 h-3.5" />
-                    Save Duties appraisal to Watchlist
+                    Save this estimate to Watchlist
                   </button>
 
                   <div className="text-[9.5px] leading-relaxed text-slate-500 font-medium font-sans">
-                    🔍 <strong>Included charges:</strong> {result.note}
+                    <strong>Included charges:</strong> {result.note}
                   </div>
                 </div>
               </div>
@@ -1192,7 +1190,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
 
                 {/* ZRA Surtax Table Reference */}
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
-                  <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1.5">{'{ZRA Carbon Tariff Table}'}</h4>
+                  <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1.5">{'ZRA Carbon Tariff Table'}</h4>
                   <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
                     <table className="w-full text-left text-[9.5px]">
                       <thead>
@@ -1224,7 +1222,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
 
                   {/* Resource directory board */}
                   <div className="mt-3 text-[9.5px] text-slate-650 space-y-1 bg-white border border-slate-150 p-2 rounded-xl">
-                    <p className="font-bold text-[9px] uppercase text-slate-500 tracking-wider">{'{ZRA Resource board}'}</p>
+                    <p className="font-bold text-[9px] uppercase text-slate-500 tracking-wider">{'ZRA Contact Details'}</p>
                     <div className="flex items-center gap-1.5">
                       <span className="font-bold block w-10 text-slate-400">CALL:</span>
                       <span className="font-bold bg-slate-100 text-black border border-slate-300 px-1 rounded font-mono">4111 / +260 211 381111</span>
@@ -1246,7 +1244,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 <div className="bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-[9px] text-black flex items-start gap-2 flex-shrink-0 font-semibold leading-relaxed">
                   <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong>Independent Estimator Warning:</strong> This application is unaffiliated, untethered, and unendorsed by the Zambia Revenue Authority (ZRA). Calculations are structural guides. Confirms are required with licensed clearing agents.
+                    <strong>Independent estimator:</strong> This application is not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All figures are estimates only. Always confirm the final amounts with a licensed clearing agent.
                   </div>
                 </div>
               </div>
@@ -1274,11 +1272,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
           <div className="min-w-0">
             <h2 className="font-extrabold text-xs sm:text-sm tracking-tight flex items-center gap-1.5 uppercase text-slate-800">
               <span className="w-2 h-2 rounded bg-black animate-pulse"></span>
-              {'{ZRA Tariff Lookup Assistant}'}
+              {'ZRA Tariff Lookup Assistant'}
             </h2>
             <p className="text-[10px] text-slate-500 font-bold tracking-wide uppercase truncate mt-0.5">
-              {'{'}Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &bull; {currentStep.subtitle}{'}'}
-            </p>
+Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &bull; {currentStep.subtitle}            </p>
           </div>
           <button
             id="wizard-global-reset-btn"
@@ -1287,7 +1284,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             className="text-[9.5px] uppercase tracking-wider font-extrabold text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 px-2 py-1.5 rounded-lg border border-slate-200 transition-all outline-none flex items-center gap-1.5 cursor-pointer flex-shrink-0 shadow-sm"
           >
             <RotateCcw className="w-3 h-3" />
-            Reset State
+            Start Over
           </button>
         </div>
 
@@ -1311,28 +1308,28 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
         {/* ── BUDGET HERO — Live Estimate Strip ───────────────────────────────── */}
         {/* Visible once enough data exists to produce any estimate; hidden on Results step */}
         {currentStep.id !== 'results' && (state.cat !== '' || result) && (
-          <div className="border-b border-slate-100 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-4 py-2.5 flex items-center justify-between gap-3 flex-shrink-0">
+          <div className="border-b border-[color:var(--border)] bg-[color:var(--surface-soft)] px-4 py-2.5 flex items-center justify-between gap-3 flex-shrink-0">
             <div className="flex items-center gap-2.5 min-w-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse flex-shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[color:var(--primary)] animate-pulse flex-shrink-0" />
               <div className="flex flex-wrap items-center gap-1.5 min-w-0">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 flex-shrink-0">Live Estimate</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest text-[color:var(--text-muted)] flex-shrink-0">Live Estimate</span>
                 {/* Routing path chips */}
                 {isHighPerf && (
-                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-white/15 text-white border border-white/25 flex-shrink-0">⚡ HIGH PERF → CIF</span>
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)] flex-shrink-0">HIGH PERF → CIF</span>
                 )}
                 {!isHighPerf && state.fuel === 'hybrid' && (
-                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-white/15 text-white border border-white/25 flex-shrink-0">⚡ HYBRID → 3RD SCHED</span>
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)] flex-shrink-0">HYBRID → 3RD SCHED</span>
                 )}
                 {!isHighPerf && state.fuel === 'electric' && (
-                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-white/15 text-white border border-white/25 flex-shrink-0">EV → CIF 0%</span>
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-[color:var(--accent-soft)] text-[color:#2f8a72] flex-shrink-0">EV → CIF 0%</span>
                 )}
                 {!isHighPerf && state.age === '0-2' && (
-                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-slate-500/30 text-slate-300 border border-slate-500/30 flex-shrink-0">UNDER 2YR → CIF</span>
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)] flex-shrink-0">UNDER 2YR → CIF</span>
                 )}
                 {/* Carbon band chip when available */}
                 {result && result.carbon > 0 && result.cband && (
-                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-white/15 text-white border border-white/25 flex-shrink-0">
-                    🌿 Carbon {result.cband}cc +{zmwFormat(result.carbon)}
+                  <span className="text-[8.5px] font-extrabold px-1.5 py-0.5 rounded bg-[color:var(--accent-soft)] text-[color:#2f8a72] flex-shrink-0">
+                    Carbon {result.cband}cc +{zmwFormat(result.carbon)}
                   </span>
                 )}
               </div>
@@ -1340,11 +1337,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             <div className="flex-shrink-0 text-right">
               {result ? (
                 <div>
-                  <p className="text-lg font-black font-mono text-white leading-none tracking-tighter">{zmwFormat(result.total)}</p>
-                  <p className="text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">{result.mode === 'cif' ? 'Ad Valorem Estimate' : 'Specific Rate Total'}</p>
+                  <p className="text-lg font-black font-mono text-[color:var(--primary-hover)] leading-none tracking-tighter">{zmwFormat(result.total)}</p>
+                  <p className="text-[8px] text-[color:var(--text-muted)] font-bold uppercase tracking-wider mt-0.5">{result.mode === 'cif' ? 'Ad Valorem Estimate' : 'Specific Rate Total'}</p>
                 </div>
               ) : (
-                <p className="text-[10px] font-bold text-slate-500 italic">Fill steps to unlock total</p>
+                <p className="text-[10px] font-bold text-[color:var(--text-muted)] italic">Complete the steps to see your total</p>
               )}
             </div>
           </div>
@@ -1373,11 +1370,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             type="button"
             disabled={currentStepIndex === 0}
             onClick={handlePrevStep}
-            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl border transition-all ${
-              currentStepIndex === 0
-                ? 'opacity-35 cursor-not-allowed border-slate-200 text-slate-400 bg-slate-50/50'
-                : 'border-slate-300 hover:border-slate-400 text-slate-700 bg-white hover:bg-slate-50 cursor-pointer active:scale-95'
-            }`}
+            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 btn-ghost disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Previous
@@ -1388,7 +1381,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             {currentStepIndex === activeSteps.length - 1 ? (
               <span className="text-black font-extrabold flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-black" />
-                Done (Tariffs appraised)
+                Done — estimate ready
               </span>
             ) : (
               <span>Progress {Math.round(((currentStepIndex + 1) / activeSteps.length) * 100)}%</span>
@@ -1400,13 +1393,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             type="button"
             disabled={currentStepIndex === activeSteps.length - 1 || !isCurrentStepValid}
             onClick={handleNextStep}
-            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all ${
-              currentStepIndex === activeSteps.length - 1
-                ? 'opacity-35 cursor-not-allowed'
-                : !isCurrentStepValid
-                ? 'opacity-40 cursor-not-allowed'
-                : 'bw-active cursor-pointer active:scale-95'
-            }`}
+            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {currentStepIndex === activeSteps.length - 2 ? 'View Estimate' : 'Continue'}
             <ArrowRight className="w-3.5 h-3.5" />

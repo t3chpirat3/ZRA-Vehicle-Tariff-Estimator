@@ -12,13 +12,7 @@ import {
   Copy,
   Check,
   Building,
-  Shield,
-  Award,
-  ExternalLink,
-  ChevronRight,
   Info,
-  Layers,
-  ArrowRight,
 } from 'lucide-react';
 
 interface Agent {
@@ -75,7 +69,7 @@ export default function ClearingAgents() {
   const [selectedLicense, setSelectedLicense] = useState('All');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const handleCopyText = (text: string, type: 'tpin' | 'phone' | 'email', id: string) => {
     navigator.clipboard.writeText(text);
@@ -107,61 +101,69 @@ export default function ClearingAgents() {
     });
   }, [searchTerm, selectedLocation, selectedLicense]);
 
-  // Reset the window (and scroll position) whenever the filters change.
+  // Reset the window whenever the filters change.
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-    if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [searchTerm, selectedLocation, selectedLicense]);
 
   const visibleAgents = filteredAgents.slice(0, visibleCount);
   const hasMore = visibleCount < filteredAgents.length;
 
-  const handleScroll = () => {
-    const el = scrollRef.current;
+  // Reveal the next page as the bottom sentinel scrolls into the viewport.
+  // This rides the single page scroll, so the list has no inner scrollbar.
+  useEffect(() => {
+    if (!hasMore) return;
+    const el = sentinelRef.current;
     if (!el) return;
-    // Reveal the next page once the user nears the bottom of the list.
-    if (el.scrollHeight - el.scrollTop - el.clientHeight < 500) {
-      setVisibleCount((c) => Math.min(c + PAGE_SIZE, filteredAgents.length));
-    }
-  };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount((c) => Math.min(c + PAGE_SIZE, filteredAgents.length));
+        }
+      },
+      { rootMargin: '600px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, filteredAgents.length, visibleCount]);
 
   const getLicenseStyle = (lic: string) => {
     if (lic === 'FULL LICENCE') {
-      return 'bg-black text-white border border-black';
+      return 'bg-[color:var(--primary)] text-white';
     }
     if (lic.includes('RIT')) {
-      return 'bg-slate-200 text-black border border-slate-300';
+      return 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]';
     }
-    return 'bg-slate-100 text-slate-700 border border-slate-200';
+    return 'bg-[color:var(--surface-soft)] text-slate-600 border border-[color:var(--border)]';
   };
 
   return (
     <div
       id="clearing-agents-tab-view"
-      className="w-full h-full flex justify-center items-stretch py-2 md:py-4 select-none min-h-0"
+      className="w-full max-w-4xl mx-auto select-none"
     >
       <div
         id="agents-frame-container"
-        className="w-full max-w-4xl h-full flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm transition-all overflow-hidden"
+        className="w-full bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm overflow-hidden"
       >
         {/* SECTION HEADER */}
-        <div className="p-4 bg-slate-900 text-white border-b border-slate-950 flex-shrink-0 flex items-center justify-between">
+        <div className="p-4 bg-[color:var(--surface)] border-b border-[color:var(--border)] flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="font-extrabold text-xs sm:text-sm tracking-tight flex items-center gap-1.5 uppercase">
-              <span className="w-2 h-2 rounded bg-white animate-pulse"></span>
-              {'{ZRA Registered Clearing Agents}'}
+            <h2 className="font-extrabold text-sm sm:text-base tracking-tight flex items-center gap-2 text-[color:var(--text)]">
+              <span className="w-2 h-2 rounded-full bg-[color:var(--primary)] animate-pulse"></span>
+              ZRA Registered Clearing Agents
             </h2>
-            <p className="text-[10px] text-slate-400 font-medium truncate mt-0.5">
-              {'{Verified list of ZRA Licensed Customs clearing agents as of 31.05.2024}'}
+            <p className="text-[11px] text-[color:var(--text-muted)] font-medium truncate mt-1">
+              Verified list of ZRA licensed customs clearing agents as of 31.05.2024
             </p>
           </div>
-          <div className="bg-white/10 px-2.5 py-1 rounded-lg text-[9px] uppercase tracking-wide font-mono font-bold text-slate-300">
-            {filteredAgents.length} Agents Listed
+          <div className="bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)] px-2.5 py-1 rounded-lg text-[10px] uppercase tracking-wide font-mono font-bold flex-shrink-0">
+            {filteredAgents.length} listed
           </div>
         </div>
 
-        {/* SEARCH & FILTERS CONTROLS */}
-        <div className="p-3 bg-slate-50 border-b border-slate-200 flex-shrink-0 grid grid-cols-1 md:grid-cols-4 gap-2.5">
+        {/* SEARCH & FILTERS CONTROLS — sticky so filtering never needs a scroll back up */}
+        <div className="p-3 bg-[color:var(--surface)]/95 backdrop-blur-sm border-b border-[color:var(--border)] sticky top-[60px] z-20 grid grid-cols-1 md:grid-cols-4 gap-2.5">
           {/* Text Search */}
           <div className="relative md:col-span-2">
             <span className="absolute left-3 top-2.5 text-slate-400 pointer-events-none">
@@ -173,7 +175,7 @@ export default function ClearingAgents() {
               placeholder="Search company, TPIN, or keywords..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-slate-250 rounded-xl pl-9 pr-3 py-2 text-xs font-semibold text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-inner"
+              className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl pl-9 pr-3 py-2 text-xs font-semibold text-[color:var(--text)] placeholder-slate-400 outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] transition-all"
             />
           </div>
 
@@ -183,16 +185,16 @@ export default function ClearingAgents() {
               id="agents-location-filter"
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full text-xs font-bold text-slate-700 bg-white border border-slate-205 hover:border-slate-400 p-2 rounded-xl outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all cursor-pointer appearance-none"
+              className="w-full text-xs font-bold text-[color:var(--text)] bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] hover:border-[color:var(--primary-border)] p-2 rounded-xl outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] transition-all cursor-pointer appearance-none"
               style={{
-                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23767d90' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
                 backgroundPosition: 'right 0.5rem center',
                 backgroundSize: '1.25rem',
                 backgroundRepeat: 'no-repeat',
                 paddingRight: '1.75rem',
               }}
             >
-              <option value="All">📍 All Border Locations</option>
+              <option value="All">All Border Locations</option>
               {LOCATIONS.filter((l) => l !== 'All').map((loc) => (
                 <option key={loc} value={loc}>
                   {loc}
@@ -207,16 +209,16 @@ export default function ClearingAgents() {
               id="agents-license-filter"
               value={selectedLicense}
               onChange={(e) => setSelectedLicense(e.target.value)}
-              className="w-full text-xs font-bold text-slate-700 bg-white border border-slate-205 hover:border-slate-400 p-2 rounded-xl outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all cursor-pointer appearance-none"
+              className="w-full text-xs font-bold text-[color:var(--text)] bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] hover:border-[color:var(--primary-border)] p-2 rounded-xl outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] transition-all cursor-pointer appearance-none"
               style={{
-                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23767d90' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
                 backgroundPosition: 'right 0.5rem center',
                 backgroundSize: '1.25rem',
                 backgroundRepeat: 'no-repeat',
                 paddingRight: '1.75rem',
               }}
             >
-              <option value="All">📜 All Licences</option>
+              <option value="All">All Licences</option>
               {LICENSE_TYPES.filter((t) => t !== 'All').map((type) => (
                 <option key={type} value={type}>
                   {type === 'FINAL CLEARANCE ONLY'
@@ -230,25 +232,21 @@ export default function ClearingAgents() {
           </div>
         </div>
 
-        {/* CONTAINER AREA FOR THE DATA — scrolls internally so the rest of the frame stays put */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex-1 min-h-0 overflow-y-auto p-4 bg-slate-50 space-y-3"
-        >
+        {/* CONTAINER AREA FOR THE DATA — flows with the single page scroll */}
+        <div className="p-4 bg-[color:var(--surface-soft)] space-y-3">
           {filteredAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {visibleAgents.map((agent) => (
                 <div
                   key={agent.tpin}
-                  className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-sm hover:border-slate-300 transition-all duration-150"
+                  className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-xl p-3 flex flex-col justify-between hover:shadow-sm hover:border-[color:var(--primary-border)] transition-all duration-150"
                   style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 196px' }}
                 >
                   <div>
                     {/* Company Names & Badges row */}
                     <div className="flex justify-between items-start gap-2 mb-1.5">
-                      <h4 className="font-extrabold text-[11px] md:text-[12px] text-slate-900 leading-snug uppercase min-w-0 flex-grow font-display">
-                        {'{'}{agent.company}{'}'}
+                      <h4 className="font-extrabold text-[11px] md:text-[12px] text-[color:var(--text)] leading-snug uppercase min-w-0 flex-grow font-display">
+                        {agent.company}
                       </h4>
                       <span className="bg-slate-100 text-slate-800 text-[8.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded border border-slate-200/50 flex-shrink-0">
                         {agent.location}
@@ -326,24 +324,24 @@ export default function ClearingAgents() {
           ) : null}
 
           {filteredAgents.length > 0 && hasMore && (
-            <div className="pt-3 flex flex-col items-center gap-2">
+            <div ref={sentinelRef} className="pt-3 flex flex-col items-center gap-2">
               <button
                 type="button"
                 onClick={() => setVisibleCount((c) => Math.min(c + PAGE_SIZE, filteredAgents.length))}
-                className="px-4 py-2 text-[10px] font-extrabold uppercase tracking-wider rounded-xl border border-slate-300 bg-white text-slate-700 hover:border-black hover:text-black transition-all cursor-pointer"
+                className="px-4 py-2 text-[10px] font-extrabold uppercase tracking-wider btn-ghost cursor-pointer"
               >
                 Load more agents
               </button>
-              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-[color:var(--text-muted)]">
                 Showing {visibleAgents.length} of {filteredAgents.length}
               </span>
             </div>
           )}
 
           {filteredAgents.length === 0 && (
-            <div className="text-center py-12 bg-white border border-slate-200 rounded-2xl">
-              <Building className="w-12 h-12 mx-auto mb-2 text-slate-350" />
-              <p className="font-bold text-xs uppercase text-slate-400">{'{No agents fit search filters}'}</p>
+            <div className="text-center py-12 bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl">
+              <Building className="w-12 h-12 mx-auto mb-2 text-slate-300" />
+              <p className="font-bold text-xs uppercase text-[color:var(--text-muted)]">No agents fit search filters</p>
               <p className="text-[10px] text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
                 Check details and locations of filters. Some border outposts might have fewer registered agents.
               </p>

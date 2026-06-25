@@ -283,8 +283,8 @@ export default function Watchlist({
   return (
     <div id="watchlist-tab-view" className="space-y-6 max-w-4xl mx-auto">
       {/* Informational banner */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex items-start gap-3 text-xs text-slate-300 shadow-sm font-medium">
-        <Bookmark className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+      <div className="p-4 bg-[color:var(--primary-soft)] border border-[color:var(--primary-border)] rounded-xl flex items-start gap-3 text-xs text-[color:var(--text)] font-medium">
+        <Bookmark className="w-4 h-4 text-[color:var(--primary-hover)] mt-0.5 flex-shrink-0" />
         <p className="leading-relaxed">
           The watchlist is cataloged locally inside <strong>your offline browser sandbox</strong>. No cloud databases, trackers, or logins are ever connected. Safe, offline, secure.
         </p>
@@ -295,7 +295,7 @@ export default function Watchlist({
         <div className="bg-slate-50 px-5 py-4 border-b border-slate-150 flex items-center justify-between">
           <h2 className="font-bold text-slate-800 flex items-center gap-2.5 text-sm md:text-base">
             <Plus className="w-5 h-5 text-slate-950" />
-            {'{Add Vehicle to Watchlist Registry}'}
+            {'Add a Vehicle to Your Watchlist'}
           </h2>
           <button
             id="watchlist-form-collapse-btn"
@@ -303,7 +303,7 @@ export default function Watchlist({
             onClick={() => setFormOpen((prev) => !prev)}
             className="text-xs text-slate-600 font-bold uppercase tracking-wider hover:text-slate-900 transition-all cursor-pointer"
           >
-            {formOpen ? '[-] Close Panel' : '[+] Open Form'}
+            {formOpen ? 'Close Form' : 'Open Form'}
           </button>
         </div>
 
@@ -336,7 +336,7 @@ export default function Watchlist({
                     className={`p-3 border rounded-xl text-xs font-bold transition-all flex flex-col items-center cursor-pointer ${
                       currency === 'USD'
                         ? 'bw-active'
-                        : ''
+                        : 'border-slate-200 bg-[color:var(--surface-soft)] text-slate-600 hover:border-[color:var(--primary-border)] hover:bg-[color:var(--primary-soft)]'
                     }`}
                   >
                     <span className="font-extrabold text-sm">USD</span>
@@ -349,7 +349,7 @@ export default function Watchlist({
                     className={`p-3 border rounded-xl text-xs font-bold transition-all flex flex-col items-center cursor-pointer ${
                       currency === 'ZAR'
                         ? 'bw-active'
-                        : ''
+                        : 'border-slate-200 bg-[color:var(--surface-soft)] text-slate-600 hover:border-[color:var(--primary-border)] hover:bg-[color:var(--primary-soft)]'
                     }`}
                   >
                     <span className="font-extrabold text-sm">ZAR</span>
@@ -426,7 +426,7 @@ export default function Watchlist({
               <div className="md:col-span-2">
                 <label className="text-xs font-bold text-slate-500 uppercase block mb-1.5">
                   DreamCars Listing Link
-                  <span className="font-semibold text-slate-400 ml-1">(Optional Integration)</span>
+                  <span className="font-semibold text-slate-400 ml-1">(Optional)</span>
                 </label>
                 <input
                   id="wl-form-dcurl-input"
@@ -448,7 +448,7 @@ export default function Watchlist({
                 <input
                   id="wl-form-notes-input"
                   type="text"
-                  placeholder="e.g. Needs tires, structural inspection low mileage"
+                  placeholder="e.g. Needs new tyres, low mileage"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-slate-800 focus:ring-2 focus:ring-slate-900 focus:bg-white outline-none text-sm font-medium"
@@ -462,7 +462,7 @@ export default function Watchlist({
                     id="wl-form-duty-input"
                     type="number"
                     min="0"
-                    placeholder="Enter or capture from left column"
+                    placeholder="Enter manually or load from the calculator"
                     value={duty}
                     onChange={(e) => setDuty(e.target.value === '' ? '' : Number(e.target.value))}
                     className="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 pr-24 text-slate-850 focus:ring-2 focus:ring-slate-900 focus:bg-white outline-none text-sm font-mono font-bold"
@@ -470,7 +470,7 @@ export default function Watchlist({
                   <button
                     type="button"
                     onClick={fillDutyFromCalculator}
-                    className="absolute right-2 top-2 bg-slate-900 hover:bg-slate-800 text-white px-2.5 py-1 text-[10px] font-extrabold rounded uppercase tracking-wider transition-all border border-slate-800 cursor-pointer"
+                    className="absolute right-2 top-2 btn-primary px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider cursor-pointer"
                   >
                     Load Calc
                   </button>
@@ -495,7 +495,7 @@ export default function Watchlist({
                   <button
                     type="button"
                     onClick={fillFXFromCalculator}
-                    className="absolute right-2 top-2 bg-slate-900 hover:bg-slate-800 text-white px-2.5 py-1 text-[10px] font-extrabold rounded uppercase tracking-wider transition-all border border-slate-800 cursor-pointer"
+                    className="absolute right-2 top-2 btn-primary px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider cursor-pointer"
                   >
                     Load Calc
                   </button>
@@ -505,8 +505,8 @@ export default function Watchlist({
             </div>
 
             {formError && (
-              <div id="wl-form-error" className="text-xs font-semibold text-black bg-slate-100 border border-slate-300 rounded-lg p-3">
-                ⚠️ {formError}
+              <div id="wl-form-error" className="text-xs font-semibold text-[color:#9a4b2e] bg-[color:var(--warn-soft)] border border-[color:#eccdbf] rounded-lg p-3">
+                {formError}
               </div>
             )}
 
@@ -514,23 +514,23 @@ export default function Watchlist({
               <button
                 id="watchlist-submit-btn"
                 type="submit"
-                className="flex-1 bg-slate-900 hover:bg-slate-850 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl transition-all shadow hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
+                className="flex-1 btn-primary font-bold text-xs uppercase tracking-wider py-3.5 px-4 cursor-pointer flex items-center justify-center gap-2"
               >
                 <Bookmark className="w-4 h-4" />
-                Commit to Watchlist
+                Add to Watchlist
               </button>
               <button
                 id="watchlist-clear-form-btn"
                 type="button"
                 onClick={handleClearForm}
-                className="px-5 py-3.5 border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-all cursor-pointer"
+                className="px-5 py-3.5 btn-ghost text-xs font-bold uppercase tracking-wider cursor-pointer"
               >
-                Reset Field Form
+                Clear Form
               </button>
             </div>
             {addFlash && (
               <div className="text-xs text-black bg-slate-100 border border-slate-300 rounded-xl p-3 text-center font-bold animate-pulse">
-                ✓ Vehicle successfully committed to your secure browser registry!
+                Vehicle saved to your watchlist on this device.
               </div>
             )}
           </form>
@@ -541,7 +541,7 @@ export default function Watchlist({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-slate-800 text-sm md:text-base">
-            {'{'}Saved Watchlist ({watchlist.length}){'}'}
+            Saved Watchlist ({watchlist.length})
           </h3>
           {watchlist.length > 0 && (
             <button
@@ -558,9 +558,9 @@ export default function Watchlist({
         {watchlist.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-slate-200 p-8 text-slate-400">
             <Bookmark className="w-12 h-12 mx-auto mb-3 text-slate-200" />
-            <p className="font-semibold text-sm">No vehicles saved in your watchlist yet.</p>
+            <p className="font-semibold text-sm">You have not saved any vehicles yet.</p>
             <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
-              Configure parameters on the calculator and tap &quot;Save to Watchlist&quot; or manually input vehicle specs above.
+              Calculate a vehicle's duty and select &quot;Save to Watchlist&quot;, or add a vehicle manually using the form above.
             </p>
           </div>
         ) : (
@@ -594,7 +594,7 @@ export default function Watchlist({
                       
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
                         {item.dcId && (
-                          <span className="inline-flex items-center gap-1 bg-slate-900 text-slate-100 hover:bg-black font-mono font-bold text-[9px] px-2 py-0.5 rounded tracking-wide uppercase">
+                          <span className="inline-flex items-center gap-1 bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)] font-mono font-bold text-[9px] px-2 py-0.5 rounded tracking-wide uppercase">
                             DreamCars #{item.dcId}
                           </span>
                         )}
@@ -654,10 +654,10 @@ export default function Watchlist({
                       </div>
                     )}
                     {totalEstCost > 0 && (
-                      <div className="bg-slate-900 shadow-sm rounded-lg p-2.5 border border-slate-800 text-slate-200">
-                        <p className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Total Est. Cost</p>
+                      <div className="bg-[color:var(--primary)] shadow-sm rounded-lg p-2.5 text-white">
+                        <p className="text-[9px] text-white/75 uppercase tracking-widest font-bold">Total Est. Cost</p>
                         <p className="text-xs md:text-sm font-black text-white mt-0.5 font-mono">{zmwFormat(totalEstCost)}</p>
-                        <p className="text-[8.5px] text-slate-400 font-medium">FOB kwacha + duty charges</p>
+                        <p className="text-[8.5px] text-white/75 font-medium">FOB kwacha + duty charges</p>
                       </div>
                     )}
                   </div>
@@ -667,7 +667,7 @@ export default function Watchlist({
                     <div className="px-5 py-3 bg-slate-50 border-t border-slate-150 flex items-center justify-between gap-3 flex-wrap">
                       {item.notes ? (
                         <p className="text-xs text-slate-600 italic font-medium flex-1 truncate">
-                          📝 {item.notes}
+                          {item.notes}
                         </p>
                       ) : (
                         <div className="flex-1" />
@@ -716,7 +716,7 @@ export default function Watchlist({
                       className="w-full text-center py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors flex items-center justify-center gap-1.5 focus:outline-none cursor-pointer"
                     >
                       <Plus className={`w-3.5 h-3.5 transition-transform ${openInlineCalcs[item.id] ? 'rotate-45' : ''}`} />
-                      {item.duty > 0 ? 'Recalculate Entry Duty' : 'Calculate Custom Duty'}
+                      {item.duty > 0 ? 'Recalculate Duty' : 'Calculate Duty'}
                     </button>
                   </div>
 
@@ -983,7 +983,7 @@ export default function Watchlist({
 
                               {inlineState.cat === 'goods-vehicle' && (
                                 <div>
-                                  <label className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Cargo Net Weight Payload</label>
+                                  <label className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Cargo Weight</label>
                                   <select
                                     value={inlineState.weight}
                                     onChange={(e) => updateInlineState(item.id, { weight: e.target.value })}
@@ -1017,15 +1017,15 @@ export default function Watchlist({
                               <button
                                 type="button"
                                 onClick={() => saveInlineDuty(item.id, inlineResult.total, inlineState.fx)}
-                                className="bg-black hover:bg-neutral-800 text-white font-bold px-3 py-2 rounded-lg transition-all text-[11px] hover:shadow flex items-center gap-1 cursor-pointer self-start sm:self-center"
+                                className="btn-primary font-bold px-3 py-2 text-[11px] flex items-center gap-1 cursor-pointer self-start sm:self-center"
                               >
                                 <Check className="w-3.5 h-3.5" />
-                                Save as saved duty
+                                Save this duty
                               </button>
                             </div>
                           ) : (
                             <p className="text-[10.5px] text-slate-400 italic text-center">
-                              Please supply all dynamic configuration fields to calculate updated dues...
+                              Complete all fields to calculate the updated duty.
                             </p>
                           )}
                         </div>

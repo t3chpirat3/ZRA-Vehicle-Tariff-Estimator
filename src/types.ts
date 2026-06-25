@@ -372,10 +372,10 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
         total: cd + ed + vat + carbon,
         rates: cr,
         note: (isHighPerfCar
-          ? `⚡ High-Performance Vehicle (2020 Amendment): ≥3,800cc & ≥450hp — excluded from flat-rate duties. `
+          ? `High-Performance Vehicle (2020 Amendment): ≥3,800cc & ≥450hp — excluded from flat-rate duties. `
           : '') +
           `CIF-based ad valorem. Customs: ${(cr.cd * 100)}% on CIF | Excise: ${(cr.ed * 100)}% on (CIF+CD) | VAT: 16% on (CIF+CD+ED). Rate: 1 USD = ZMW ${fx}.` +
-          (fuel === 'electric' ? ' EVs exempt from CD & ED.' : ''),
+          (fuel === 'electric' ? ' Electric vehicles are exempt from customs and excise duty.' : ''),
         authority: 'Zambia Revenue Authority (ZRA) Customs Act, Ad Valorem Valuation',
         hsCode: cat === 'goods-vehicle' ? 'Chapter 8704 (Motor vehicles for the transport of goods)' : cat === 'bus' ? 'Chapter 8702 (Motor vehicles for the transport of ten or more persons)' : cat === 'motorcycle' ? 'Chapter 8711 (Motorcycles)' : 'Chapter 8703 (Motor cars and other motor vehicles principally designed for the transport of persons)',
       };
@@ -441,7 +441,7 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
           cband: cb,
           total: cd + ed + carbon,
           note: `Hybrid — Appendix III Third Schedule (2025 C&E Amendment Act). CD: ZMW ${cd.toFixed(2)} | ED: ZMW ${ed.toFixed(2)}. Carbon Surtax added separately.` +
-            (isProvisional ? ' ⚠️ Hatchback/Station rates are provisional (sedan proxy) — update when gazette is published.' : ''),
+            (isProvisional ? ' Note: Hatchback/Station rates are provisional (sedan proxy) — update when gazette is published.' : ''),
           authority: 'Zambia Revenue Authority (ZRA) Customs and Excise (Amendment) Act, 2025 - Third Schedule (Appendix III)',
           hsCode: '8703 (Motor cars and other motor vehicles principally designed for the transport of persons)'
         };

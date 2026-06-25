@@ -27,154 +27,53 @@ const BrandMark = ({ className }: { className?: string }) => (
   </svg>
 );
 
-/**
- * A spiky, rippling monochrome blob that trails the pointer.
- *
- * The body is a closed membrane whose radius is driven by layered sine waves,
- * so it gently undulates at rest. Pointer velocity pumps "ripple energy" into a
- * traveling wave that rolls around the rim — biased toward the direction of
- * travel — so moving the cursor sends a wash of spikes rippling around it,
- * echoing the Antigravity feel. Rendered on a full-viewport canvas.
- */
+/** A soft grey glow that smoothly trails the mouse pointer. The animation loop
+ *  idles whenever the pointer is still, so it costs nothing at rest. */
 function CursorBlob() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const blobRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const blob = blobRef.current;
+    if (!blob) return;
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let frame = 0;
+    let running = false;
 
-    const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const render = () => {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+
+      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+        frame = requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
     };
-    resize();
-
-    let targetX = width / 2;
-    let targetY = height / 2;
-    let x = targetX;
-    let y = targetY;
-    let prevX = x;
-    let prevY = y;
-    let ripple = 0; // movement-driven energy that decays over time
-    let moveAngle = 0; // direction of the most recent movement
-    let t = 0;
-    let raf = 0;
-
-    const SPIKES = 220;
-    const BASE = 78; // resting body radius (px)
-    const SPIKE = 34; // max spike length (px)
-    const TWO_PI = Math.PI * 2;
 
     const onMove = (e: PointerEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
-    };
-
-    const render = () => {
-      t += 0.016;
-
-      x += (targetX - x) * 0.16;
-      y += (targetY - y) * 0.16;
-
-      const dx = x - prevX;
-      const dy = y - prevY;
-      const speed = Math.hypot(dx, dy);
-      prevX = x;
-      prevY = y;
-      if (speed > 0.4) moveAngle = Math.atan2(dy, dx);
-      // Inject energy on movement, then bleed it off so ripples fade out.
-      ripple = Math.min(ripple + speed * 0.5, 26) * 0.95;
-
-      ctx.clearRect(0, 0, width, height);
-      ctx.save();
-      ctx.translate(x, y);
-
-      ctx.beginPath();
-      const tips: number[] = [];
-      for (let i = 0; i <= SPIKES; i++) {
-        const a = (i / SPIKES) * TWO_PI;
-        const cos = Math.cos(a);
-        const sin = Math.sin(a);
-
-        // Ambient breathing of the membrane.
-        const ambient =
-          Math.sin(a * 4 + t * 0.8) * 6 +
-          Math.sin(a * 7 - t * 1.3) * 4 +
-          Math.sin(a * 2 + t * 0.5) * 3;
-        // Traveling ripple, strongest on the side the cursor is heading toward.
-        const dir = 0.5 + 0.5 * Math.cos(a - moveAngle);
-        const wave = Math.sin(a * 9 - t * 6) * ripple * dir;
-
-        const membrane = BASE + ambient + wave * 0.5;
-        const spikeLen =
-          SPIKE * (0.45 + 0.55 * (0.5 + 0.5 * Math.sin(a * 14 + t * 2.2))) + wave;
-        const tip = membrane + spikeLen;
-
-        tips.push(cos * membrane, sin * membrane);
-
-        // Each spike is a thin radial line from membrane to tip.
-        ctx.moveTo(cos * membrane, sin * membrane);
-        ctx.lineTo(cos * tip, sin * tip);
-      }
-      // Rainbow spikes: a conic gradient assigns each spike a hue by its angle,
-      // and the whole wheel slowly rotates so the colours drift over time.
-      const spikeHue = ctx.createConicGradient(t * 0.3, 0, 0);
-      for (let k = 0; k <= 6; k++) {
-        spikeHue.addColorStop(k / 6, `hsl(${(k * 60 + t * 40) % 360}, 95%, 55%)`);
-      }
-      ctx.strokeStyle = spikeHue;
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-
-      // Soft, hue-shifting body filling the membrane outline.
-      const bodyHue = (t * 40) % 360;
-      const bodyGrad = ctx.createRadialGradient(0, 0, 8, 0, 0, 110);
-      bodyGrad.addColorStop(0, `hsla(${bodyHue}, 95%, 60%, 0.28)`);
-      bodyGrad.addColorStop(0.55, `hsla(${(bodyHue + 80) % 360}, 95%, 60%, 0.15)`);
-      bodyGrad.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
-      ctx.beginPath();
-      ctx.moveTo(tips[0], tips[1]);
-      for (let i = 2; i < tips.length; i += 2) ctx.lineTo(tips[i], tips[i + 1]);
-      ctx.closePath();
-      ctx.fillStyle = bodyGrad;
-      ctx.fill();
-
-      ctx.restore();
-      raf = requestAnimationFrame(render);
-    };
-
-    const onVisibility = () => {
-      cancelAnimationFrame(raf);
-      if (!document.hidden) {
-        prevX = x;
-        prevY = y;
-        raf = requestAnimationFrame(render);
+      if (!running) {
+        running = true;
+        frame = requestAnimationFrame(render);
       }
     };
 
+    blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
     window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('resize', resize);
-    document.addEventListener('visibilitychange', onVisibility);
-    raf = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('resize', resize);
-      document.removeEventListener('visibilitychange', onVisibility);
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(frame);
     };
   }, []);
 
-  return <canvas id="cursor-blob" ref={canvasRef} aria-hidden="true" />;
+  return <div id="cursor-blob" ref={blobRef} aria-hidden="true" />;
 }
 
 export default function App() {
@@ -238,8 +137,15 @@ export default function App() {
 
   const watchlistCount = watchlist.length;
 
+  const navTabs: { id: typeof activeTab; label: string }[] = [
+    { id: 'calc', label: 'Calculate Duty' },
+    { id: 'watchlist', label: 'Watchlist' },
+    { id: 'agents', label: 'Clearing Agents' },
+    { id: 'guide', label: 'Import Guide' },
+  ];
+
   return (
-    <div className="text-black h-[100dvh] font-sans flex flex-col overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <div className="min-h-[100dvh] font-sans flex flex-col text-[color:var(--text)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
       {/* Reactive cursor-tracking blob */}
       <CursorBlob />
 
@@ -247,81 +153,78 @@ export default function App() {
       {showSplash && (
         <div
           id="splash-screen"
-          className={`fixed inset-0 flex flex-col items-center justify-center bg-white z-[9999] transition-opacity duration-500 ease-in-out ${
+          className={`fixed inset-0 flex flex-col items-center justify-center bg-[color:var(--bg)] z-[9999] transition-opacity duration-500 ease-in-out ${
             isAnimatingOut ? 'opacity-0' : 'opacity-100'
           }`}
         >
           <div className="flex flex-col items-center justify-center animate-pulse">
             <BrandMark className="w-24 h-24 mb-6" />
-            <h1 className="text-4xl font-black font-display text-black tracking-tight text-center">
-              {'{ZRA}'}
+            <h1 className="text-4xl font-black font-display tracking-tight text-center">
+              ZRA
             </h1>
-            <p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">
-              {'{Vehicle Tariff Estimator}'}
+            <p className="text-xs text-[color:var(--text-muted)] font-bold tracking-widest uppercase mt-2">
+              Vehicle Tariff Estimator
             </p>
           </div>
         </div>
       )}
 
-      {/* App Header Bar */}
-      <header id="main-app-header" className="relative z-10 bg-white py-3 border-b border-neutral-200 flex-shrink-0">
-        <div className="container mx-auto px-4 max-w-7xl flex items-center gap-6 sm:gap-8 md:gap-10 overflow-x-auto scrollbar-none">
+      {/* App Header Bar — sticky so navigation stays in reach during the single page scroll */}
+      <header
+        id="main-app-header"
+        className="sticky top-0 z-30 bg-[color:var(--surface)]/85 backdrop-blur-md border-b border-[color:var(--border)]"
+      >
+        <div className="container mx-auto px-4 max-w-7xl flex items-center gap-4 sm:gap-8 py-3">
           <button
-            className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none"
+            className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none rounded-xl"
             onClick={() => setActiveTab('calc')}
           >
-            <div className="flex-shrink-0">
-              <BrandMark className="w-10 h-10" />
-            </div>
-            <div className="flex flex-col justify-center border-r border-neutral-200 pr-6 group">
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display text-black leading-none group-hover:text-neutral-500 transition-colors">
-                {'{ZRA}'}
+            <BrandMark className="w-10 h-10 flex-shrink-0" />
+            <div className="flex flex-col justify-center">
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display leading-none">
+                ZRA
               </h1>
-              <p className="text-[10px] sm:text-[11px] text-neutral-500 font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap group-hover:text-neutral-700 transition-colors">
-                {'{Vehicle Tariff Estimator}'}
+              <p className="text-[10px] sm:text-[11px] text-[color:var(--text-muted)] font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap">
+                Vehicle Tariff Estimator
               </p>
             </div>
           </button>
 
-          <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold">
-            <button
-              onClick={() => setActiveTab('calc')}
-              className={`whitespace-nowrap ${activeTab === 'calc' ? 'bw-active' : ''}`}
-            >
-              {'{Calculate Duty}'}
-            </button>
-            <button
-              onClick={() => setActiveTab('watchlist')}
-              className={`whitespace-nowrap flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'bw-active' : ''}`}
-            >
-              {'{Watchlist}'}
-              {watchlistCount > 0 && (
-                <span className="text-[9px] font-black">
-                  ({watchlistCount})
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab('agents')}
-              className={`whitespace-nowrap ${activeTab === 'agents' ? 'bw-active' : ''}`}
-            >
-              {'{Clearing Agents}'}
-            </button>
-            <button
-              onClick={() => setActiveTab('guide')}
-              className={`whitespace-nowrap ${activeTab === 'guide' ? 'bw-active' : ''}`}
-            >
-              {'{Import Guide}'}
-            </button>
-          </div>
+          <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[13px] font-semibold overflow-x-auto scrollbar-none">
+            {navTabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
+                    isActive
+                      ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
+                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
+                  }`}
+                >
+                  {tab.label}
+                  {tab.id === 'watchlist' && watchlistCount > 0 && (
+                    <span
+                      className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1 ${
+                        isActive ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--border-strong)] text-[color:var(--text)]'
+                      }`}
+                    >
+                      {watchlistCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
       </header>
 
-      {/* Main Workspace Panels — fills remaining height; only scrolls when content demands it */}
-      <main className="relative z-10 flex-1 min-h-0 overflow-y-auto">
-        <div className="container mx-auto px-4 max-w-7xl py-4 h-full">
+      {/* Main Workspace — one natural page scroll, no nested scroll areas */}
+      <main className="relative z-10 flex-1">
+        <div className="container mx-auto px-4 max-w-7xl py-5">
           {activeTab === 'calc' && (
-            <div className="animate-fadeIn h-full">
+            <div className="animate-fadeIn">
               <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
             </div>
           )}
@@ -338,7 +241,7 @@ export default function App() {
             </div>
           )}
           {activeTab === 'agents' && (
-            <div className="animate-fadeIn h-full">
+            <div className="animate-fadeIn">
               <ClearingAgents />
             </div>
           )}
@@ -360,20 +263,20 @@ export default function App() {
         </div>
       </main>
 
-      {/* Slim Monochrome Footer */}
-      <footer className="relative z-10 bg-white border-t border-neutral-200 py-2 flex-shrink-0">
-        <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[10px] text-neutral-500">
+      {/* Footer */}
+      <footer className="relative z-10 bg-[color:var(--surface)] border-t border-[color:var(--border)] py-3 mt-2">
+        <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] text-[color:var(--text-muted)]">
           <p className="text-center sm:text-left leading-tight">
-            <span className="font-extrabold text-black font-display">{'{ZRA Vehicle Tariff Estimator}'}</span>
+            <span className="font-extrabold text-[color:var(--text)] font-display">ZRA Vehicle Tariff Estimator</span>
             <span className="mx-1.5 hidden sm:inline">·</span>
             <span className="block sm:inline">&copy; 2026 · Independent estimator by{' '}
-              <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-black underline hover:no-underline font-semibold">t3chpirat3</a>.
+              <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] underline hover:no-underline font-semibold">t3chpirat3</a>.
               Not affiliated with the ZRA. Estimates only.
             </span>
           </p>
-          <div className="flex gap-4 font-semibold text-black flex-shrink-0">
-            <button onClick={() => setActiveTab('privacy')} className="hover:underline cursor-pointer">{'{Privacy}'}</button>
-            <button onClick={() => setActiveTab('terms')} className="hover:underline cursor-pointer">{'{Terms}'}</button>
+          <div className="flex gap-4 font-semibold text-[color:var(--text)] flex-shrink-0">
+            <button onClick={() => setActiveTab('privacy')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Privacy</button>
+            <button onClick={() => setActiveTab('terms')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Terms</button>
           </div>
         </div>
       </footer>
