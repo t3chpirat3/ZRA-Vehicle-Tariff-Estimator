@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Calculator from './components/Calculator';
+import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
@@ -79,7 +80,7 @@ function CursorBlob() {
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -139,6 +140,7 @@ export default function App() {
 
   const navTabs: { id: typeof activeTab; label: string }[] = [
     { id: 'calc', label: 'Calculate Duty' },
+    { id: 'discover', label: 'Find Your Vehicle' },
     { id: 'watchlist', label: 'Watchlist' },
     { id: 'agents', label: 'Clearing Agents' },
     { id: 'guide', label: 'Import Guide' },
@@ -226,6 +228,11 @@ export default function App() {
           {activeTab === 'calc' && (
             <div className="animate-fadeIn">
               <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
+            </div>
+          )}
+          {activeTab === 'discover' && (
+            <div className="animate-fadeIn">
+              <VehicleDiscovery />
             </div>
           )}
           {activeTab === 'watchlist' && (

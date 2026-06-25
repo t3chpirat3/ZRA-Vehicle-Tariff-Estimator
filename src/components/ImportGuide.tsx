@@ -117,7 +117,7 @@ export default function ImportGuide() {
                     </li>
                   </ul>
                   <div className="bg-white border border-slate-200 rounded-lg p-3 text-xs text-slate-600">
-                    <strong>Note on SADC Imports (South Africa):</strong> If a vehicle was <em>manufactured</em> in South Africa (with a SADC Certificate of Origin), it qualifies for 0% Customs Duty. However, you still pay Excise Duty, VAT, and Carbon Surtax.
+                    <strong>Advisory — SADC Origin (South Africa):</strong> Both countries are SADC members, so a vehicle <em>manufactured</em> in South Africa can qualify for preferential — sometimes zero — Customs Duty. It is not automatic: the vehicle must pass the SADC Rules of Origin (broadly, at least 40% South African / SADC content) and carry a SADC Certificate of Origin, which SARS issues to the exporter at the time of export. Locally built models like the Toyota Hilux and Fortuner (assembled at Toyota's Prospecton plant in Durban) are the usual candidates, though some production runs sit right on the threshold. An authorized franchise dealer or the exporter normally arranges the certificate; a private used re-export is more paperwork. Even then the real-world saving is usually small — most used vehicles (2 years and older) clear on a single bundled Specific Duty with no separate Customs Duty line to waive, so the preference mainly helps newer vehicles assessed on invoice / CIF value. Treat it as worth asking about, not a guaranteed discount.
                   </div>
                 </div>
               </div>
