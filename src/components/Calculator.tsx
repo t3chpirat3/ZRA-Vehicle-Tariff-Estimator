@@ -611,7 +611,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   onClick={() => selectAge(opt.id as VehicleAge)}
                   className={`flex flex-col items-center justify-center p-3.5 border rounded-2xl transition-all cursor-pointer ${
                     state.age === opt.id
-                      ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                      ? 'bw-active'
                       : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-705'
                   }`}
                 >
@@ -655,7 +655,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectCat(opt.id as VehicleCategory)}
                     className={`flex items-center gap-3.5 p-4 border rounded-2xl text-left transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-800'
                     }`}
                   >
@@ -691,7 +691,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectType(opt.v)}
                     className={`p-3.5 border rounded-2xl font-bold font-sans text-xs transition-all cursor-pointer text-center flex items-center justify-center ${
                       isSelected
-                        ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
                     }`}
                   >
@@ -726,7 +726,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectFuel(opt.v as FuelType)}
                     className={`p-3.5 border rounded-2xl text-left transition-all flex items-center gap-3 cursor-pointer ${
                       isSelected
-                        ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : isGreen
                         ? 'border-slate-300 bg-slate-50 hover:bg-slate-100 text-black'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
@@ -772,8 +772,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                         onClick={() => setState((prev) => ({ ...prev, busFuel: opt.id as BusFuelType }))}
                         className={`p-2.5 border rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
                           isSel
-                            ? 'border-black bg-black text-white'
-                            : 'border-slate-200 bg-slate-50 text-slate-650 hover:border-slate-300 hover:bg-slate-100'
+                            ? 'bw-active'
+                            : ''
                         }`}
                       >
                         <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">{opt.code}</span>
@@ -879,7 +879,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectCifEngine(opt.v)}
                     className={`flex flex-col items-center justify-center p-3 border rounded-2xl transition-all text-center cursor-pointer ${
                       isSelected
-                        ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
                     }`}
                   >
@@ -911,7 +911,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectEngine(opt.v)}
                     className={`flex flex-col items-center justify-center p-3 border rounded-2xl text-center transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-black bg-black text-white font-bold ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
                     }`}
                   >
@@ -946,7 +946,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectWeight(opt.v)}
                     className={`p-3 border rounded-2xl text-left transition-all text-xs font-bold font-sans cursor-pointer flex items-center justify-center text-center ${
                       isSelected
-                        ? 'border-black bg-black text-white ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100'
                     }`}
                   >
@@ -975,7 +975,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => selectVdp(opt.v)}
                     className={`p-3 border rounded-2xl font-bold font-mono text-center text-xs transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-black bg-black text-white ring-2 ring-black shadow-sm'
+                        ? 'bw-active'
                         : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100'
                     }`}
                   >
@@ -1006,9 +1006,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 type="button"
                 onClick={() => setMobileResultsTab('breakdown')}
                 className={`flex-1 py-1.5 text-[10px] font-extrabold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  mobileResultsTab === 'breakdown'
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
+                  mobileResultsTab === 'breakdown' ? 'bw-active' : ''
                 }`}
               >
                 📊 Duty Breakdown
@@ -1017,9 +1015,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 type="button"
                 onClick={() => setMobileResultsTab('resources')}
                 className={`flex-1 py-1.5 text-[10px] font-extrabold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  mobileResultsTab === 'resources'
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
+                  mobileResultsTab === 'resources' ? 'bw-active' : ''
                 }`}
               >
                 ⚖️ Rules & resources
@@ -1055,15 +1051,15 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                       <div className="w-full h-3 rounded-full flex overflow-hidden shadow-inner bg-slate-100 border border-slate-200/60">
                         {/* Fake logic to estimate relative widths based on ZRA typical shares */}
                         {/* Real rates: Customs = CIF*cd = e.g., 25%. Excise = (CIF+CD)*ed = e.g., 30%. VAT = (CIF+CD+ED)*16%. */}
-                        <div className="bg-black h-full border-r border-white/20" title="Customs Duty" style={{ width: '30%' }}></div>
-                        <div className="bg-slate-500 h-full border-r border-white/20" title="Excise Duty" style={{ width: '40%' }}></div>
-                        <div className="bg-slate-300 h-full" title="VAT" style={{ width: '30%' }}></div>
+                        <div className="bw-ink h-full" title="Customs Duty" style={{ width: '30%', borderRight: '2px solid #fff' }}></div>
+                        <div className="bw-ink h-full" title="Excise Duty" style={{ width: '40%', borderRight: '2px solid #fff' }}></div>
+                        <div className="bw-ink h-full" title="VAT" style={{ width: '30%' }}></div>
                       </div>
-                      <div className="flex items-center justify-between mt-2 px-1 text-[9px] font-bold text-slate-500">
-                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-black"></div>Customs</div>
-                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-slate-500"></div>Excise</div>
-                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-slate-300 border border-slate-400"></div>VAT</div>
-                        {result.carbon > 0 && <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-slate-700"></div>Carbon</div>}
+                      <div className="flex items-center justify-between mt-2 px-1 text-[9px] font-bold">
+                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bw-ink"></div>Customs</div>
+                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bw-ink"></div>Excise</div>
+                        <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bw-ink"></div>VAT</div>
+                        {result.carbon > 0 && <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bw-ink"></div>Carbon</div>}
                       </div>
                     </div>
                   )}
@@ -1169,7 +1165,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     onClick={() => {
                       onSaveToWatchlist(result.total, state.cifUSD, state.fx);
                     }}
-                    className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 rounded-xl shadow-sm cursor-pointer transition-all active:scale-[0.99]"
+                    className="w-full flex items-center justify-center gap-2 bw-active text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 rounded-xl cursor-pointer transition-all active:scale-[0.99]"
                   >
                     <BookmarkPlus className="w-3.5 h-3.5" />
                     Save Duties appraisal to Watchlist
@@ -1304,11 +1300,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               <div
                 key={st.id}
                 className={`h-1.5 rounded-full flex-1 transition-all duration-300 ${
-                  isCompleted
-                    ? 'bg-slate-400'
-                    : isActive
-                    ? 'bg-black scale-y-110 shadow-inner'
-                    : 'bg-slate-200'
+                  isCompleted ? 'bw-ink' : isActive ? 'bw-ink scale-y-110' : ''
                 }`}
                 title={st.title}
               />
@@ -1408,12 +1400,12 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             type="button"
             disabled={currentStepIndex === activeSteps.length - 1 || !isCurrentStepValid}
             onClick={handleNextStep}
-            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl border text-white transition-all ${
+            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all ${
               currentStepIndex === activeSteps.length - 1
-                ? 'opacity-35 cursor-not-allowed bg-slate-250 border-slate-200 text-slate-400'
+                ? 'opacity-35 cursor-not-allowed'
                 : !isCurrentStepValid
-                ? 'bg-slate-300 border-slate-300 text-slate-200 cursor-not-allowed opacity-75'
-                : 'bg-black hover:bg-neutral-800 border-black cursor-pointer active:scale-95 shadow-sm'
+                ? 'opacity-40 cursor-not-allowed'
+                : 'bw-active cursor-pointer active:scale-95'
             }`}
           >
             {currentStepIndex === activeSteps.length - 2 ? 'View Estimate' : 'Continue'}

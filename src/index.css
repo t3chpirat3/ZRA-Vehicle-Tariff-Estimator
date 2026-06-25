@@ -43,3 +43,58 @@ body {
   z-index: 40;
   mix-blend-mode: multiply;
 }
+
+/* ══ Strict black-on-white "paper" theme ═══════════════════════════════════
+   These rules are intentionally UNLAYERED, so they win over Tailwind's
+   layered utilities WITHOUT needing !important (which lets inline styles and
+   the targeted overrides below still take effect). The result: the whole app
+   is pure black ink floating on white paper — no greys, fills, borders,
+   shadows, gradients or lines anywhere.
+
+   Three things opt out by design:
+     1. The header BrandMark logo  → uses explicit SVG fills (#000/#525252),
+        which CSS `color` never touches, so it keeps its greys.
+     2. The results vehicle render → a PNG <img>, unaffected by `color`.
+     3. The cursor blob (#cursor-blob) → a canvas drawn in JS, multicoloured.
+        (The harmless color/background resets below don't affect canvas pixels;
+        its blend/position live in the dedicated #cursor-blob rule above.)      */
+#root * {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  color: #000000;
+}
+
+/* The splash overlay must stay opaque white so content doesn't bleed through. */
+#splash-screen {
+  background-color: #ffffff;
+}
+
+/* Affordance without fills/greys: text underlines on hover/focus, plus a thin
+   black focus ring for keyboard accessibility (only on :focus-visible). */
+#root a:hover,
+#root button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#root :focus-visible {
+  outline: 1px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Emphasis marker for selected/active controls (applied conditionally in JSX
+   in place of the old filled/coloured states). */
+#root .bw-active {
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+/* Data-viz that must remain visible as solid black ink on white. */
+#root .bw-ink {
+  background-color: #000000;
+}

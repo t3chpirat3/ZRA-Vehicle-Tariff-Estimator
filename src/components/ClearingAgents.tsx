@@ -185,7 +185,7 @@ export default function ClearingAgents() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="w-full text-xs font-bold text-slate-700 bg-white border border-slate-205 hover:border-slate-400 p-2 rounded-xl outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all cursor-pointer appearance-none"
               style={{
-                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
                 backgroundPosition: 'right 0.5rem center',
                 backgroundSize: '1.25rem',
                 backgroundRepeat: 'no-repeat',
@@ -209,7 +209,7 @@ export default function ClearingAgents() {
               onChange={(e) => setSelectedLicense(e.target.value)}
               className="w-full text-xs font-bold text-slate-700 bg-white border border-slate-205 hover:border-slate-400 p-2 rounded-xl outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all cursor-pointer appearance-none"
               style={{
-                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M7 9l3 3 3-3' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
                 backgroundPosition: 'right 0.5rem center',
                 backgroundSize: '1.25rem',
                 backgroundRepeat: 'no-repeat',

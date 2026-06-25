@@ -286,7 +286,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                 type="button"
                 onClick={handleResolve}
                 disabled={!query.trim() || status === 'loading'}
-                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none flex-shrink-0"
+                className="px-4 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed bw-active text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none flex-shrink-0"
               >
                 {status === 'loading' ? 'Resolving…' : 'Resolve'}
               </button>
@@ -371,7 +371,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                   <button
                     type="button"
                     onClick={handleUseSpecs}
-                    className="flex-1 px-3 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
+                    className="flex-1 px-3 py-2.5 bw-active text-xs font-extrabold rounded-xl transition-all cursor-pointer outline-none"
                   >
                     Use These Specs
                   </button>

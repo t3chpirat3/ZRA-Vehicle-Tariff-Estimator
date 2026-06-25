@@ -58,13 +58,6 @@ function CursorBlob() {
     };
     resize();
 
-    // A soft radial body fill, defined once at the origin and reused every
-    // frame (the per-frame translate maps it onto the blob's current centre).
-    const bodyGrad = ctx.createRadialGradient(0, 0, 8, 0, 0, 110);
-    bodyGrad.addColorStop(0, 'rgba(0,0,0,0.20)');
-    bodyGrad.addColorStop(0.6, 'rgba(0,0,0,0.11)');
-    bodyGrad.addColorStop(1, 'rgba(0,0,0,0)');
-
     let targetX = width / 2;
     let targetY = height / 2;
     let x = targetX;
@@ -132,11 +125,22 @@ function CursorBlob() {
         ctx.moveTo(cos * membrane, sin * membrane);
         ctx.lineTo(cos * tip, sin * tip);
       }
-      ctx.strokeStyle = 'rgba(0,0,0,0.14)';
-      ctx.lineWidth = 1.1;
+      // Rainbow spikes: a conic gradient assigns each spike a hue by its angle,
+      // and the whole wheel slowly rotates so the colours drift over time.
+      const spikeHue = ctx.createConicGradient(t * 0.3, 0, 0);
+      for (let k = 0; k <= 6; k++) {
+        spikeHue.addColorStop(k / 6, `hsl(${(k * 60 + t * 40) % 360}, 95%, 55%)`);
+      }
+      ctx.strokeStyle = spikeHue;
+      ctx.lineWidth = 1.4;
       ctx.stroke();
 
-      // Soft body filling the membrane outline.
+      // Soft, hue-shifting body filling the membrane outline.
+      const bodyHue = (t * 40) % 360;
+      const bodyGrad = ctx.createRadialGradient(0, 0, 8, 0, 0, 110);
+      bodyGrad.addColorStop(0, `hsla(${bodyHue}, 95%, 60%, 0.28)`);
+      bodyGrad.addColorStop(0.55, `hsla(${(bodyHue + 80) % 360}, 95%, 60%, 0.15)`);
+      bodyGrad.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
       ctx.beginPath();
       ctx.moveTo(tips[0], tips[1]);
       for (let i = 2; i < tips.length; i += 2) ctx.lineTo(tips[i], tips[i + 1]);
@@ -242,6 +246,7 @@ export default function App() {
       {/* Splash Screen */}
       {showSplash && (
         <div
+          id="splash-screen"
           className={`fixed inset-0 flex flex-col items-center justify-center bg-white z-[9999] transition-opacity duration-500 ease-in-out ${
             isAnimatingOut ? 'opacity-0' : 'opacity-100'
           }`}
@@ -278,33 +283,33 @@ export default function App() {
             </div>
           </button>
 
-          <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold text-neutral-500">
+          <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold">
             <button
               onClick={() => setActiveTab('calc')}
-              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'calc' ? 'text-black' : ''}`}
+              className={`whitespace-nowrap ${activeTab === 'calc' ? 'bw-active' : ''}`}
             >
               {'{Calculate Duty}'}
             </button>
             <button
               onClick={() => setActiveTab('watchlist')}
-              className={`transition-colors whitespace-nowrap hover:text-black flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'text-black' : ''}`}
+              className={`whitespace-nowrap flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'bw-active' : ''}`}
             >
               {'{Watchlist}'}
               {watchlistCount > 0 && (
-                <span className={`text-[9px] font-black rounded-full px-1.5 py-0.5 ${activeTab === 'watchlist' ? 'bg-black text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                  {watchlistCount}
+                <span className="text-[9px] font-black">
+                  ({watchlistCount})
                 </span>
               )}
             </button>
             <button
               onClick={() => setActiveTab('agents')}
-              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'agents' ? 'text-black' : ''}`}
+              className={`whitespace-nowrap ${activeTab === 'agents' ? 'bw-active' : ''}`}
             >
               {'{Clearing Agents}'}
             </button>
             <button
               onClick={() => setActiveTab('guide')}
-              className={`transition-colors whitespace-nowrap hover:text-black ${activeTab === 'guide' ? 'text-black' : ''}`}
+              className={`whitespace-nowrap ${activeTab === 'guide' ? 'bw-active' : ''}`}
             >
               {'{Import Guide}'}
             </button>

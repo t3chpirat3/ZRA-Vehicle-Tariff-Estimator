@@ -22,25 +22,25 @@ export default function ImportGuide() {
         <div className="flex flex-wrap gap-2">
           <button 
             onClick={() => setActiveSection('permanent')}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'permanent' ? 'bg-black text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'permanent' ? 'bw-active' : ''}`}
           >
             {'{Permanent Imports}'}
           </button>
           <button 
             onClick={() => setActiveSection('temporary')}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'temporary' ? 'bg-black text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'temporary' ? 'bw-active' : ''}`}
           >
             {'{Temporary (Tourists & Transit)}'}
           </button>
           <button 
             onClick={() => setActiveSection('commercial')}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'commercial' ? 'bg-black text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'commercial' ? 'bw-active' : ''}`}
           >
             {'{Corporate & Commercial TIP}'}
           </button>
           <button 
             onClick={() => setActiveSection('safety')}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'safety' ? 'bg-black text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+            className={`px-4 py-2 rounded-xl text-sm font-bold transition-colors ${activeSection === 'safety' ? 'bw-active' : ''}`}
           >
             {'{Road Safety & Compliance}'}
           </button>

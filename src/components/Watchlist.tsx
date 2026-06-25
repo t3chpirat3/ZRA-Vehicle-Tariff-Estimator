@@ -335,8 +335,8 @@ export default function Watchlist({
                     onClick={() => handleCurrencyChange('USD')}
                     className={`p-3 border rounded-xl text-xs font-bold transition-all flex flex-col items-center cursor-pointer ${
                       currency === 'USD'
-                        ? 'border-slate-900 bg-slate-905 text-slate-900 shadow-sm'
-                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
+                        ? 'bw-active'
+                        : ''
                     }`}
                   >
                     <span className="font-extrabold text-sm">USD</span>
@@ -348,8 +348,8 @@ export default function Watchlist({
                     onClick={() => handleCurrencyChange('ZAR')}
                     className={`p-3 border rounded-xl text-xs font-bold transition-all flex flex-col items-center cursor-pointer ${
                       currency === 'ZAR'
-                        ? 'border-slate-900 bg-slate-905 text-slate-900 shadow-sm'
-                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-600'
+                        ? 'bw-active'
+                        : ''
                     }`}
                   >
                     <span className="font-extrabold text-sm">ZAR</span>
