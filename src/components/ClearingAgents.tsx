@@ -65,8 +65,9 @@ const LICENSE_TYPES = [
 
 // How many agent cards to reveal per "page". The full list is ~1,369 entries,
 // so rendering them all at once blocks the main thread. We window the list
-// instead, revealing more as the user scrolls.
-const PAGE_SIZE = 30;
+// instead, revealing more as the user scrolls. A smaller first page keeps the
+// initial tab switch snappy.
+const PAGE_SIZE = 18;
 
 export default function ClearingAgents() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -241,6 +242,7 @@ export default function ClearingAgents() {
                 <div
                   key={agent.tpin}
                   className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-sm hover:border-slate-300 transition-all duration-150"
+                  style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 196px' }}
                 >
                   <div>
                     {/* Company Names & Badges row */}
