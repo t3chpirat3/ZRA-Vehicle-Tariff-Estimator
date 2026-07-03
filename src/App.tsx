@@ -96,7 +96,7 @@ export default function App() {
               <circle cx="62" cy="62" r="3" fill="#1e293b"/>
             </svg>
             <h1 className="text-4xl font-black font-display text-slate-800 tracking-tight text-center">
-              ZRA
+              DUTY BOSS
             </h1>
             <p className="text-xs text-slate-500 font-bold tracking-widest uppercase mt-2">
               Vehicle Tariff Estimator
@@ -107,6 +107,12 @@ export default function App() {
 
       <div>
         
+        {/* Sticky Legal Disclaimer Banner */}
+        <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm sticky top-0 z-50">
+          <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
+          <span>Duty Boss is an independent tool. We are NOT affiliated with, endorsed by, or operated by the Zambia Revenue Authority (ZRA).</span>
+        </div>
+
         {/* App Header Bar */}
         <header id="main-app-header" className="bg-white py-3 border-b border-slate-200">
           <div className="container mx-auto px-4 max-w-7xl flex items-center gap-6 sm:gap-8 md:gap-10 overflow-x-auto scrollbar-none">
@@ -127,7 +133,7 @@ export default function App() {
               </div>
               <div className="flex flex-col justify-center border-r border-slate-200 pr-6 group">
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display text-slate-800 leading-none group-hover:text-emerald-600 transition-colors">
-                  ZRA
+                  DUTY BOSS
                 </h1>
                 <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap group-hover:text-emerald-500 transition-colors">
                   Vehicle Tariff Estimator
@@ -227,10 +233,10 @@ export default function App() {
             </svg>
             <div>
               <p className="font-extrabold text-slate-200 text-sm tracking-tight font-display mb-1">
-                ZRA <span className="font-medium text-[11px] text-slate-400 uppercase tracking-widest ml-1">Vehicle Tariff Estimator</span>
+                DUTY BOSS <span className="font-medium text-[11px] text-slate-400 uppercase tracking-widest ml-1">Vehicle Tariff Estimator</span>
               </p>
               <p className="text-[10px] text-slate-500">
-                &copy; 2026 ZRA VEHICLE TARIFF ESTIMATOR. All rights reserved.
+                &copy; 2026 DUTY BOSS. All rights reserved.
               </p>
               <p className="text-[10px] text-slate-500 mt-2">
                 Created independently by <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-emerald-500 hover:text-emerald-400 font-medium transition-colors">t3chpirat3</a>.

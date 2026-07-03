@@ -30,122 +30,28 @@ interface SpecResolverProps {
 
 // ─── DeepSeek API ─────────────────────────────────────────────────────────────
 
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY as string;
-
-const SYSTEM_PROMPT = `You are an expert automotive spec resolver for the Zambian used car import market.
-Users will describe a vehicle using local Zambian slang, Japanese Domestic Market names, engine codes, or common nicknames.
-
-Your job is to identify the exact vehicle and return its tariff-relevant specifications as a strict JSON object with NO extra text, explanation, or markdown — just raw JSON.
-
-Zambian and Japanese market context:
-- "Vitz" = Toyota Vitz/Yaris
-- "Allion", "Premio" = Toyota sedans
-- "Succeed", "Probox" = Toyota station wagons
-- "Aqua" = Toyota Aqua (hybrid hatchback)
-- "Prius" = Toyota Prius (hybrid sedan)
-- "Fielder" = Toyota Corolla Fielder (station wagon)
-- "Hilux" = Toyota Hilux (truck/pickup)
-- "Land Cruiser", "LC" = Toyota Land Cruiser (SUV)
-- "Demio" = Mazda Demio
-- "Axela" = Mazda Axela/Mazda3
-- "Fit" = Honda Fit/Jazz
-- "Freed" = Honda Freed (small SUV/MPV)
-- "Wingroad" = Nissan Wingroad (station wagon)
-- "Tiida", "Bluebird" = Nissan sedans
-- "Wish" = Toyota Wish (MPV — classify as 'suv')
-- "Noah", "Voxy" = Toyota minivans — classify as 'suv'
-
-Common engine codes and their CC:
-- 1KR-FE = 998cc petrol
-- 1SZ-FE = 1298cc petrol
-- 2SZ-FE = 1298cc petrol
-- 1NZ-FE = 1497cc petrol
-- 1NZ-FXE = 1497cc hybrid (petrol-electric)
-- 2NZ-FE = 1298cc petrol
-- 1ZZ-FE = 1794cc petrol
-- 2ZZ-GE = 1796cc petrol
-- 1AZ-FE / 1AZ-FSE = 1998cc petrol
-- 2AZ-FE = 2362cc petrol
-- 3SZ-VE = 1495cc petrol
-- 1GD-FTV = 2755cc diesel
-- 2GD-FTV = 2393cc diesel
-- 1KD-FTV = 2982cc diesel
-- 2KD-FTV = 2494cc diesel
-- 1HD-FTE = 4163cc diesel
-- 2TR-FE = 2693cc petrol
-- 3UR-FE = 5663cc petrol
-- 2GR-FE = 3456cc petrol
-- 4GR-FSE = 2499cc petrol
-- 1ZR-FE = 1598cc petrol
-- 2ZR-FE = 1797cc petrol
-- K3-VE = 989cc petrol (Daihatsu)
-- EF-VE = 989cc petrol (Daihatsu)
-
-Age bracket logic (calculate from current year 2025):
-- If production ended before 2020 → "5+"
-- If produced 2020–2022 → "2-5"
-- If produced 2023+ → "0-2"
-- Default for old JDM classics → "5+"
-
-For bodyType use ONLY one of: sedan, hatchback, station, suv, truck, motorcycle, bus
-For fuelType use ONLY one of: petrol, diesel, hybrid, electric
-For ageBracket use ONLY one of: 0-2, 2-5, 5+
-For confidence use ONLY one of: high, medium, low
-
-Return EXACTLY this JSON structure and nothing else:
-{
-  "make": "string",
-  "model": "string",
-  "engineCode": "string",
-  "engineCC": number,
-  "bodyType": "sedan|hatchback|station|suv|truck|motorcycle|bus",
-  "fuelType": "petrol|diesel|hybrid|electric",
-  "ageBracket": "0-2|2-5|5+",
-  "productionYears": "string e.g. 2005–2011",
-  "confidence": "high|medium|low",
-  "notes": "one sentence explanation of how you resolved this"
-}
-
-If you absolutely cannot identify the vehicle, return:
-{ "error": "Cannot resolve: brief reason" }`;
+// The frontend now calls our secure Vercel Serverless Function instead of the DeepSeek API directly.
+// This ensures our API key is not exposed to the client.
+const LOCAL_API_URL = '/api/resolve-spec';
 
 async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
-  if (!DEEPSEEK_API_KEY) {
-    throw new Error('Spec Resolver is not configured. Add VITE_DEEPSEEK_API_KEY to your .env file.');
-  }
-
-  const response = await fetch(DEEPSEEK_API_URL, {
+  const response = await fetch(LOCAL_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
     },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: `Resolve vehicle specs for: "${query}"` },
-      ],
-      response_format: { type: 'json_object' },
-      temperature: 0.1,
-      max_tokens: 512,
-    }),
+    body: JSON.stringify({ query }),
   });
 
   if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`API error ${response.status}: ${err}`);
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.error || `API error ${response.status}`);
   }
 
   const data = await response.json();
-  const raw = data.choices?.[0]?.message?.content;
-  if (!raw) throw new Error('Empty response from resolver.');
+  if (data.error) throw new Error(data.error);
 
-  const parsed = JSON.parse(raw);
-  if (parsed.error) throw new Error(parsed.error);
-
-  return parsed as ResolvedSpecs;
+  return data as ResolvedSpecs;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -274,9 +180,9 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
             <div className="flex gap-2">
               <input
                 ref={inputRef}
-                id="spec-resolver-input"
                 type="text"
                 value={query}
+                maxLength={100}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder='e.g. "Vitz 1KR" or "Premio 1NZ 2015"'

@@ -335,6 +335,17 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
   const { age, cat, type, fuel, busFuel, engine, cifEngine, weight, seats, vdp, cifUSD, fx, hpCC, hpHP } = state;
   if (!age || !cat) return null;
 
+  // Advanced Infrastructure Security: Hard cap numeric state values to prevent extreme overflows
+  // if an attacker bypasses the HTML max limits in DevTools.
+  if (cifUSD > 10000000 || cifUSD < 0) return null;
+  if (fx > 5000 || fx < 0) return null;
+  const hpCCNum = parseInt(hpCC || '0', 10);
+  const hpHPNum = parseInt(hpHP || '0', 10);
+  if (hpCCNum > 20000 || hpCCNum < 0) return null;
+  if (hpHPNum > 5000 || hpHPNum < 0) return null;
+  const cEngNum = parseInt(cifEngine || '0', 10);
+  if (cEngNum > 20000 || cEngNum < 0) return null;
+
   const isCif = isCIFMode({ age, cat, fuel: fuel || '' as FuelType, hpCC, hpHP });
 
   if (isCif) {

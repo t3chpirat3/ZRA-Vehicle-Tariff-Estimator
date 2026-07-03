@@ -549,6 +549,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                       id="hp-cc-input"
                       type="number"
                       min="0"
+                      max="20000"
                       placeholder="e.g. 4500"
                       value={state.hpCC}
                       onChange={(e) => setState((prev) => ({ ...prev, hpCC: e.target.value }))}
@@ -566,6 +567,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                       id="hp-power-input"
                       type="number"
                       min="0"
+                      max="5000"
                       placeholder="e.g. 500"
                       value={state.hpHP}
                       onChange={(e) => setState((prev) => ({ ...prev, hpHP: e.target.value }))}
@@ -827,6 +829,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     id="wizard-cif-usd-input_s"
                     type="number"
                     min="0"
+                    max="10000000"
                     placeholder="e.g. 8500"
                     value={state.cifUSD || ''}
                     onChange={(e) => setState((prev) => ({ ...prev, cifUSD: parseFloat(e.target.value) || 0 }))}
@@ -840,6 +843,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   id="wizard-fx-rate-input_s"
                   type="number"
                   min="1"
+                  max="5000"
                   step="0.01"
                   placeholder="e.g. 27.50"
                   value={state.fx || ''}

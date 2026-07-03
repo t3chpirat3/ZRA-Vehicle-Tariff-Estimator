@@ -22,14 +22,14 @@ export default function TermsOfUse({ onClose }: TermsOfUseProps) {
           Terms of Use
         </h2>
         <p className="text-sm text-slate-500 font-medium mb-8">
-          Effective Date: 14th June, 2026
+          Effective Date: 2nd July, 2026
         </p>
 
         <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-600 leading-relaxed space-y-6">
           <section>
             <h3 className="text-lg font-bold text-slate-800 mb-2">1. Acceptance of Terms</h3>
             <p>
-              By accessing and using the ZRA Vehicle Tariff Estimator ("the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. We provide this service as a public utility for informational purposes regarding Zambian vehicle import logistics.
+              By accessing and using Duty Boss (the Zambia Vehicle Tariff Estimator, hereafter "the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. We provide this service as a public utility for informational purposes regarding Zambian vehicle import logistics.
             </p>
           </section>
 
@@ -40,6 +40,9 @@ export default function TermsOfUse({ onClose }: TermsOfUseProps) {
             </p>
             <p className="mt-2 text-slate-800 font-semibold">You explicitly acknowledge and agree that:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
+              <li>
+                <strong>AI Spec Resolver Limitations:</strong> The "Spec Resolver" utilizes artificial intelligence to interpret vehicle descriptions. AI models are probabilistic and may return inaccurate or hallucinatory vehicle specifications (such as incorrect engine capacities or body types). You are solely responsible for verifying the resolved specifications before relying on the subsequent duty estimates.
+              </li>
               <li>
                 <strong>All calculations are estimates.</strong> The figures provided by the Platform are not final tax assessments.
               </li>

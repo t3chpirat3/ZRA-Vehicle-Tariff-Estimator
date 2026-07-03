@@ -22,14 +22,14 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           Privacy Policy
         </h2>
         <p className="text-sm text-slate-500 font-medium mb-8">
-          Effective Date: 14th June, 2026
+          Effective Date: 2nd July, 2026
         </p>
 
         <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-600 leading-relaxed space-y-6">
           <section>
             <h3 className="text-lg font-bold text-slate-800 mb-2">1. Introduction</h3>
             <p>
-              Welcome to ZRA Vehicle Tariff Estimator. We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
+              Welcome to Duty Boss (Zambia Vehicle Tariff Estimator). We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
             </p>
             <p className="mt-2">
               Because our platform is designed to be a quick, accessible utility, we adhere to a principle of minimal data collection: we do not require you to create an account, and we do not actively collect personal identifying information (such as your name, email address, or phone number).
@@ -41,7 +41,10 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
             <p>When you use our platform, the data involved falls into two specific categories:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
-                <strong>Automatically Collected Analytics Data:</strong> To keep the site running smoothly and understand how it is being used, our hosting and analytics provider (Vercel) automatically collects basic technical data. This may include your IP address, browser type, device type, referring URLs, and general geographic region.
+                <strong>Automatically Collected Analytics & Security Data:</strong> To keep the site running smoothly and securely, our hosting provider (Vercel) automatically collects basic technical data (like browser type and region), and our security systems (Upstash/Vercel KV) temporarily process your IP address to enforce rate limits and prevent abuse.
+              </li>
+              <li>
+                <strong>Search Queries (Spec Resolver):</strong> When you use the Spec Resolver tool, the text you enter is sent to a third-party AI service (DeepSeek) to identify vehicle specifications. Please do not enter any personal identifying information into this search bar.
               </li>
               <li>
                 <strong>Locally Stored Data (Vehicle Watchlist):</strong> If you use the "Vehicle Watchlist" feature to save specific models or calculations, that data is stored locally on your device (using your browser's local storage or session storage). This data is never transmitted to, stored on, or processed by our servers.
@@ -63,8 +66,19 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
             <h3 className="text-lg font-bold text-slate-800 mb-2">4. Third-Party Services</h3>
             <p>We do not sell, rent, or trade any user data to third parties.</p>
             <p className="mt-2">
-              We utilize Vercel Web Analytics to help us analyze website traffic. Vercel processes basic technical information (like IP addresses and referrer data) securely and in compliance with global privacy standards to provide us with aggregated, anonymized performance metrics.
+              We utilize the following trusted third-party services to operate the platform securely and effectively:
             </p>
+            <ul className="list-disc pl-5 mt-2 space-y-2">
+              <li>
+                <strong>Vercel Web Analytics:</strong> Processes basic technical information securely to provide us with aggregated, anonymized performance metrics.
+              </li>
+              <li>
+                <strong>Upstash / Vercel KV:</strong> Temporarily processes and evaluates IP addresses to enforce API rate limits, protecting the platform from automated bots and denial-of-service attacks.
+              </li>
+              <li>
+                <strong>DeepSeek API:</strong> Processes the free-text queries you enter into the Spec Resolver. This data is processed strictly to identify vehicle specifications and return tariff-relevant data.
+              </li>
+            </ul>
           </section>
 
           <section>

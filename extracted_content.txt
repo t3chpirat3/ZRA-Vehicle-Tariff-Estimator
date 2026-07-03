@@ -1,0 +1,1569 @@
+
+==================================================
+FILE: Temporary Import Permit Zambia Vehicle.pdf
+==================================================
+
+--- PAGE 1 ---
+Comprehensive Framework and
+Procedures for the Temporary
+Importation of Foreign-Registered
+Vehicles into Zambia
+Introduction and Geopolitical Context
+Zambia occupies a highly strategic geographical position within the Southern African
+Development Community (SADC) and the Common Market for Eastern and Southern Africa
+(COMESA). Bordered by eight sovereign nations—including the Democratic Republic of the
+Congo to the north, Tanzania to the northeast, Malawi and Mozambique to the east, Zimbabwe
+and Botswana to the south, Namibia to the southwest, and Angola to the west—the country
+functions as the primary logistical keystone of the North-South Corridor.1 This geographic
+reality facilitates the extensive movement of commercial freight, overland tourism, and regional
+passenger transport across the continent.1 Consequently, the regulatory mechanisms
+governing the cross-border movement of motor vehicles are critical to both national security
+and domestic economic stability.
+The Temporary Importation Permit (TIP) and the corresponding Customs Import Permit (CIP)
+serve as the primary legal instruments enabling foreign nationals, tourists, and commercial
+operators to bring foreign-registered vehicles into Zambian territory without incurring the
+prohibitive costs of permanent importation.3 The temporary importation framework is
+meticulously designed to balance two competing sovereign interests: the facilitation of
+seamless international trade and tourism, and the strict prevention of customs fraud. Without a
+robust TIP framework, the Zambian automotive market would be highly susceptible to the illicit
+influx of undocumented, untaxed foreign vehicles, which would undermine domestic revenue
+collection and disrupt the local automotive economy.5 Furthermore, the procedures
+surrounding the TIP intersect with broader national macroeconomic policies, including
+environmental sustainability via carbon taxation, infrastructure maintenance through
+sophisticated road tolling networks, and regional risk management via compulsory third-party
+insurance schemes.7 This report provides an exhaustive, expert-level analysis of the procedural
+steps, documentation prerequisites, financial architectures, and strict statutory limitations
+governing the temporary importation of foreign-registered vehicles into the Republic of
+Zambia.
+Legislative and Regulatory Underpinnings
+The legal foundation for the temporary importation of goods and motor vehicles into Zambia is
+anchored in Section 89 of the Customs and Excise Act, functioning in tandem with Regulation
+78 of the Customs and Excise (General) Regulations of 2000.4 This legislative architecture
+provides the Commissioner-General of the Zambia Revenue Authority (ZRA) with the statutory
+--- PAGE 2 ---
+authority to grant a rebate or remission of duty for goods temporarily imported into the
+country, provided the duration of stay does not exceed the authorized period and all statutory
+conditions are met.4
+A fundamental eligibility criterion built into this legislation is that the vehicle or goods subject to
+the application must be unequivocally owned by a natural or corporate person resident outside
+the Republic of Zambia.4 This stipulation serves as a critical anti-dumping and anti-smuggling
+measure. By restricting temporary relief to bona fide non-residents, the Zambian government
+effectively mitigates the risk of its own citizens utilizing the TIP framework to bypass the
+standard import duties, excise duties, and Value Added Tax (VAT) applied to permanent vehicle
+imports.4
+The legislative framework categorizes temporary importations into two distinct relief
+paradigms: total conditional relief and partial conditional relief.4 Motor vehicles imported
+temporarily by tourists, visitors, and transiting travelers generally qualify for total conditional
+relief, meaning they are completely exempt from paying the proportionate depreciated value of
+the vehicle's duty, provided the vehicle is used exclusively for personal transport, frontier
+traffic, or approved developmental programs, and is exported prior to the permit's expiration.4
+The regulations explicitly and strictly prohibit the loaning, renting, or selling of these vehicles
+within Zambian territory without prior written consent from Customs authorities.4 Conversely,
+partial conditional relief applies to vehicles imported under commercial hire, lease, or
+related-party contractor arrangements, where import duties may be levied based on the
+proportionate depreciated value of the asset over its authorized stay in the country, assuming a
+maximum lifespan of five years for depreciation purposes.4
+The Financial Alternative: Contextualizing Permanent
+Importation Costs
+To fully comprehend the rigorous scrutiny applied to Temporary Importation Permits by the
+Zambia Revenue Authority, it is necessary to analyze the alternative: the financial burden of
+permanent vehicle importation. Zambia does not enforce a strict age-based import ban like
+some neighboring jurisdictions, but it heavily penalizes the importation of older vehicles
+through a cascading taxation system based on the Cost, Insurance, and Freight (CIF) value of
+the vehicle.10
+When a vehicle is imported permanently, it is subject to a standard Customs Duty, which is
+typically calculated at 25 percent of the CIF value for passenger sedans and up to 30 percent
+for station wagons and Sport Utility Vehicles (SUVs).11 Following the application of the Customs
+Duty, an Excise Duty is levied. For passenger vehicles with an engine capacity not exceeding
+1500cc, this excise duty is 20 percent of the combined CIF and Customs Duty value.12 For
+vehicles exceeding 1500cc, the excise rate escalates to 30 percent.11 Furthermore, a flat Value
+Added Tax (VAT) of 16 percent is applied to the cumulative total of the CIF, Customs Duty, and
+Excise Duty.11
+Beyond these standard taxes, the Zambian government imposes a Motor Vehicle Surtax on any
+vehicle older than five years at the time of importation, acting as a deliberate disincentive to
+--- PAGE 3 ---
+prevent the country from becoming a dumping ground for aged, highly polluting automobiles.11
+This surtax adds an additional 20 percent penalty based on the vehicle's value.11 Consequently,
+the total landed cost of permanently importing a vehicle into Zambia often results in a
+cumulative tax burden ranging from 45 percent to well over 60 percent of the original Free on
+Board (FOB) price of the asset.10 Given this massive financial liability, the incentive for illicit
+actors to smuggle vehicles into the country under the guise of a Temporary Import Permit is
+immense. The exhaustive procedural steps, documentation requirements, and draconian
+penalties discussed throughout this report are directly engineered by the ZRA to protect the
+domestic tax base from this specific vector of customs fraud.
+The Digital Customs Infrastructure: ASYCUDAWorld
+and the IBDF
+The operational procedure for clearing a foreign-registered vehicle at a Zambian border post
+has undergone significant digital transformation over the past decade, transitioning from highly
+fragmented, paper-based bureaucratic processes to unified, digital declarations. At the core of
+this modernization is the Zambia Revenue Authority's implementation of the ASYCUDAWorld
+system, a globally recognized automated customs data management platform.1 The
+deployment of ASYCUDAWorld has enabled the integration of multiple border agencies into a
+more cohesive, transparent, and auditable workflow, culminating in the mandatory utilization of
+the Integrated Border Declaration Form (IBDF).18
+The IBDF is a sophisticated, multi-purpose customs instrument designed to streamline the
+passenger and vehicle clearance process. The form is utilized simultaneously for the temporary
+entry of motor vehicles imported by visitors and tourists for their own use, the entry of
+personal motor vehicles transiting through Zambia to third-party countries, the declaration of
+visitors' accompanied baggage stored within the vehicle, and the mandatory financial
+declaration of any physical currency carried by the traveler in excess of the equivalent of USD
+5,000.18 By consolidating these disparate declarations into a single digital node, the ZRA has
+significantly reduced the administrative friction previously associated with crossing Zambian
+borders, while concurrently enhancing data collection for the Electronic Balance of Payments
+(e-BOP) system and national security watchlists.17
+Recent enhancements to the ASYCUDAWorld platform and the IBDF architecture have
+introduced mandatory electronic attachment capabilities, requiring travelers to digitally upload
+critical supporting documents—such as third-party insurance certificates, driver identification,
+and vehicle registration logs—directly into the system during the clearance process.16 To
+facilitate this transition for self-driving tourists and overlanders who may lack prior knowledge
+of the digital requirements, the ZRA has actively deployed dedicated IBDF computer terminals
+at major One-Stop Border Posts (OSBPs) like Kazungula, alongside specialized counters for
+Interpol verification within the passenger terminals.19
+Procedural Workflow for Border Clearance
+The clearance process for a foreign-registered vehicle requires meticulous adherence to a
+structured, multi-step workflow upon physical arrival at the Zambian port of entry. This process
+--- PAGE 4 ---
+is generally standardized across all major border posts, although localized logistical variations
+may exist at specialized One-Stop Border Posts.18
+The first phase of the clearance protocol entails the primary declaration of information and
+immigration processing. Before addressing vehicle importation, the driver and all passengers
+must proceed to the Department of Immigration to acquire the necessary entry visas, which
+may range from standard 30-day tourist visas to specialized 90-day business authorizations,
+depending on the traveler's nationality and purpose of visit.21 Once passports are officially
+stamped, the traveler proceeds to the customs administration desk to initiate the IBDF process.
+Here, the driver must provide comprehensive personal identification details, precise particulars
+of the motor vehicle (including engine capacity, chassis number, and registration data), travel
+itineraries, and a declaration of any accompanied goods.18 Concurrently, the driver is required
+to complete a physical inspection form for the motor vehicle.18
+The second phase involves the rigorous assessment of the declaration by ZRA Customs
+officers. During this stage, customs officials utilize the ASYCUDAWorld system to evaluate the
+vehicle's parameters, determine the applicable environmental levies based on the declared
+engine capacity, and verify the physical vehicle against the provided documentation.18 A critical
+component of this assessment phase is the Interpol clearance check. The vehicle's Vehicle
+Identification Number (VIN) and engine serial numbers are cross-referenced against regional
+and international stolen vehicle databases.19 This physical inspection and digital verification are
+crucial for intercepting stolen vehicles attempting to transit through the Zambian corridor to
+black markets in the Democratic Republic of the Congo or East Africa.
+The third phase is the financial settlement of all assessed taxes, tolls, and levies. Upon
+completion of the assessment, the ASYCUDA system generates a consolidated financial
+demand. The traveler is required to proceed to the designated cashier or digital payment
+terminal to remit payment for all applicable fees simultaneously.18 The ZRA has increasingly
+integrated electronic payment platforms across its border networks, allowing travelers to utilize
+credit and debit facilities.17 However, the reliability of local network infrastructure can be
+volatile, making it an established best practice for overlanders and logistics operators to carry
+sufficient physical cash in both United States Dollars (USD) and Zambian Kwacha (ZMW), as
+specific levies require payment in distinct currencies.20
+The fourth and final phase is the formal issuance of the IBDF and associated permits. Upon
+verification of cleared funds, Customs issues a formal receipt of payment and a physical
+printout of the IBDF, which serves as the official, legally binding Temporary Import Permit for
+the vehicle.18 For certain extended stays or specific commercial classifications, drivers may also
+be required to interface with the Road Transport and Safety Agency (RTSA) digital portal.
+Through this integrated "My Workplace" portal, an applicant can digitally sign their application
+using a PIN-code, submit it for a final physical examination at a designated RTSA station, and
+subsequently receive a Temporary Motor Vehicle Registration Certificate, which remains
+permanently archived in the user's digital workplace for future compliance checks or localized
+renewals.27
+Exhaustive Documentation Requirements
+--- PAGE 5 ---
+The success of a temporary importation application hinges entirely on the presentation of
+comprehensive, unaltered, and authenticated documentation. The Zambian border authorities
+operate under strict legislative mandates, making documentary compliance the most heavily
+scrutinized element of the entire border crossing experience.22
+The primary application document for formal, non-tourist temporary imports is the prescribed
+Form TIP 0001, obtainable at any Customs House.4 The completion of this form requires
+granular detail, including the physical address of the applicant, the exact reasons necessitating
+the temporary importation, the intended duration of stay, and specific identification details of
+the vehicle.4 If the vehicle is leased or hired, the applicant must also disclose the terms and
+conditions under which the vehicle was sourced from the supplier, alongside any form of
+financial security for duties and taxes that Customs may require to mitigate flight risk.4
+According to ZRA guidelines, completed application forms for commercial TIPs should be
+submitted to the Station Manager of the intended port of entry at least five days before the
+intended date of arrival.4
+Beyond the formal application form, the applicant must present a suite of supporting
+documents to validate ownership, identity, and intent. The original vehicle registration book
+(frequently referred to as the logbook) is strictly mandatory.2 While some remote border posts
+may occasionally accept highly authenticated, certified copies under exceptional
+circumstances, presenting the original registration documentation is the established and
+necessary standard to avoid severe delays or outright rejection of entry.2
+If the driver is not the formally registered owner of the vehicle, the evidentiary burden
+increases significantly to combat unauthorized exportation. In such instances, the driver must
+produce a legally binding affidavit or formal letter, certified by a recognized Commissioner of
+Oaths or police authority, explicitly granting authorization from the registered owner to take
+the vehicle across international borders into Zambian territory.2 Furthermore, if the vehicle
+remains under a financing agreement with a bank or commercial financial institution, the driver
+must possess a formal letter of authority from that specific financier.2 This letter must explicitly
+state the approved dates of international travel and be accompanied by the certified vehicle
+license papers.2
+A Police Clearance Certificate, typically issued by regional Interpol bureaus, is a highly critical
+requirement for vehicles and trailers crossing from neighboring SADC countries, particularly
+South Africa and Zimbabwe.2 This certificate validates that the vehicle is not listed on any
+regional stolen vehicle registries. While recent regional harmonization efforts and shifting
+bilateral agreements have occasionally relaxed this requirement for standard, short-term
+holiday travel in specific contexts, possessing a valid police clearance remains the most secure
+and recommended method to ensure uninterrupted border transit.28
+Personal documentation requirements are equally rigorous. The driver must present a valid
+passport containing the appropriate visas or entry stamps.2 From a vehicular operation
+standpoint, the driver must hold a valid domestic driver's license accompanied by an
+International Driving Permit (IDP).2 The IDP serves as a universally recognized translation of the
+national driving license and is a strict legal prerequisite for operating a motor vehicle on
+--- PAGE 6 ---
+Zambian public roads.28 Commercial entrants must also provide documents supporting the
+nature of their business transaction in Zambia, such as lease agreements, localized
+employment contracts, or temporary exportation documents originating from the vehicle's
+home country.4
+The Carnet de Passage en Douane (CPD) Alternative
+For overlanders, international tourists, and specific commercial operators, the Carnet de
+Passage en Douane (CPD) offers a highly formalized alternative to the standard Zambian TIP.2
+The CPD is an internationally recognized customs document that guarantees the payment of
+customs duties and taxes to the Zambian government if the vehicle is not re-exported within
+the authorized timeframe.29 If a traveler presents a valid Carnet upon entry, the Zambian
+customs authority will stamp the document in lieu of issuing a standard localized TIP or IBDF
+vehicle permit.21 While the Carnet is not compulsory for vehicles registered in neighboring
+countries such as Uganda, Kenya, Tanzania, Malawi, Zimbabwe, South Africa, Mozambique, and
+Botswana, it is highly recommended for vehicles originating from outside the African continent
+or for assets intending to remain in Zambia for extended periods exceeding three months, as it
+drastically expedites the physical border clearance process and satisfies all ZRA financial
+security requirements.2
+Border Post Logistics and Spatial Operations
+Zambia’s landlocked geography necessitates a vast network of border control posts, each
+operating with distinct logistical realities, traffic volumes, and operational hours.1
+Understanding the spatial dynamics of these ports of entry is critical for efficient route
+planning, as arriving outside of operating hours will strand vehicles in highly congested,
+unsecured transit zones.1
+The Zambian border network is anchored by several critical One-Stop Border Posts (OSBPs),
+which have been engineered to consolidate the exit and entry procedures of two adjoining
+nations into a single physical facility, drastically reducing dwell times. The Chirundu OSBP
+(bordering Zimbabwe) and the Kazungula OSBP (bordering Botswana) are the most heavily
+trafficked southern nodes.1 The Kazungula crossing, in particular, has seen massive
+infrastructural upgrades with the completion of the Kazungula Bridge, replacing the antiquated
+pontoon ferry system, though localized tolls for bridge access have been introduced.1 To the
+north, the Kasumbalesa OSBP serves as the primary, high-volume artery into the Democratic
+Republic of the Congo and is notably one of the few border posts operating 24 hours a day to
+manage the immense backlog of commercial copper and cobalt freight.1
+The operational hours of major Zambian border posts dictate the rhythm of regional logistics:
+Border Post Connecting Vehicle Type / Standard
+Country Infrastructure Operating Times
+Kasumbalesa Democratic Commercial & 24 Hours 1
+['Border Post', 'Connecting\nCountry', 'Vehicle Type /\nInfrastructure', 'Standard\nOperating Times']
+['Kasumbalesa', 'Democratic', 'Commercial &', '24 Hours 1']
+--- PAGE 7 ---
+(OSBP) Republic of Congo Private
+Chirundu (OSBP) Zimbabwe Commercial & 06:00 – 22:00 1
+Private
+Kazungula (OSBP / Botswana Commercial & 06:00 – 18:00 1
+Bridge) Private
+Livingstone / Zimbabwe Private / Tourist 06:00 – 18:00
+Victoria Falls Focus (Closes 20:00
+locally) 1
+Nakonde / Tunduma Tanzania Commercial & 06:00 – 18:00 1
+(OSBP) Private
+Mwami / Mchinji Malawi Light Vehicles / 24 Hours (Light) /
+Commercial 06:00 – 18:00
+(Commercial) 1
+Wenela / Sesheke Namibia Commercial & 06:00 – 18:00 1
+Private
+Jimbe Angola Commercial & 06:00 – 18:00 1
+Private
+Travelers utilizing these corridors must calculate their transit times meticulously. The failure of
+administrative networks, power outages, or the sheer volume of commercial trucks at nodes
+like Nakonde or Kazungula can easily result in clearance procedures extending for several
+hours, making late-afternoon arrivals highly risky.1
+Financial Architecture I: The Carbon Emission Surtax
+As part of the Zambian government's strategic transition toward a green economy and in
+alignment with global environmental sustainability protocols, the Ministry of Finance, in
+conjunction with the Ministry of Green Economy and Environment, enforces a mandatory
+Carbon Emission Surtax on all motor vehicles operating within the country.15 This surtax is
+applied equally to permanently imported assets, local fleet renewals, and foreign vehicles
+visiting or transiting through Zambian territory.15 The tax functions as a direct economic
+disincentive for highly polluting, older vehicles and serves as a critical revenue generation
+mechanism to fund national climate change mitigation and adaptation programs.15
+The calculation of the Carbon Emission Surtax is transparent and based exclusively on the
+engine capacity (measured in cubic centimeters, or cc) of the motor vehicle.34 The rates are
+['(OSBP)', 'Republic of Congo', 'Private', '']
+['Chirundu (OSBP)', 'Zimbabwe', 'Commercial &\nPrivate', '06:00 – 22:00 1']
+['Kazungula (OSBP /\nBridge)', 'Botswana', 'Commercial &\nPrivate', '06:00 – 18:00 1']
+['Livingstone /\nVictoria Falls', 'Zimbabwe', 'Private / Tourist\nFocus', '06:00 – 18:00\n(Closes 20:00\nlocally) 1']
+['Nakonde / Tunduma\n(OSBP)', 'Tanzania', 'Commercial &\nPrivate', '06:00 – 18:00 1']
+['Mwami / Mchinji', 'Malawi', 'Light Vehicles /\nCommercial', '24 Hours (Light) /\n06:00 – 18:00\n(Commercial) 1']
+['Wenela / Sesheke', 'Namibia', 'Commercial &\nPrivate', '06:00 – 18:00 1']
+['Jimbe', 'Angola', 'Commercial &\nPrivate', '06:00 – 18:00 1']
+--- PAGE 8 ---
+subject to annual statutory revision during the presentation of the national fiscal budget.34
+According to the parameters established for the 2026 fiscal year, the tax tiers have been
+carefully calibrated to place the heaviest financial burden on large-displacement engines,
+typically found in commercial freight trucks, heavy-duty overlanding SUVs, and heavy
+passenger buses.37
+Vehicle Category / Engine Capacity Tier 2026 Proposed Rate (ZMW or Equivalent
+USD)
+Motorcycles ZMW 140 37
+Engine capacity less than 1,500cc ZMW 140 37
+Engine capacity between 1,500cc and ZMW 280 37
+2,000cc
+Engine capacity between 2,000cc and ZMW 400 37
+3,000cc
+Engine capacity exceeding 3,000cc ZMW 550 37
+Historically, border agents accepted approximate flat fees ranging from USD 20 to USD 50
+depending on a cursory visual inspection of the vehicle size.2 However, recent directives from
+the ZRA increasingly mandate that the payment be calculated precisely against the vehicle
+logbook and remitted in Zambian Kwacha (or a strictly calculated USD equivalent based on
+daily central bank rates) to standardize national revenue collection and prevent informal
+localized arbitrage at border posts.2
+Financial Architecture II: National Road Tolls and
+Access Fees
+Zambia operates a highly developed, user-pays road infrastructure system managed by the
+National Road Fund Agency (NRFA).8 The tolling system is designed to internalize the external
+costs of road degradation by generating direct capital for ongoing road maintenance, highway
+rehabilitation, and safety enhancements along the nation's primary and secondary arterial
+networks.8 Foreign vehicles entering Zambia are subjected to this tolling architecture
+immediately upon entry.
+The structure of these road fees is dual-layered. First, most foreign-registered private vehicles
+are required to pay a blanket Road Access Fee at the border post.2 This entry fee, which has
+historically been priced at approximately USD 30 (or around K 230 depending on the exchange
+rate mechanism), acts as an initial contribution to the road fund and is generally valid for the
+['Vehicle Category / Engine Capacity Tier', '2026 Proposed Rate (ZMW or Equivalent\nUSD)']
+['Motorcycles', 'ZMW 140 37']
+['Engine capacity less than 1,500cc', 'ZMW 140 37']
+['Engine capacity between 1,500cc and\n2,000cc', 'ZMW 280 37']
+['Engine capacity between 2,000cc and\n3,000cc', 'ZMW 400 37']
+['Engine capacity exceeding 3,000cc', 'ZMW 550 37']
+--- PAGE 9 ---
+duration of the temporary import, up to a maximum of one year.2
+However, for commercial logistics operators, heavy-duty transit vehicles, and passenger buses,
+the NRFA enforces specific, point-of-use toll gate tariffs that must be paid per passage at
+various toll plazas scattered across the country's highway network.8 To align with regional
+integration goals, the NRFA offers specific fee structures for vehicles registered within
+COMESA and SADC member states, differentiating between single trips and return trips to
+facilitate regional trade.41
+For example, COMESA/SADC registered private small vehicles typically face border access tolls
+of USD 15 to USD 20 for single trips, scaling up to USD 30 for return trips.41 Tourist vehicles face
+fees ranging from USD 6 to USD 12, while heavy cross-country trucks incur massive charges
+reaching up to USD 400 for a single border transit.41
+Beyond the border entry tolls, the inland toll plaza network was subject to significant upward
+revisions for the 2026 fiscal year to offset the escalating costs of road infrastructure
+maintenance and combat an extensive backlog of rehabilitation projects.38 The inland fee
+structure is meticulously categorized by vehicle weight and axle configuration.
+Vehicle Classification Axle / Capacity 2026 Standard Inland Toll
+Specifications Rate (ZMW) per passage
+Small Vehicles Up to 3.5 tonnes (incl. cars, K 20 42
+vans, minibuses up to 16
+seats)
+Light Vehicles 3.5 to 6.5 tonnes (incl. K 40 42
+minibuses 17 to 30 seats)
+Large Buses Exceeding 30 passenger K 50 42
+seats
+Medium-Heavy Vehicles Exceeding 6.5 tonnes, with K 200 42
+2 to 4 axles
+Heavy Vehicles 4 axles and above K 300 42
+Abnormal Load Vehicles Oversized commercial K 1,000 42
+freight
+It is a critical point of operational intelligence for commercial operators that certain premium
+infrastructure nodes command significantly higher localized tariffs. The Michael Chilufya Sata
+Toll Gate, strategically situated between the industrial and mining hubs of Ndola and Kitwe in
+['Vehicle Classification', 'Axle / Capacity\nSpecifications', '2026 Standard Inland Toll\nRate (ZMW) per passage']
+['Small Vehicles', 'Up to 3.5 tonnes (incl. cars,\nvans, minibuses up to 16\nseats)', 'K 20 42']
+['Light Vehicles', '3.5 to 6.5 tonnes (incl.\nminibuses 17 to 30 seats)', 'K 40 42']
+['Large Buses', 'Exceeding 30 passenger\nseats', 'K 50 42']
+['Medium-Heavy Vehicles', 'Exceeding 6.5 tonnes, with\n2 to 4 axles', 'K 200 42']
+['Heavy Vehicles', '4 axles and above', 'K 300 42']
+['Abnormal Load Vehicles', 'Oversized commercial\nfreight', 'K 1,000 42']
+--- PAGE 10 ---
+the Copperbelt Province, enforces rates of K 400 for medium-heavy vehicles, K 600 for heavy
+vehicles, and up to K 1,000 for abnormal loads.39 These elevated tariffs reflect the intense
+degradation caused by continuous heavy mining freight and the localized costs of maintaining
+that specific high-value corridor. Foreign drivers are strictly required to pay these inland tolls
+either in physical United States Dollars or the direct equivalent in Zambian Kwacha.8
+Financial Architecture III: Third-Party Insurance and
+Regional Risk Pools
+To operate a motor vehicle legally within Zambian territory, the driver must possess valid,
+compulsory third-party motor insurance.2 This financial mechanism is a non-negotiable
+statutory requirement designed to protect Zambian citizens, local businesses, and national
+infrastructure from the immense liabilities that arise from road traffic accidents involving
+foreign nationals, who might otherwise exit the jurisdiction without providing adequate
+compensation. Drivers entering the country have two primary avenues for achieving
+compliance: the localized purchase of border insurance or the utilization of the sophisticated
+COMESA Yellow Card scheme.
+For motorists arriving without regional coverage, local third-party insurance can be purchased
+directly from brokers stationed at the border posts.26 This local policy is typically underwritten
+for a standard validity of 30 days and generally costs approximately USD 30, or the equivalent
+in Kwacha (historically ranging from K 130 to K 230 depending on the underwriting agency and
+the specific vehicle class).20 Upon purchase, the physical insurance disk must be prominently
+displayed on the passenger side of the vehicle’s windshield at all times while operating within
+the country.20 Failure to display this disk is a primary catalyst for detention at roadside police
+checkpoints.
+However, the most sophisticated, cost-effective, and seamless method for insurance
+compliance across the region is the COMESA Yellow Card.9 The Yellow Card is a highly
+integrated, regional third-party motor vehicle insurance scheme recognized by participating
+states as unassailable legal evidence of insurance coverage, functioning in strict accordance
+with the national laws governing liability in the country where an accident occurs.9 The scheme
+operates through an Inter-Bureaux Agreement and a centralized Reinsurance Pool, allowing
+motorists to traverse participating nations—including Burundi, Djibouti, Democratic Republic of
+Congo, Eritrea, Ethiopia, Kenya, Malawi, Rwanda, Sudan, Tanzania, Uganda, Zambia, and
+Zimbabwe—using a single, unified policy.9
+The Yellow Card provides comprehensive coverage for bodily injury and death of third parties,
+as well as third-party property damage, subject to the maximum limits of liability dictated by
+the host nation's legislation.9 Crucially, the scheme offers an extra benefit covering emergency
+medical treatment expenses for the driver and passengers of the insured vehicle, drastically
+reducing the physical and financial risks associated with severe accidents in remote
+transboundary corridors.9 While designed for COMESA member states, the framework
+includes strategic Business-to-Business (B2B) arrangements allowing motorists from
+non-member SADC countries—most notably South Africa, Mozambique, and Namibia—to
+--- PAGE 11 ---
+purchase valid Yellow Card coverage from their domestic insurers prior to embarking on their
+journeys, thereby bypassing the chaotic and often highly predatory environment of
+border-post insurance vendors entirely.9
+Financial Architecture IV: Municipal Council Levies
+A highly contentious and frequently misunderstood element of the financial architecture is the
+imposition of Council Levies by local municipalities stationed at or near major border towns.2
+While the central government strictly manages customs taxes and the NRFA administers road
+tolls, local district councils—such as those operating in border districts like Siavonga,
+Kazungula, and Nakonde—frequently levy their own independent fees on foreign vehicles
+entering and exiting their municipal jurisdictions.2 These levies generally amount to USD 20 or
+an equivalent Kwacha figure per vehicle and are collected at localized roadblocks shortly after
+the primary customs perimeter.2
+The stated political and administrative rationale for these levies is that the heavy, continuous
+influx of transiting vehicles generates severe localized environmental degradation, overwhelms
+municipal waste management capabilities (due to massive amounts of solid and liquid waste
+generated by delayed truck drivers), and strains local infrastructure in ways that the centralized
+national road fund does not adequately compensate the municipalities for.49 While these
+decentralized levies have faced heavy and sustained criticism from regional commercial
+logistics bodies (such as FESARTA) for allegedly violating SADC and COMESA transit
+agreements regarding the harmonization of transparent road user charges, they remain a de
+facto reality on the ground.40 Travelers and commercial operators must be financially and
+psychologically prepared to pay these municipal taxes and retain the associated receipts to
+avoid local detention of their vehicles.31
+Temporal Limitations, Extensions, and Visa
+Synchronization
+The issuance of a Temporary Importation Permit via the IBDF or a manual Form TIP 0001 is not
+an indefinite grant of access. The regulatory framework imposes strict temporal limitations
+engineered to prevent the systemic abuse of the system as a backdoor for avoiding permanent
+vehicle importation duties.4
+The legal parameters of "temporary" vary based on the classification of the entrant. For
+standard tourists, holidaymakers, and ordinary visitors entering Zambia on standard visitor
+visas, the initial validity of the vehicle's temporary import permit is often synchronized closely
+with their immigration status.2 Typically, a tourist is granted a free 30-day vehicle permit upon
+entry, mirroring the initial 30 days granted by the Department of Immigration.21 If the visitor
+wishes to remain in the country, they can extend their immigration status up to a maximum of
+90 days within a rolling 12-month period as an ordinary visitor, and they must simultaneously
+proceed to the nearest Customs Office to formally extend the vehicle's IBDF permit to match
+this new duration.24 The Zambian government recently extended the allowable stay duration for
+visa-exempt business visitors from 30 days to 90 days, providing greater flexibility for
+commercial exploratory trips, but the vehicle permits must still be actively managed and
+--- PAGE 12 ---
+extended to reflect this stay.25
+For major commercial entities, expatriates on temporary employment permits, or organizations
+involved in approved developmental programs, the maximum initial period allowed for a
+foreign-registered vehicle to remain in Zambia under a standard TIP is statutorily capped at
+twelve (12) months.4 Upon the expiration of this initial 12-month period, if the vehicle must
+remain in the country, the client cannot simply renew the permit at a local customs house.
+Instead, they must submit a formal, written application directly to the Commissioner-General
+of the ZRA.4 The Commissioner-General possesses the discretionary, non-delegable authority
+to extend the maximum allowable period for goods imported for developmental programs, or
+for other highly valid reasons, for a subsequent period not exceeding 12 months.4 Crucially, the
+total period of all extensions, combined with the initial validity period, is strictly capped at a
+maximum of 24 months.4 Beyond this absolute ceiling, the vehicle must be physically exported
+from Zambian territory, or it must be formally entered for permanent home consumption,
+thereby triggering the immediate assessment of all standard import duties, excise taxes, and
+VAT.4
+Penalties, Infractions, and Asset Forfeiture Mechanics
+The punitive mechanisms designed to enforce the temporal limitations of the TIP are
+deliberately draconian. They are calibrated not merely as administrative deterrents, but as
+devastating financial consequences engineered to completely eradicate the profit margins
+associated with creating a grey market of untaxed foreign vehicles.4
+Under the amended provisions of Section 32 of the Customs and Excise Act, any goods or
+motor vehicles that remain in Zambia beyond the authorized TIP expiration date automatically
+and immediately become liable for the payment of full import duties, excise taxes, and VAT,
+stripping away all conditional relief.4 Furthermore, the legislation imposes a crippling daily
+statutory fine of 3,000 fee units for every single day (or part thereof) that the vehicle remains
+in the country illegally beyond the authorized date.4 In the context of Zambian statutory law,
+where penalty units translate directly into substantial Kwacha fines, a vehicle that overstays its
+temporary permit by merely a few weeks can rapidly accrue financial penalties that rival or
+even exceed the actual market value of the vehicle itself.
+The enforcement of this penalty structure is unyielding. If a traveler needs to extend their stay,
+the extension must be formalized at a Customs Office before the expiry of the existing IBDF or
+TIP; retroactive extensions are not entertained, and penalties apply immediately for the extra
+days stayed.51 More severely, the Customs and Excise Act empowers the state with the
+authority of asset forfeiture. If any vehicle entered under temporary importation is found to
+have exceeded its authorized period by more than ten days without an approved extension, the
+vehicle becomes legally liable to immediate seizure by the state.5 This strict enforcement
+paradigm, combining massive daily financial penalties with the threat of total asset forfeiture,
+underscores the ZRA's absolute commitment to maintaining the integrity of its customs
+borders and protecting its national revenue streams.
+Physical Safety Regulations and Highway Compliance
+--- PAGE 13 ---
+Beyond documentary perfection and financial compliance, foreign-registered vehicles must
+satisfy stringent physical safety criteria mandated by the Zambian Highway Code, the Road
+Transport and Safety Agency (RTSA), and the Compulsory Standards Act.2 These regulations
+are aggressively and routinely enforced at numerous police checkpoints, toll plazas, and mobile
+roadblocks distributed throughout the national highway network.
+The most heavily scrutinized physical requirement is the mandatory application of specific
+reflective safety tapes, governed strictly by the ZS 266 standard for Reflex-Reflecting Vehicle
+Number Plates and safety markings.2 It is a strict legal requirement for any vehicle operating in
+Zambia to comply with these visibility standards, which are designed to reduce the high
+incidence of nighttime collisions involving poorly lit commercial vehicles and wildlife.53 The law
+dictates that a vehicle must have two small, white, rectangular reflective strips affixed securely
+to the extreme left and right sides of the front bumper.2 Conversely, the rear bumper must
+display two small, red, square reflective strips positioned on the left and right outer corners.2
+Authorities highly recommend utilizing honeycomb-patterned retro-reflective material to
+ensure maximum compliance with RTSA visibility standards.29
+If the primary vehicle is towing a secondary asset, such as a commercial trailer, a boat, or a
+tourist caravan, additional specific markings are required. The towing configuration must
+display a clearly visible white and red "T-sign"—the white section must be displayed on the front
+right-hand side of the trailer, and the red section must be mounted on the rear right-hand side
+of the trailer, oriented from the perspective of looking forward.2
+Furthermore, all vehicles must carry specialized emergency equipment. The driver must
+possess two red warning triangles, which are legally required to be constructed on a sturdy
+metal plate base rather than lightweight plastic.2 This specific material requirement ensures
+that the triangles remain upright and visible in the strong aerodynamic wake generated by
+passing heavy commercial trucks on narrow highways.2 Additionally, any vehicle carrying
+auxiliary fuel in external jerry cans—a common practice for overlanders navigating the remote
+western and northern provinces—is legally required to possess an easily accessible and fully
+functional fire extinguisher.2 Finally, the Zambian Highway Code strictly mandates the use of
+seatbelts for the driver and all passengers, with specific height and age requirements dictating
+rear-seat usage for children under the age of ten.54 Failure to maintain these physical vehicle
+standards not only risks the revocation of the temporary entry privileges but subjects the
+driver to immediate, non-negotiable roadside fines.
+Strategic Implications and Future Outlook
+The procedural architecture surrounding Zambia's Temporary Import Permit framework offers
+profound insights into the broader operational realities of international trade, regional
+integration, and sovereign risk management within Southern Africa. The digitization of the IBDF
+through the ASYCUDAWorld platform represents a monumental administrative shift away from
+historical bilateral border friction toward a highly sophisticated system of integrated border
+management.16 By forcing the consolidation of immigration data, customs declarations,
+environmental levies, and national road tolls into a single, cohesive digital workflow, the
+Zambian government is actively attempting to modernize its logistical corridors and reduce
+--- PAGE 14 ---
+devastating dwell times at notorious chokepoints like the Kazungula and Chirundu borders.18
+However, the analysis also reveals inherent structural contradictions within the national policy
+framework. While the central government publicly seeks to facilitate seamless regional mobility
+to boost the lucrative tourism sector and leverage its geographic position as a continental
+transit hub, the simultaneous proliferation of aggressively high national road tolls, localized
+municipal council levies, and expanding carbon emission surtaxes introduces substantial,
+unavoidable financial friction for logistics operators and tourists alike.40 The dramatic 2026
+revisions to the NRFA inland toll rates, which saw costs for heavy commercial vehicles spike to
+levels heavily criticized by the transport industry, highlight the intense political and economic
+tension between generating the massive domestic capital required for infrastructure survival
+and adhering to COMESA and SADC treaties regarding harmonized, affordable transit
+corridors.38
+Ultimately, Zambia's TIP framework successfully functions as both a gateway for legitimate
+regional mobility and a formidable, heavily armed barrier against cross-border automotive
+smuggling and revenue erosion. The procedure for importing a foreign-registered vehicle into
+Zambia using a Temporary Import Permit is not a mere bureaucratic formality; it is a rigorous,
+multi-layered gauntlet that demands absolute adherence to documentation authenticity,
+complex financial settlements, and strict physical compliance metrics. For the foreign traveler,
+commercial logistics operator, or expatriate entering Zambia, operational success requires
+proactive, exhaustive preparation, a deep understanding of the regulatory landscape, and a
+recognition of the severe consequences of non-compliance within this highly strategic transit
+nation.
+Works cited
+1. Republic of Zambia - The Cross-Border Road Transport Agency, accessed on May
+31, 2026, https://www.cbrta.co.za/uploads/files/Zambia-Country-Handbook.pdf
+2. Driving to Zambia and Vehicle Entry Requirements, accessed on May 31, 2026,
+https://www.myguidezambia.com/usefulinfo/driving-to-zambia-and-vehicle-entry
+-requirements
+3. Zambia - Temporary Entry - International Trade Administration, accessed on May
+31, 2026,
+https://www.trade.gov/country-commercial-guides/zambia-temporary-entry
+4. Temporary Importations - Zambia Revenue Authority, accessed on May 31, 2026,
+https://www.zra.org.zm/temporary-importations/
+5. Customs and Excise Amendment Act No. 18 of 2015.pdf - Parliament of Zambia,
+accessed on May 31, 2026,
+https://www.parliament.gov.zm/sites/default/files/documents/amendment_act/Cu
+stoms%20and%20Excise%20Amendment%20Act%20No.%2018%20of%202015.
+pdf
+6. 1 REPORT OF THE COMMITTEE ON ESTIMATES ON THE CUSTOMS AND EXCISE
+(AMENDMENT) BILL, N.A.B NO 22 OF 2015, FOR THE FIFTH SESSION OF, accessed
+on May 31, 2026,
+https://www.parliament.gov.zm/sites/default/files/documents/committee_reports/
+--- PAGE 15 ---
+CUSTOMS%20AND%20EXCISE%20REPORT%20Bill%20No%2022%20of%202015.
+pdf
+7. Zambia - Corporate - Other taxes - PwC Tax Summaries, accessed on May 31,
+2026, https://taxsummaries.pwc.com/zambia/corporate/other-taxes
+8. From-Foreign-Soil-to-Zambian-Gates-Paying-Tolls-Smoothly - National Road
+Fund Agency, accessed on May 31, 2026,
+https://nrfa.org.zm/wp-content/uploads/2025/09/12.From-Foreign-Soil-to-Zambia
+n-Gates-Paying-Tolls-Smoothly.pdf
+9. COMESA Yellow Card - Maksure Risk Solutions, accessed on May 31, 2026,
+https://newsite.maksure.co.za/solutions/specialty/comesa-yellow-card/
+10. How to Calculate Total Import Cost for Zambia (2025 Guide) - EVERYCAR.jp,
+accessed on May 31, 2026,
+https://www.everycar.jp/blog/how-to-calculate-total-import-cost-for-zambia-20
+25-guide/
+11. How to Import a Car in Zambia: A Step-by-Step Guide - Carused.jp, accessed on
+May 31, 2026,
+https://carused.jp/blog/how-to-import-a-car-in-zambia-a-step-by-step-guide/
+12. How to calculate duty on imported cars in Zambia | Carused.jp, accessed on May
+31, 2026,
+https://carused.jp/blog/how-to-calculate-car-import-taxes-duties-fees-for-zamb
+ia/
+13. How To Import Cars From Japan To Zambia (Full Guide 2026) - TokyoCarZ Blog,
+accessed on May 31, 2026,
+https://tokyocarz.com/blog/import-guides/how-to-import-cars-from-japan-to-z
+ambia-full-guide-2026/
+14. Customs and Tax Guide for Importing Cars into Zambia - SBT Japan, accessed on
+May 31, 2026,
+https://www.sbtjapan.com/sbtnews/import-policy/customs-and-tax-guide-for-im
+porting-cars-into-zambia
+15. ZAMBIA - Public Expenditure and Financial Accountability (PEFA), accessed on
+May 31, 2026,
+https://www.pefa.org/sites/default/files/2025-12/ZM-Jul2025-CRPFM-Final%20Pu
+blic%20with%20PEFA%20Check.pdf
+16. Annual Report 2022 - Zambia Revenue Authority, accessed on May 31, 2026,
+https://www.zra.org.zm/wp-content/uploads/2023/05/ZRA-Annual-Report-2022-
+compressed.pdf
+17. Annual Report 2019 - Zambia Revenue Authority, accessed on May 31, 2026,
+https://www.zra.org.zm/wp-content/uploads/2021/03/Annual-Report-2019.pdf
+18. Importation of foreign registered motor vehicles for visitors, tourists and
+travellers, accessed on May 31, 2026,
+https://www.zra.org.zm/importation-of-foreign-registered-motor-vehicles-for-vi
+sitors-tourists-and-travellers/
+19. ENDLINE TIME MEASUREMENT SURVEY 2024 - Zambia Revenue Authority,
+accessed on May 31, 2026,
+https://www.zra.org.zm/wp-content/uploads/2024/11/JICA-ENDLINE-TIME-MEASU
+--- PAGE 16 ---
+REMENT-SURVEY-02Nov2024-MS.pdf
+20. Kazungula Border Bridge - The Africa Rally, accessed on May 31, 2026,
+https://africarally.com/wp-content/uploads/2024/10/The-Kazungula-Border-An-A
+frica-Rally-How-To-Guide.pdf
+21. Overland Zambia Travel - WikiOverland, accessed on May 31, 2026,
+https://wikioverland.org/Zambia
+22. Border-crossing.pdf - Zambia Tourism, accessed on May 31, 2026,
+https://www.zambiatourism.com/media/Border-crossing.pdf
+23. Border Crossings - Africa - Tucks' Truck, accessed on May 31, 2026,
+https://tuckstruck.net/overland-planning/overlanding-africa/border-crossings-afri
+ca/
+24. For Visitors – Zambia Department of Immigration, accessed on May 31, 2026,
+https://www.zambiaimmigration.gov.zm/for-visitors/
+25. Zambia: Extended Duration of Stay for Visa-Exempt Nationals Entering for
+Business Purposes - Fragomen, accessed on May 31, 2026,
+https://www.fragomen.com/insights/zambia-extended-duration-of-stay-for-visa-
+exempt-nationals-entering-for-business-purposes.html
+26. Zambia: South Luangwa National Park - Hoblets On The Go, accessed on May 31,
+2026,
+https://hobletsonthego.com/where-weve-been/africa/zambia/zambia-south-luan
+gwa-national-park/
+27. Quick Guide: How to Temporary Register a Motor Vehicle or Trailer Imported in
+Zambia - ZamPortal, accessed on May 31, 2026,
+https://zamportal.gov.zm/wp-content/uploads/2020/05/RTSA_Temp-Registration_
+Quick-Guide.pdf
+28. Zambia's Border Crossings - Zambia Tourism, accessed on May 31, 2026,
+https://www.zambiatourism.com/self-drive/border-crossing/
+29. Preparing for the Holiday, Cross-border, Carnet de passage. - The Automobile
+Association of South Africa, accessed on May 31, 2026,
+https://aa.co.za/preparing-for-the-holiday-cross-border-carnet-de-passage-2/
+30. Tips for hassle-free border crossing in Africa: Before you leave - Tracks4Africa
+Blog, accessed on May 31, 2026,
+https://blog.tracks4africa.co.za/tips-hassle-free-border-crossing-africa-leave/
+31. Self drive Kazungula Ferry crossing 4 by 4 by Safpar., accessed on May 31, 2026,
+https://safpar.com/need-know-self-drive-kazangula-zambia-ferry-crossing/
+32. 2021 RTSA Annual Report, accessed on May 31, 2026,
+https://www.rtsa.org.zm/wp-content/uploads/2022/11/2021-RTSA-Annual-Report.
+pdf
+33. Zambia border charges - Google Groups, accessed on May 31, 2026,
+https://groups.google.com/g/overland-forum/c/aVZczEWJZgA
+34. Zambia - Import Tariffs - International Trade Administration, accessed on May 31,
+2026, https://www.trade.gov/country-commercial-guides/zambia-import-tariffs
+35. SPECIFIC DUTY RATES ON USED MOTOR VEHICLES, accessed on May 31, 2026,
+https://www.zra.org.zm/wp-content/uploads/2022/07/Used-Motor-Vehicle-specifi
+c-duty-schedule-July-2022.pdf
+--- PAGE 17 ---
+36. Zambia: Budget 2026 - legal and regulatory insights - Bowmans, accessed on May
+31, 2026,
+https://bowmanslaw.com/insights/zambia-budget-2026-legal-and-regulatory-insi
+ghts-2/
+37. 2026 Budget Highlights - United Nations Development Programme, accessed on
+May 31, 2026,
+https://www.undp.org/sites/g/files/zskgke326/files/2025-10/undp_kpmg_zambia_2
+026_national_budget_highlights.pdf
+38. Road Toll Fees Adjusted Effective January 2026 - ZNBC, accessed on May 31,
+2026, https://znbc.co.zm/?p=10215
+39. Zambia increases toll fees for heavy vehicles - nbc - YouTube, accessed on May
+31, 2026, https://www.youtube.com/watch?v=YKeFUg5DYGQ
+40. BORDER BEAT: Zambia institutes toll charges on foreign vehicles - Freight News,
+accessed on May 31, 2026,
+https://www.freightnews.co.za/article/border-beat-zambia-institutes-toll-charges
+-on-foreign-vehicles
+41. Entry tolls for foreign registered vehicles transiting into Zambia - eRegistry:
+Licenses, accessed on May 31, 2026,
+https://www.businesslicenses.gov.zm/license/id/518
+42. NRFA to increase toll fees starting 1st January 2026 – Zambia - News Diggers!,
+accessed on May 31, 2026,
+https://diggers.news/local/2025/12/29/nrfa-to-increase-road-tolls-effective-jan-1-
+2026/
+43. update on revised tolls for selected vehicle classes - NRFA, accessed on May 31,
+2026, https://nrfa.org.zm/update-on-revised-tolls-for-selected-vehicle-classes/
+44. Border crossings in Southern and East Africa - Tracks4Africa Blog, accessed on
+May 31, 2026,
+https://blog.tracks4africa.co.za/border-crossings-in-southern-and-east-africa/
+45. COMESA PTA Yellow Card - Mayfair Zambia, accessed on May 31, 2026,
+https://zm.mayfairinsurance.africa/solutions/motor-insurance/comesa-pta-yellow
+-card/
+46. COMESA Yellow Card Insurance - Mukfin, accessed on May 31, 2026,
+https://mukfin.com/comesa-yellow-card-insurance/
+47. COMESA Yellow Card coverage, accessed on May 31, 2026,
+https://comesayellowcard.com/yellow-card-overview
+48. Frequently Asked Questions - COMESA Yellow Card, accessed on May 31, 2026,
+https://comesayellowcard.com/frequently-asked-questions
+49. Reporting, Monitoring and Eliminating Mechanism - Non-Tariff Barriers ::
+Complaints, accessed on May 31, 2026,
+https://www.tradebarriers.org/complaint/NTB-000-531
+50. Guide on Immigration Permits & Visas Requirements & Fees, accessed on May 31,
+2026,
+https://zamimmigration.azurewebsites.net/wp-content/uploads/2019/10/Guide-o
+n-Immigration-Permits-Visas.pdf
+51. User Guide for the Integrated Border Declaration Form Process on the Customs
+--- PAGE 18 ---
+Portal and TaxOnApp - Zambia Revenue Authority, accessed on May 31, 2026,
+https://www.zra.org.zm/wp-content/uploads/2024/02/User-Guide-for-the-Integr
+ated-Border-Declaration-Form-Process-on-the-Customs-Portal-and-TaxOnApp.
+pdf
+52. ACT-2015-3.pdf - Laws of Zambia, accessed on May 31, 2026,
+https://www.zambialaws.com/Zambia_Acts_yearPdf/Zambia2015Pdf/ACT-2015-3.
+pdf
+53. View SearchMeasures - Zambia Trade Information Portal, accessed on May 31,
+2026,
+https://www.zambiatradeportal.gov.zm/index.php?r=searchMeasures/view&id=14
+45&page=28
+54. Zambian-Highway-Code.pdf - Lusaka - RTSA, accessed on May 31, 2026,
+https://www.rtsa.org.zm/wp-content/uploads/2019/09/Zambian-Highway-Code.p
+df
+55. Reflective White & Red Strips Pack for Zimbabwe & Zambia Travel | Safari Centre
+Cape Town, accessed on May 31, 2026,
+https://www.safaricentrecapetown.co.za/product/reflective-white-red-strips-pac
+k-for-zimbabwe-zambia-travel/
+56. Caravan marking (yellow strips)Traffic regulation - Forum Topic -
+CaravanParks.com, accessed on May 31, 2026,
+https://www.caravanparks.com/35.caravan-camping-forums-caravan-marking-ye
+llow-strips-traffic-regulation?forumaction=1&loadcategory=1012&loadpost=2500
+85258
+
+
+==================================================
+FILE: TIP Procedure.pdf
+==================================================
+
+--- PAGE 1 ---
+Good data. I got everything from ZRA's official publications and the IBDF brochure. Here's
+the full breakdown.
+Temporary Importation of Foreign-Registered Vehicles
+into Zambia
+First, an important clarification: there are two distinct regimes depending on your situation,
+and people often conflate them under "TIP."
+Regime 1: IBDF — Integrated Border Declaration Form
+For: tourists, visitors, and persons transiting through Zambia driving their own
+foreign-registered vehicle for personal use.
+This is the most common scenario — a Zimbabwean, South African, or other SADC national
+driving in for a visit.
+Procedure
+The entry process is done at the border in four steps:
+Step 1 — Declaration. On arrival, you provide Customs with your personal information,
+vehicle particulars (reg number, engine number, chassis number, make, type, colour), your
+travelling details (visitor or transit), and any currency exceeding USD 5,000. You also fill in a
+vehicle inspection form.
+Step 2 — Assessment. Customs assesses the declaration.
+Step 3 — Payment. You make a single payment for all applicable fees and levies.
+Step 4 — IBDF Issued. Customs prints and hands you the IBDF and a receipt.
+You can also apply in advance online through the ZRA Customs Portal or the TaxOnApp
+before reaching the border, which reduces dwell time.
+Required Documents
+The following are required:
+● Valid passport
+--- PAGE 2 ---
+● Foreign vehicle registration book (logbook), in your name
+● Insurance certificate
+● Temporary Exportation Permit from the country of export (showing the vehicle has
+been formally exported)
+● If you are not the registered owner: a written authority/Power of Attorney from the
+owner, plus a Police clearance certificate for the vehicle
+For Zambians wanting to drive in a foreign-registered vehicle: you must be in possession of
+a valid work permit or residence documentation from the country where the vehicle is
+registered.
+For diplomats: you must prove ongoing diplomatic status with a valid diplomatic identity
+card.
+Validity Period
+Visitor: The IBDF is valid for the period of stay granted by Immigration, up to 30 days. It can
+be extended twice at the nearest Customs office — the Customs officer must physically
+verify the vehicle and be satisfied there is a justified reason. For visitors whose stay extends
+beyond 90 days, a further extension (up to an additional 9 months) may be applied for at
+Customs Headquarters, Revenue House, Lusaka.
+Transit: Validity is 5 days.
+Financials
+No customs duty or import tax is payable on the vehicle itself under the IBDF. The
+customs/estimated value of the vehicle must be declared, but no duty is charged on it.
+The fees that are payable are:
+● Carbon Emission Surtax
+● Council Levy
+● Dam Toll fee (where applicable)
+● Road Toll fee
+The Carbon Emission Surtax for visiting/transiting vehicles (prorated — not the full annual
+import rate) is based on engine capacity. From the 2025 ZRA specific duty schedule:
+Engine Capacity Surtax (ZMW)
+Up to 1,500cc K 123
+1,501cc – 2,000cc K 246
+2,001cc – 3,000cc K 352
+--- PAGE 3 ---
+3,001cc and K 484
+above
+Note that the Carbon Emission Surtax is an annual charge for vehicles in Zambia; the cost is
+based on the vehicle's engine capacity. Visiting vehicles pay a prorated portion of this, hence
+the much lower figures above compared to full import rates.
+All fees are collected in a single payment at the border — the IBDF functions as a
+one-stop-shop for all regulatory agencies.
+Penalties
+Late exit (leaving after the IBDF has expired) attracts a penalty of K900 per day. Any
+vehicle that remains in Zambia beyond ten days after the authorized period is liable to
+seizure under Regulation 83(7) of the Customs and Excise (General) Regulations, 2000.
+Regime 2: TIP — Temporary Importation Permit (Form TIP 0001)
+For: goods (including vehicles) owned by a person or company resident outside
+Zambia, for corporate, developmental, or contractual purposes — not routine tourism.
+Who Qualifies
+Any person, natural or corporate, is eligible to apply. The goods must be owned by a person
+or company resident outside Zambia.
+Procedure
+Application is made in writing on Form TIP 0001, obtainable from any Customs House. The
+application must include:
+● Physical address of the applicant (and importer if different)
+● Reasons for the temporary importation
+● Duration of intended stay
+● Identification details for the goods/vehicle
+● Terms and conditions of supply if on lease or hire
+● Form of security for duties and taxes (where Customs requires it)
+Completed forms must be submitted to the Station Manager at the intended Port of Entry,
+and must be received at least 5 days before the intended date of arrival.
+Documents Required
+The application must be accompanied by:
+--- PAGE 4 ---
+● Copies of invoices (where applicable)
+● Temporary exportation documents from the country of exportation
+● Relevant permits (where applicable)
+● Documents supporting the business transaction (e.g. lease agreement, contracts)
+● Ownership documents such as the vehicle registration book
+Duration
+The maximum period allowed is 12 months. Extensions within that 12-month window may
+be granted upon written request to the Commissioner General, with valid reasons. The total
+period of all extensions combined, including the initial period, cannot exceed 12 months.
+Duties Under TIP
+Some goods attract partial duties and taxes, others do not. Goods admitted with partial
+conditional relief include those imported under hire, lease, or contract, and goods for
+commercial use other than professional equipment. For goods imported under related party
+arrangements or by a contractor for use on a contract in Zambia, the value for duty purposes
+is based on a depreciated value proportionate to the duration of stay — the maximum
+lifespan for depreciation is 5 years.
+Goods qualifying for total conditional relief include goods for display at exhibitions,
+professional equipment, and goods for educational/scientific/cultural purposes.
+A security deposit (bond or bank guarantee) covering the full potential duty may be
+required by Customs as a condition of approval.
+Penalty for Overstay
+Any goods that remain in Zambia beyond the authorized period are liable to full duties plus
+a fine of 3,000 fee units per day or part thereof. Since April 2024, the value of a fee unit
+was increased to K0.40 (40 ngwee) under S.I. No. 25 of 2024. That means the overstay fine
+under TIP is K1,200 per day.
+Restrictions (Both Regimes)
+Under the IBDF, the following are prohibited:
+● No sale, offer for sale, lease, hire, lending, pledging, or disposal of the vehicle to any
+Zambian resident
+● The vehicle must be removed from Zambia by IBDF expiry or at the time the visitor
+leaves, whichever comes first
+● In case of breakdown, theft, or accident, the IBDF holder must report to the
+nearest Customs office immediately
+Additionally:
+--- PAGE 5 ---
+● Visitors holding a valid Carnet de Passages en Douane are exempt from obtaining
+an IBDF — the Carnet serves as the instrument
+● Under a Carnet, the maximum stay allowed by Zambian Customs is one year, after
+which you must exit and re-enter
+● Under TIP, the vehicle cannot be used for purposes other than those stated in the
+application, and cannot be sold without Customs consent and payment of all duties
+due
+● Left-hand drive vehicles are technically permissible but right-hand drive is the
+Zambian norm
+Quick Reference Summary
+IBDF (Visitor/Tourist) TIP 0001
+(Corporate/Formal)
+Who Foreign visitor/tourist/transit Non-resident
+owner/corporate
+Where At the border on arrival (or advance online) Customs House, 5 days
+applied before arrival
+Duration Up to 30 days (extendable to 90 days + Up to 12 months total
+possible 9-month extension)
+Customs None on the vehicle Partial/prorated if under
+duty hire/lease
+Carbon K123–K484 (prorated by engine size) Full annual rate
+surtax (K50,000–K200,000)
+Security Not typically required May be required
+bond
+Late K900/day; seizure after 10 days K1,200/day (3,000 fee units
+penalty × K0.40)
+Carnet Exempt from IBDF Carnet used instead
+holders
+A couple of practical notes: the ZRA's customs portal is at portal-customs.zra.org.zm, and
+the TaxOnApp supports advance IBDF applications. The Carbon Emission Surtax rates for
+visitors are buried in the motor vehicle specific duty schedule — most border agents know
+them but they're not prominently published separately, so if there's any dispute at the border,
+reference the ZRA 2025 specific duty rate schedule directly.
+
+
+==================================================
+FILE: Zambia Vehicle Import Cost Breakdown.pdf
+==================================================
+
+--- PAGE 1 ---
+Comprehensive Analysis of Zambian
+Motor Vehicle Importation Costs and
+Customs Regulatory Frameworks
+(2025–2026)
+The importation of motor vehicles into the Republic of Zambia represents a highly regulated,
+multi-agency logistical and financial undertaking. Due to the absence of a large-scale domestic
+automotive manufacturing base, Zambia relies heavily on the importation of both new and used
+vehicles to sustain its transport, agricultural, mining, and private sectors.1 To manage this influx,
+the government has established a stringent regulatory architecture governed primarily by the
+Zambia Revenue Authority (ZRA), the Zambia Compulsory Standards Agency (ZCSA), and the
+Road Transport and Safety Agency (RTSA).1
+This report provides an exhaustive, forensic analysis of the statutory costs, tariffs, penalties,
+and administrative fees associated with importing a motor vehicle into Zambia for the
+2025–2026 fiscal cycle. Furthermore, it deconstructs the specific regulatory and logistical
+treatments applied to vehicles originating from seven primary global supply markets: Japan,
+Thailand, Singapore, South Korea, the United Arab Emirates (UAE), the United Kingdom (UK),
+and South Africa. By integrating customs valuation models, pre-shipment inspection mandates,
+border transit tolls, and domestic registration fees, this document serves as a definitive
+architectural guide for calculating precise landed cost estimates.
+Part I: The Zambia Revenue Authority (ZRA) Taxation
+Architecture
+The Zambian customs regime for motor vehicles operates on a bifurcated system. The
+methodology used to calculate import duties is determined exclusively by the age of the
+vehicle at the time of importation. Vehicles under two years of age are subjected to an Ad
+Valorem tax structure based on their market value, whereas vehicles aged two years and older
+are assessed using a fixed "Specific Duty" matrix based on the vehicle's physical
+characteristics.4
+The Ad Valorem Taxation Model (Vehicles Under 2 Years Old)
+For new or near-new vehicles (defined as under 24 months from the date of manufacture), the
+ZRA employs the traditional Ad Valorem method. This system requires the establishment of a
+Value for Duty Purposes (VDP), which is the Zambian Kwacha (ZMW) equivalent of the total
+Cost, Insurance, and Freight (CIF) value up to the Zambian port of entry.5
+Under the Ad Valorem framework, taxes are not flat; they are calculated sequentially and
+compound upon one another. The taxation sequence is executed as follows:
+1. Customs Duty: This is the primary tariff barrier levied as a percentage of the CIF value.
+--- PAGE 2 ---
+The standard statutory rates are 25% for passenger sedans and hatchbacks, 30% for
+sport utility vehicles (SUVs) and station wagons, 20% for pickup trucks, and 15% for
+heavy commercial vehicles and passenger buses.6
+2. Excise Duty: This is a consumption tax applied to the sum of the CIF value plus the
+assessed Customs Duty. Standard excise rates range from 0% for certain commercial or
+agricultural applications to 30% for high-displacement luxury passenger vehicles. A
+critical regulatory update in the 2025/2026 national budget reduced the excise duty on
+new hybrid motor vehicles from 30% to 15%, a policy maneuver designed to incentivize
+the adoption of environmentally friendly transport and reduce national greenhouse gas
+emissions.8
+3. Value Added Tax (VAT): A flat statutory rate of 16% is charged on the final taxable value.
+In the Ad Valorem system, this taxable value is the aggregate sum of the CIF value, the
+Customs Duty, and the Excise Duty.6
+The compounding nature of the Ad Valorem system means that high-value new vehicles face a
+severe exponential tax burden. When all cumulative multipliers are applied, the total tax liability
+can easily exceed 60% to 80% of the vehicle's original purchase price.1
+The Specific Duty Taxation Model (Vehicles 2 Years and Older)
+Historically, the Ad Valorem system proved highly vulnerable to customs fraud when applied to
+used vehicles. Importers frequently engaged in invoice manipulation and under-declaration to
+minimize their tax liabilities, leading to substantial revenue leakage for the state.1 To counteract
+this, the ZRA transitioned to a "Specific Duty" regime for all motor vehicles aged two years and
+older.13
+The Specific Duty is a flat, non-negotiable statutory figure assessed purely on the vehicle's
+engine capacity (in cubic centimeters), body type, and age bracket.2 It entirely disregards the
+purchase price or the CIF value of the vehicle.
+A critical analytical distinction must be made regarding the Specific Duty: it is an aggregated
+tax. The statutory figure gazetted by the ZRA is a consolidated sum that includes the Customs
+Duty, the Excise Duty, the Value Added Tax (VAT), the Motor Vehicle Fee, the ASYCUDA
+Processing Fee, and the Motor Vehicle Surtax.15 Importers do not calculate VAT or
+administrative processing fees on top of these specific figures; the liability is singular and fixed.
+The application of Specific Duties acts as a profound economic equalizer within the automotive
+market. Because the tax is decoupled from the vehicle's market value, a premium luxury used
+vehicle and a budget economy used vehicle of the identical age, body type, and engine size will
+pay the exact same import duty to the ZRA.14 This structural dynamic heavily incentivizes the
+importation of higher-trim, well-maintained vehicles, as the effective tax rate as a percentage
+of the vehicle's total value decreases the more expensive the vehicle is.
+Specific Duty Rates for Passenger Vehicles (Sedans and Hatchbacks)
+The specific duties for standard passenger cars are categorized into two primary age brackets:
+2 to 5 years old, and over 5 years old. To stimulate fleet renewal, the specific duty is generally
+lower for older vehicles, though this reduction is offset by age-based environmental surtaxes
+--- PAGE 3 ---
+applied elsewhere.2
+Engine Capacity (cc) Specific Duty: 2 to 5 Years Specific Duty: Over 5
+Old (ZMW) Years Old (ZMW)
+Up to 1,000 cc 39,461.45 25,138.60
+1,001 cc – 1,500 cc 50,340.60 29,491.36
+1,501 cc – 2,500 cc 61,225.25 33,844.12
+2,501 cc – 3,000 cc 66,666.20 41,461.45
+Exceeding 3,000 cc 82,989.05 46,902.40
+Specific Duty Rates for SUVs and Station Wagons
+Sport Utility Vehicles (SUVs), station wagons, and four-wheel-drive passenger vehicles carry a
+significant premium over standard sedans. The ZRA classifies these as high-impact utility or
+luxury vehicles, resulting in substantially higher statutory duty burdens, particularly at larger
+engine displacements.14
+Engine Capacity (cc) Specific Duty: 2 to 5 Years Specific Duty: Over 5
+Old (ZMW) Years Old (ZMW)
+Up to 1,000 cc 48,866.53 31,869.84
+1,001 cc – 1,500 cc 56,597.74 36,508.57
+1,501 cc – 2,500 cc 77,548.10 49,078.78
+2,501 cc – 3,000 cc 88,430.00 59,525.40
+Exceeding 3,000 cc 104,752.85 68,666.20
+Specific Duty Rates for Commercial Vehicles (Trucks and Panel Vans)
+Unlike passenger vehicles, commercial vehicles are taxed based on their Gross Vehicle Weight
+(GVW) or payload capacity rather than solely on their engine displacement. This ensures that
+heavy logistics and freight vehicles are taxed commensurately with their impact on national
+['Engine Capacity (cc)', 'Specific Duty: 2 to 5 Years\nOld (ZMW)', 'Specific Duty: Over 5\nYears Old (ZMW)']
+['Up to 1,000 cc', '39,461.45', '25,138.60']
+['1,001 cc – 1,500 cc', '50,340.60', '29,491.36']
+['1,501 cc – 2,500 cc', '61,225.25', '33,844.12']
+['2,501 cc – 3,000 cc', '66,666.20', '41,461.45']
+['Exceeding 3,000 cc', '82,989.05', '46,902.40']
+['Engine Capacity (cc)', 'Specific Duty: 2 to 5 Years\nOld (ZMW)', 'Specific Duty: Over 5\nYears Old (ZMW)']
+['Up to 1,000 cc', '48,866.53', '31,869.84']
+['1,001 cc – 1,500 cc', '56,597.74', '36,508.57']
+['1,501 cc – 2,500 cc', '77,548.10', '49,078.78']
+['2,501 cc – 3,000 cc', '88,430.00', '59,525.40']
+['Exceeding 3,000 cc', '104,752.85', '68,666.20']
+--- PAGE 4 ---
+infrastructure.15
+Gross Vehicle Weight / Commercial Type Specific Duty (ZMW)
+Panel Vans (Up to 1 tonne) 30,306.46
+Panel Vans (1.1 to 1.5 tonnes) 34,688.10
+Panel Vans (1.6 to 3.0 tonnes) 39,503.10
+Trucks (Up to 2 tonnes) 44,318.10
+Trucks (2.1 to 5 tonnes) 49,133.10
+Trucks (5.1 to 10 tonnes) 78,023.10
+Trucks (10.1 to 20 tonnes) 97,283.10
+Heavy Trucks (Exceeding 20 tonnes) 116,543.10
+Part II: Environmental Levies and Age-Based Surtaxes
+While the Specific Duty consolidates most border taxes, it explicitly excludes the Carbon
+Emission Surtax and specific age penalties.15 These are environmental levies designed to
+penalize high-polluting and older vehicles, discouraging the dumping of end-of-life automotive
+stock into the Zambian market.
+The Initial Carbon Emission Surtax
+The Carbon Emission Surtax is an environmental levy that must be settled at the border during
+the initial customs clearance process.6 Recent regulatory updates present a highly stratified
+approach to this tax, with the specific statutory rates strictly tied to engine capacity.2 To curb
+the importation of high-displacement, high-emission vehicles, the ZRA established the
+following aggressive surtax brackets for initial importation:
+Engine Capacity Initial Importation Carbon Surtax (ZMW)
+Up to 1,500 cc 50,000.00
+1,501 cc – 2,000 cc 100,000.00
+['Gross Vehicle Weight / Commercial Type', 'Specific Duty (ZMW)']
+['Panel Vans (Up to 1 tonne)', '30,306.46']
+['Panel Vans (1.1 to 1.5 tonnes)', '34,688.10']
+['Panel Vans (1.6 to 3.0 tonnes)', '39,503.10']
+['Trucks (Up to 2 tonnes)', '44,318.10']
+['Trucks (2.1 to 5 tonnes)', '49,133.10']
+['Trucks (5.1 to 10 tonnes)', '78,023.10']
+['Trucks (10.1 to 20 tonnes)', '97,283.10']
+['Heavy Trucks (Exceeding 20 tonnes)', '116,543.10']
+['Engine Capacity', 'Initial Importation Carbon Surtax (ZMW)']
+['Up to 1,500 cc', '50,000.00']
+['1,501 cc – 2,000 cc', '100,000.00']
+--- PAGE 5 ---
+2,001 cc – 3,000 cc 150,000.00
+Exceeding 3,000 cc 200,000.00
+It is imperative to note the distinction between this massive initial importation surtax designed
+to deter high-emission acquisitions at the border, and the nominal recurring annual carbon tax
+(ranging from ZMW 200 to ZMW 400) which is collected locally during annual roadworthiness
+certification renewals.6
+The 5-Year Age Surtax
+To further regulate the quality of the national vehicle fleet, Zambia enforces an age-based
+penalty. While the country does not have an outright ban on the importation of older vehicles,
+any vehicle that is older than five years from its date of manufacture is subject to an automatic
+20% age surtax.2 This surtax acts as a counterbalance to the fact that vehicles over five years
+old enjoy lower base Specific Duty rates, ensuring that the total landed cost remains prohibitive
+enough to encourage the importation of newer, safer stock.2
+Part III: Mandatory Pre-Shipment Inspections and
+ZCSA Compliance
+Beyond the financial taxation administered by the ZRA, the Republic of Zambia enforces
+rigorous physical standards on used vehicle imports. This mandate is enforced by the Zambia
+Compulsory Standards Agency (ZCSA) in conjunction with the Zambia Bureau of Standards
+(ZABS), designed to mitigate the dumping of substandard, environmentally hazardous, or
+stolen vehicles.3
+The Roadworthiness Inspection (RWI) Framework
+Under Zambian Standard ZS 560, all used motor vehicles destined for use within the Republic
+must undergo a mandatory Pre-Shipment Roadworthiness Inspection (RWI) prior to export
+from their country of origin.17 The inspection verifies multiple compliance metrics to ensure
+public health, safety, and environmental protection:
+● Identification Integrity: Inspectors confirm that the physical Vehicle Identification
+Number (VIN) and engine numbers match the export documentation. This is a primary
+safeguard preventing the entry of stolen property into the Zambian market.16
+● Mechanical Roadworthiness: Comprehensive testing of braking systems, suspension
+integrity, steering linkage, and tire tread depth to ensure the vehicle is structurally
+sound.16
+● Environmental Safety: Assurance that the vehicle is free of prohibited CFC (R12)
+refrigerant gases and meets baseline tailpipe emission standards.20
+● Radiation Testing: Mandatory screening for radioactive contamination. This became a
+['2,001 cc – 3,000 cc', '150,000.00']
+['Exceeding 3,000 cc', '200,000.00']
+--- PAGE 6 ---
+critical, non-negotiable requirement instituted globally following the Fukushima nuclear
+incident for vehicles sourced from or transiting through Japan.16
+● Odometer Verification: Rigorous checks to detect mileage tampering, ensuring
+consumer protection and accurate valuation.16
+Appointed Inspection Agents and Global Coverage
+The ZCSA does not possess the extraterritorial jurisdiction or manpower to conduct these
+inspections directly in the countries of origin. Instead, it delegates authority to accredited
+third-party logistics and inspection firms. The primary appointed agents holding Zambian
+government accreditation are the Japan Export Vehicle Inspection Center (JEVIC), Auto
+Terminal Japan (ATJ), and Eminent Africa Automotive (EAA).19
+The ZCSA has formally appointed these agents to operate in specific supply jurisdictions:
+Japan, Singapore, South Africa, the United Arab Emirates (UAE), the United Kingdom (UK), and
+the United States of America (USA).17 For vehicles originating from these jurisdictions, securing
+an RWI certificate prior to loading onto the shipping vessel is an absolute legal prerequisite.20
+The standard global inspection fees negotiated by these agencies are fixed by statutory
+agreement to ensure global uniformity:
+Origin Country Authorized Agent Base Inspection Fee (USD)
+Japan JEVIC, ATJ, EAA $140.00
+Singapore JEVIC, ATJ $140.00
+South Africa JEVIC, ATJ $140.00
+United Arab Emirates JEVIC, ATJ $140.00
+United Kingdom JEVIC, ATJ $200.00
+The $140.00 base fee (or $200.00 in the UK) encompasses all local administrative taxes and
+includes a mandatory $45.00 administration fee that is remitted directly back to the Zambian
+regulatory bodies.23
+The ZCSA Destination Penalty Regime
+A pivotal logistical and financial hurdle arises when a vehicle is imported from a country where
+the ZCSA has not appointed an inspection agent. Because importers cannot legally or
+practically secure a valid pre-shipment inspection in these unlisted countries, the vehicle is
+forced to ship uninspected.17
+Upon arrival at the Zambian border, the lack of an RWI certificate flags the vehicle for
+['Origin Country', 'Authorized Agent Base', 'Inspection Fee (USD)']
+['Japan', 'JEVIC, ATJ, EAA', '$140.00']
+['Singapore', 'JEVIC, ATJ', '$140.00']
+['South Africa', 'JEVIC, ATJ', '$140.00']
+['United Arab Emirates', 'JEVIC, ATJ', '$140.00']
+['United Kingdom', 'JEVIC, ATJ', '$200.00']
+--- PAGE 7 ---
+non-compliance. Historically, the penalty for importing an uninspected vehicle was
+aggressively calculated at 15% of the vehicle's entire CIF value, leading to massive,
+unpredictable fines.19 Recognizing the subjective nature of CIF valuations and the resulting
+disputes, the ZCSA modernized this penalty structure. The penalty for failing to procure a
+pre-shipment inspection is now a flat, specific fee based entirely on the vehicle's engine
+capacity 19:
+Engine Capacity RWI Non-Compliance Penalty (ZMW)
+Not exceeding 2,500 cc 2,500.00
+2,501 cc to 3,000 cc 3,000.00
+Exceeding 3,000 cc 3,500.00
+A critical strategic insight emerges from this modernized penalty structure. For commercial
+importers sourcing vehicles from non-accredited countries, the statutory penalty (ranging
+from ZMW 2,500 to ZMW 3,500) transforms from a punitive deterrent into a highly predictable,
+fixed operational cost. Often, this destination penalty is financially equivalent to, or only
+marginally higher than, the combined cost of the $140 USD RWI inspection and the associated
+domestic logistics required to transport the vehicle to an inspection center abroad.
+Consequently, the penalty effectively functions as a standard "arrival processing fee" for
+vehicles originating outside the ZCSA's global network.24
+Part IV: Digital Clearance and Border Transit
+Mechanisms
+The logistical transit of the vehicle to the Zambian border triggers a highly structured sequence
+of mandatory digital declarations, administrative fees, and infrastructural transit tolls.
+Landlocked Zambia relies primarily on the Dar es Salaam corridor in Tanzania, the Walvis Bay
+corridor in Namibia, and the North-South corridor extending from the Port of Durban in South
+Africa.7
+The ASYCUDA World Pre-Clearance Mandate
+To alleviate extreme congestion at critical border posts such as Nakonde and Chirundu, the
+ZRA instituted a strict digital pre-clearance mandate utilizing the Automated System for
+Customs Data (ASYCUDA World) platform.2
+As of mid-2024, continuing into the 2025/2026 framework, all motor vehicles must be digitally
+pre-cleared through the ASYCUDA portal a minimum of five days prior to the vehicle's
+physical arrival at the Zambian border.2 Importers, or their designated clearing agents, must
+upload the Ocean Bill of Lading, the Commercial Invoice, the JEVIC/ATJ Inspection Certificate,
+['Engine Capacity', 'RWI Non-Compliance Penalty (ZMW)']
+['Not exceeding 2,500 cc', '2,500.00']
+['2,501 cc to 3,000 cc', '3,000.00']
+['Exceeding 3,000 cc', '3,500.00']
+--- PAGE 8 ---
+and generate the Customs Declaration Form (CE 20) within the system.2
+Failure to adhere to the 5-day pre-clearance window constitutes a statutory violation. It results
+in an automatic, non-negotiable administrative penalty of ZMW 500.10 levied directly against
+the importer.2 This regulation fundamentally shifts the administrative burden; customs
+paperwork must be processed while the vehicle is still at sea or in overland transit, rather than
+at the border frontier.
+Port Handling and Clearing Agent Acquittal Fees
+Before the vehicle even reaches the Zambian border, it must be cleared through the transit
+port. Depending on the maritime route chosen, standard port handling fees apply to
+roll-on/roll-off (Ro-Ro) cargo. Standard operational estimates indicate port clearance fees of
+approximately $500 USD at Durban, $400 USD at Dar es Salaam, and $350 USD at Walvis Bay.7
+Once at the Zambian border, while the law does not strictly forbid self-clearance for private
+imports, the complexity of navigating the ASYCUDA system, calculating VDP, and managing the
+CE 20 forms makes the utilization of a licensed Zambian clearing agent a de facto
+requirement.2 Clearing agents charge an "acquittal fee" for processing the customs
+documentation and managing the physical handover. This fee is subject to open market
+dynamics but typically ranges between ZMW 1,500 and ZMW 3,500 depending on the
+complexity of the consignment and the specific border post utilized.7
+National Road Fund Agency (NRFA) Border Tolls
+Upon crossing the frontier, foreign-registered vehicles, commercial car carriers, and imported
+units being driven on temporary transit plates are subject to the National Road Fund Agency
+(NRFA) tolling regime.27 Toll access fees are assessed based on the vehicle classification and its
+region of origin. Vehicles registered in SADC or COMESA regions face the following standard
+entry tolls to utilize Zambian highway infrastructure:
+● Private Small Vehicles: $15.00 USD for a single inbound trip, or $30.00 USD for a return
+trip.30
+● Medium to Heavy Vehicles: Tariffs scale upward rapidly. Heavy commercial transport
+rigs carrying multiple imported vehicles pay up to $150.00 to $500.00 USD per transit.27
+● Local Municipal Council Taxes: In addition to national tolls, localized municipal councils
+at the border towns exact minor infrastructural crossing levies, commonly ranging from
+ZMW 50 to ZMW 200, handled directly by the clearing agent.7
+Part V: Domestic Registration and Licensing (RTSA)
+Once the ZRA issues a Customs Clearance Certificate (the Release Order) and all border duties
+are settled, the vehicle has legally entered the country. However, it cannot be operated on
+public roads until it is fully naturalized, registered, and licensed by the Road Transport and
+Safety Agency (RTSA) and the Zambia Police Service.1 The domestic registration phase
+introduces its own distinct schedule of mandatory statutory costs.
+1. Interpol Clearance (Anti-Motor Vehicle Theft)
+--- PAGE 9 ---
+Before the RTSA will process a new vehicle registration, the importer must obtain a Police
+Clearance Certificate from the Interpol Anti-Motor Vehicle Theft department.1 This process
+rigorously verifies the vehicle's chassis and engine numbers against global databases to ensure
+the Zambian market does not become a sanctuary for misappropriated global assets.32
+● Interpol Clearance Fee: ZMW 200.00.32
+2. Physical Examination and Certification of Fitness
+The RTSA requires a secondary physical inspection of the vehicle to confirm its identity and
+baseline domestic roadworthiness. This is entirely independent of the foreign ZCSA
+pre-shipment inspection.31
+● Physical Examination Fee (Motor Vehicle): ZMW 64.00 (revised upwards from historical
+K46.80/K52.00 rates).2
+3. Vehicle Registration and White Book Issuance
+Upon clearing Interpol and passing the physical examination, the importer submits the ZRA CE
+20 form, the customs receipt, the release order, and proof of valid domestic third-party
+insurance to the RTSA.2 The agency registers the vehicle into the national database and issues
+the original motor vehicle registration certificate, colloquially known as the "White Book."
+● First Registration Certificate Fee: ZMW 238.00.2
+4. Assignment of Registration Marks (Number Plates)
+The vehicle must be assigned a new Zambian registration mark. Standard sequentially issued
+number plates carry a fixed statutory fee. Importers seeking personalized or vanity plates face
+significantly steeper, premium costs.31
+● Standard New Registration Mark: ZMW 388.00.33
+● Assignment of Preferred/Vanity Mark: ZMW 2,145.00 to ZMW 9,166.00 depending on
+the level of customization.33
+5. Annual Road Tax (Motor Vehicle Licensing)
+Finally, to legally drive the vehicle, the owner must pay the national Road Tax, which can be
+purchased on a quarterly or annual basis.2 Unlike the ZRA specific duties which rely on engine
+capacity, the RTSA road tax is calculated entirely on the vehicle's Gross Vehicle Weight
+(GVW).35
+Under Statutory Instrument No. 25 of 2024 (and governing the 2025/2026 period), the annual
+Road Tax rates for standard private motor vehicles are strictly tiered 34:
+Gross Vehicle Weight Annual Road Tax (ZMW) Typical Vehicle Profile
+(GVW)
+Up to 800 kg 440.00 Microcars
+['Gross Vehicle Weight\n(GVW)', 'Annual Road Tax (ZMW)', 'Typical Vehicle Profile']
+['Up to 800 kg', '440.00', 'Microcars']
+--- PAGE 10 ---
+801 kg – 1,000 kg 514.00 Subcompact hatchbacks
+1,001 kg – 1,200 kg 587.00 Compact sedans
+1,201 kg – 1,400 kg 660.00 Standard sedans
+1,401 kg – 1,600 kg 734.00 Honda Fit, Toyota Vitz
+1,601 kg – 2,000 kg 807.00 Mid-size sedans,
+Crossovers
+2,001 kg – 4,000 kg 918.00 Toyota RAV4, Hilux, Prado
+4,001 kg – 6,000 kg 1,027.00 Heavy utility vehicles
+By paying the road tax, the vehicle is fully naturalized and legally permitted to operate on the
+Zambian road network.35
+Part VI: Source Market Analysis – The Seven Target
+Countries
+Zambia's regulatory framework applies uniformly at the border, but the logistical pathways, tax
+liabilities, and inspection requirements vary dramatically depending on the vehicle's country of
+origin. The treatment of the seven specific source markets requested by the inquiry highlights
+the operational realities of global automotive arbitrage and the profound impact of origin on
+landed costs.
+1. Japan
+Japan is the undisputed dominant source of used vehicles entering Zambia. This dominance is
+driven by the high turnover of the Japanese domestic market, strict local maintenance laws
+(the Shaken system), and the mass availability of right-hand-drive (RHD) stock that seamlessly
+matches Zambian road regulations.10
+● ZRA Taxation Treatment: Vehicles from Japan receive no preferential tariff treatment.
+They are subjected strictly to the Ad Valorem system (if under 2 years old) or the
+standard Specific Duty matrix (if 2 years or older).2
+● ZCSA Compliance & Inspections: Japan boasts the highest concentration of
+ZCSA-appointed agents globally, with JEVIC, EAA, and ATJ all operating extensive
+networks.19 Securing an RWI is a seamless procedure costing $140 USD.23 Because the
+inspection infrastructure is so robust, Japanese imports rarely trigger destination
+penalties at the Zambian border.
+['801 kg – 1,000 kg', '514.00', 'Subcompact hatchbacks']
+['1,001 kg – 1,200 kg', '587.00', 'Compact sedans']
+['1,201 kg – 1,400 kg', '660.00', 'Standard sedans']
+['1,401 kg – 1,600 kg', '734.00', 'Honda Fit, Toyota Vitz']
+['1,601 kg – 2,000 kg', '807.00', 'Mid-size sedans,\nCrossovers']
+['2,001 kg – 4,000 kg', '918.00', 'Toyota RAV4, Hilux, Prado']
+['4,001 kg – 6,000 kg', '1,027.00', 'Heavy utility vehicles']
+--- PAGE 11 ---
+● Logistics & Routing: Vehicles are generally shipped via Roll-on/Roll-off (Ro-Ro) vessels
+to the Port of Dar es Salaam in Tanzania or the Port of Durban in South Africa.16 From
+there, they are transported overland to the Nakonde or Chirundu border posts.
+● Cost Estimation Scenario: If an importer purchases a 2017 Toyota Vitz (1,300 cc) for
+$3,500 USD, they will pay $140 for the JEVIC inspection in Japan.7 Upon reaching the
+Zambian border, the ZRA disregards the $3,500 purchase price and charges the specific
+duty for a hatchback over 5 years old under 1,500 cc, which is ZMW 29,491.36, plus the
+ZMW 50,000 Carbon Emission Surtax.2
+2. Thailand
+Thailand is a globally critical manufacturing hub for heavy-duty pickup trucks and commercial
+utility vehicles, producing models like the Toyota Hilux, Ford Ranger, and Isuzu D-Max. It is a vital
+market for Zambian agricultural and mining sectors.7
+● ZRA Taxation Treatment: Standard Specific Duties apply based on the vehicle's payload
+tonnage. A standard 1-tonne used pickup from Thailand will incur a specific duty ranging
+from ZMW 30,306.46 to ZMW 34,688.10.15
+● ZCSA Compliance & Inspections: Crucially, Thailand does not have a ZCSA-appointed
+pre-shipment inspection agent.17 It is impossible for an importer to obtain a valid JEVIC or
+ATJ certificate prior to export from Thailand.
+● Logistics & Penalties: Because the vehicle cannot be inspected in Thailand, every vehicle
+imported directly from this market will automatically arrive at the Zambian border
+uninspected. The importer must proactively budget for the ZCSA destination penalty. For
+a standard 2,700 cc pickup truck, this incurs a mandatory ZMW 3,000 statutory fine at
+the border.25 Logistically, vehicles are usually shipped via transshipment hubs like
+Singapore or direct Ro-Ro to Durban.
+3. Singapore
+Singapore represents a highly lucrative niche market for high-specification, meticulously
+maintained luxury vehicles. Due to Singapore's aggressive local taxation on older vehicles (the
+Certificate of Entitlement, or COE system), 5-to-10-year-old luxury sedans and SUVs (e.g.,
+Mercedes-Benz, BMW, Lexus) are exported globally at highly competitive prices.17
+● ZRA Taxation Treatment: Luxury vehicles from Singapore generally feature large engine
+displacements. Consequently, they attract the highest tier of ZRA Specific Duties. A
+3,000 cc luxury sedan older than 5 years will attract ZMW 46,902.40 in Specific Duty,
+alongside the maximum Carbon Emission Surtax.2
+● ZCSA Compliance & Inspections: Singapore has an established ATJ and JEVIC
+presence.17 Importers must pay the standard $140 USD RWI fee prior to loading. Vehicles
+arrive fully compliant, successfully bypassing the destination penalties.23
+● Logistics & Routing: Singapore functions as a major maritime hub, allowing for rapid
+Ro-Ro transit directly to Dar es Salaam or Durban, making it a highly efficient route for
+luxury acquisitions.26
+--- PAGE 12 ---
+4. South Korea
+South Korea is a rapidly emerging source for reliable, affordable SUVs and commercial panel
+vans, dominated by brands like Hyundai and Kia. However, the Korean domestic market
+produces Left-Hand Drive (LHD) vehicles, presenting unique regulatory challenges.21
+● ZRA Taxation Treatment: Vehicles from South Korea face standard Ad Valorem or
+Specific Duties. No preferential trade agreements exist to lower these tariffs.2
+● LHD to RHD Conversion: Zambia legally operates on a Right-Hand Drive (RHD) system.
+While LHD vehicles can technically be imported under certain exceptional, highly
+restricted circumstances, RHD is the overwhelming statutory standard.2 Importers
+sourcing from Korea often must facilitate mechanical conversions prior to export or upon
+transit, adding significant hidden mechanical and logistical costs.
+● ZCSA Compliance & Penalties: Similar to Thailand, South Korea does not have a
+ZCSA-appointed inspection agent.17 Vehicles from South Korea will inevitably arrive
+uninspected, triggering the automatic ZCSA destination penalty. For a standard 2,000 cc
+Korean SUV, this results in a ZMW 2,500 fine upon border arrival.25
+5. United Arab Emirates (UAE)
+The UAE, specifically the Jebel Ali Free Zone in Dubai, acts as a massive global automotive
+transit and trading hub. It is heavily utilized by Zambian buyers for specialized off-road vehicles,
+luxury SUVs, and heavy commercial trucks.21
+● ZRA Taxation Treatment: Standard Ad Valorem or Specific Duties apply based on the
+vehicle's age and displacement.2
+● ZCSA Compliance & Inspections: The ZCSA has authorized ATJ and JEVIC to operate
+extensively within the UAE.17 The inspection fee remains fixed at the global standard of
+$140 USD.23
+● Structural Risks: Importers utilizing the UAE must exercise extreme caution. The Dubai
+market is heavily populated with LHD vehicles originally destined for the Middle East that
+have been cheaply converted to RHD for export to Africa. The ZCSA agents (JEVIC/ATJ)
+will rigorously inspect the structural integrity of the steering linkage and dashboard
+modifications during the RWI to ensure the conversion meets Zambian safety standards.
+If the conversion is deemed substandard, the vehicle will fail the RWI and cannot be
+legally exported to Zambia.16
+6. United Kingdom (UK)
+The UK provides a steady, high-quality supply of premium RHD vehicles. It is the preferred
+market for luxury SUVs (e.g., Land Rover, Range Rover), high-end sports cars, and specialized
+commercial stock.37
+● ZRA Taxation Treatment: Due to the prevalence of high-capacity engines in UK exports,
+vehicles frequently trigger the absolute uppermost Specific Duty tiers. For example, a
+UK-sourced SUV under 5 years old exceeding 3,000 cc will incur a massive Specific Duty
+--- PAGE 13 ---
+of ZMW 104,752.85, alongside the ZMW 200,000 initial Carbon Surtax.2
+● ZCSA Compliance & Inspections: The UK has authorized agents (JEVIC, ATJ) operating
+primarily out of static sites like the Port of Tilbury.20
+● Inspection Fees and Prerequisites: The UK is the only market globally where the
+baseline inspection fee deviates higher from the $140 standard. The fee is set at $200
+USD, or approximately £105.00 (+ VAT) for static site inspections, and £125.00 (+ VAT) if
+the inspector must travel to the client's premises.21 Furthermore, the bureaucratic
+requirements are stricter: vehicles must be presented to JEVIC with an original DVLA
+Registration Certificate (V5C) and a valid MOT test certificate with at least 4 months of
+validity remaining to pass the Zambian RWI.21 Logistically, UK vehicles generally ship via
+Ro-Ro to Walvis Bay or Durban.26
+7. South Africa (The Dual-Origin Framework)
+South Africa presents the most complex regulatory scenario within the entire Zambian
+importation matrix due to its geographical proximity, its status as a continental transit hub, and
+its membership in the Southern African Development Community (SADC) Free Trade Area.39
+South Africa serves two entirely distinct functions for the Zambian automotive market, each
+triggering vastly different tax and inspection treatments:
+Function 1: South Africa as a Transit and Export Hub for Asian Stock Used vehicles from
+Japan, Singapore, or the UK are frequently shipped to the Port of Durban, moved into bonded
+warehouses, and subsequently transported by commercial car carrier to the Zambian border at
+Chirundu or Livingstone.26
+● Compliance: South Africa has ZCSA-appointed agents (JEVIC/ATJ) to conduct
+inspections on these vehicles before they cross into Zambia. The fee is the standard $140
+USD.21
+● Taxation: Crucially, these vehicles are subjected to the standard ZRA Specific Duties and
+Ad Valorem tariffs. Because they originated in Asia or Europe, they enjoy no preferential
+tariff treatment, regardless of the fact that they transited through South Africa.
+Function 2: South Africa as a Country of Manufacturing Origin South Africa possesses a
+robust domestic automotive manufacturing sector, producing models for Toyota, Ford, BMW,
+and Volkswagen within its own borders. Under the SADC Free Trade Agreement, goods wholly
+produced or having undergone substantial manufacturing in a SADC member state qualify for
+preferential tariff treatment.40
+● The SADC Exemption: To qualify, the manufacturing process in South Africa must
+account for a minimum of 35% local value addition.41 If a Zambian importer purchases a
+vehicle manufactured in South Africa that meets this threshold, they must obtain a valid
+SADC Certificate of Origin.39 Upon presentation of this certificate to the ZRA at the
+border, the vehicle qualifies for a 0% Customs Duty rate.39
+● Strategic Limitation: It is paramount for analysts and importers to recognize the limits of
+this treaty. The 0% rate applies only to the customs duty component of the import tax.42
+The importer remains fully liable for the domestic Excise Duty, the 16% VAT, and the
+--- PAGE 14 ---
+Carbon Emission Surtax.11 Furthermore, the SADC Certificate of Origin strictly cannot be
+applied to second-hand vehicles that were manufactured in Japan or Europe and merely
+registered or driven in South Africa for a few years before being exported to Zambia. The
+origin is defined by manufacturing geography, not the jurisdiction of previous
+ownership.41
+Strategic Conclusion and Landed Cost Synthesis
+The architecture of Zambian vehicle importation throughout the 2025 and 2026 fiscal periods
+reflects a deeply protectionist and revenue-maximizing posture by the State.1 The transition
+from Ad Valorem to Specific Duties for used vehicles has fundamentally eradicated subjective
+valuation disputes at the border, replacing them with a highly predictable, mathematically rigid
+taxation matrix.1
+For automotive logistics planners, private importers, and commercial dealerships, successfully
+estimating landed costs requires a holistic integration of multiple agency frameworks. To
+accurately project the final cost of an imported vehicle, an importer must sequentially
+calculate: the initial FOB price in the source country, the maritime freight and insurance costs to
+establish the CIF value, the $140–$200 ZCSA pre-shipment inspection fee (if operating in an
+appointed jurisdiction) or the ZMW 2,500–3,500 non-compliance penalty (if sourcing from
+unlisted countries like Thailand or South Korea), the $350–$500 port handling charges in
+Durban or Dar es Salaam, the ZMW 500 ASYCUDA penalty if pre-clearance is delayed, the
+precise ZRA Specific Duty based on engine capacity and age, the ZMW 50,000–200,000 initial
+Carbon Surtax, the NRFA border tolls, clearing agent acquittal fees, and finally the domestic
+RTSA registration and road tax levies.
+Understanding the exact geographical footprint of the ZCSA's inspection agents and the tariff
+implications of the SADC Free Trade Area allows importers to execute highly accurate financial
+forecasts, optimizing their supply chains and completely mitigating the risk of vehicle
+confiscation or capital stranding at the Zambian frontier.
+Works cited
+1. MOTOR VEHICLE REGISTRATION, accessed on May 30, 2026,
+http://cdn.cseindia.org/attachments/0.41552400_1529747895_Zambia.pdf
+2. Importing Used Vehicles into Zambia: Taxes, Licensing, and Legal Compliance in
+2025, accessed on May 30, 2026,
+https://mjconsultants.co.zm/insights/importing-used-vehicles-into-zambia-taxes-
+licensing-and-legal-compliance-in-2025/
+3. COMPULSORY STANDARDS ACT - Laws of Zambia, accessed on May 30, 2026,
+https://www.zambialaws.com/consolidated-statutes/principal-legislation/751-com
+pulsory-standards-act
+4. ZRA Vehicle Tariff Estimator 2025/2026, accessed on May 30, 2026,
+https://zra-duty-calc.vercel.app/
+5. Importation of Goods - Zambia Revenue Authority, accessed on May 30, 2026,
+https://www.zra.org.zm/importation-of-goods/
+6. Zambia Vehicle Import Duty 2026 Updates & Analysis - Deepbeez, accessed on
+--- PAGE 15 ---
+May 30, 2026, https://deepbeez.com/import-duty/zambia-vehicle-import-duty
+7. Zambia Vehicle Duty Calculator, accessed on May 30, 2026,
+https://zambiadutycalculator.com/
+8. Zambia: Budget 2026 - legal and regulatory insights - Bowmans, accessed on May
+30, 2026,
+https://bowmanslaw.com/insights/zambia-budget-2026-legal-and-regulatory-insi
+ghts-2/
+9. 2026 Budget Highlights, Overview of Tax Changes - Esse Clearing Limited,
+accessed on May 30, 2026,
+https://www.esseclearing.com/uploads/public_documents/2026_Budget_Highligh
+ts.pdf
+10. Zambia Import Duty and Taxes for Used Japanese Trucks and Buses -
+EVERYCAR.jp, accessed on May 30, 2026,
+https://www.everycar.jp/blog/zambia-import-duty-and-taxes-for-used-japanese-
+trucks-and-buses/
+11. Import Duties Zambia Rates 2026 - Deepbeez, accessed on May 30, 2026,
+https://deepbeez.com/import-duty/import-duties-zambia
+12. Economic Reforms and Product Market Integration in Developing, accessed on
+May 30, 2026,
+https://open.uct.ac.za/bitstreams/5216c903-72f1-484a-9ca3-c34fecd07311/downl
+oad
+13. customs modernization handbook - Documents & Reports - World Bank,
+accessed on May 30, 2026,
+https://documents1.worldbank.org/curated/en/850061468779087644/pdf/31477.p
+df
+14. ZRA Specific Duty Rates for Used Cars in Zambia - 2026 Schedule - Zamcalc,
+accessed on May 30, 2026,
+https://zamcalc.com/blog/zra-specific-duty-rates-used-cars-zambia-2026
+15. SPECIFIC DUTY RATES ON USED MOTOR VEHICLES, accessed on May 30, 2026,
+https://www.zra.org.zm/wp-content/uploads/2022/07/Used-Motor-Vehicle-specifi
+c-duty-schedule-July-2022.pdf
+16. Zambia Vehicle Inspection Rules for Japanese Imports - EVERYCAR.jp, accessed
+on May 30, 2026,
+https://www.everycar.jp/blog/zambia-vehicle-inspection-rules-for-japanese-impo
+rts/
+17. Road-Worthiness Inspection of Imported Used Vehicles - Zambia Compulsory
+Standards Agency, accessed on May 30, 2026,
+https://www.zcsa.org.zm/index.php/roadworthiness-inspetion-of-imported-used
+-vehicles/
+18. Pre-Shipment Inspection Explained: JEVIC, EAA & QISJ for Safe Export -
+EVERYCAR.jp, accessed on May 30, 2026,
+https://www.everycar.jp/blog/pre-shipment-inspection-explained-jevic-eaa-qisj-f
+or-safe-export/
+19. ZCSA Issue-3 WEB FINAL | PDF | Business - Scribd, accessed on May 30, 2026,
+https://www.scribd.com/document/766690454/ZCSA-Issue-3-WEB-FINAL
+--- PAGE 16 ---
+20. Zambia – Roadworthiness Inspection (RWI) - Autoterminal Japan, accessed on
+May 30, 2026, https://www.inspections.jp/service/accredited/zambia_rwi/
+21. JEVIC Inspection for Zambia in United Kingdom - Jim Autos Thailand, accessed
+on May 30, 2026,
+https://toyota-dealer.org/jevic-inspection-for-zambia-in-united-kingdom.html
+22. About Important Information by Country - Frequently Asked Questions | Used
+Cars for Sale | PicknBuy24.com, accessed on May 30, 2026,
+https://www.picknbuy24.com/faq/info.html
+23. Re: Roadworthiness Inspection for Zambia - Autoterminal Japan, accessed on
+May 30, 2026,
+http://www.inspections.jp/download/20210113_Announcement_for_Zambia_Inspe
+ction_EG.pdf
+24. Customs and Tax Guide for Importing Cars into Zambia - SBT Japan, accessed on
+May 30, 2026,
+https://www.sbtjapan.com/sbtnews/import-policy/customs-and-tax-guide-for-im
+porting-cars-into-zambia
+25. RWI-penalty-regime-2019.pdf - Zambia Compulsory Standards Agency,
+accessed on May 30, 2026,
+http://zcsa.org.zm/wp-content/uploads/2021/12/RWI-penalty-regime-2019.pdf
+26. How To Import Cars From Japan To Zambia (Full Guide 2026) - TokyoCarZ Blog,
+accessed on May 30, 2026,
+https://tokyocarz.com/blog/import-guides/how-to-import-cars-from-japan-to-z
+ambia-full-guide-2026/
+27. BORDER BEAT: Zambia institutes toll charges on foreign vehicles - Freight News,
+accessed on May 30, 2026,
+https://www.freightnews.co.za/article/border-beat-zambia-institutes-toll-charges
+-on-foreign-vehicles
+28. How to Import a Car from Japan to Zambia: A Detailed Guide, accessed on May
+30, 2026, https://satjapan.com/car-blog/import-cars-from-japan-to-zambia/
+29. Republic of Zambia - The Cross-Border Road Transport Agency, accessed on May
+30, 2026, https://www.cbrta.co.za/uploads/files/Zambia-Country-Handbook.pdf
+30. Entry tolls for foreign registered vehicles transiting into Zambia - eRegistry:
+Licenses, accessed on May 30, 2026,
+https://www.businesslicenses.gov.zm/license/id/518
+31. MOTOR VEHICLE AND TRAILER REGISTRATION 1.0 FIRST PERMANENT
+REGISTRATION REQUIREMENTS a. Zambia Revenue Authority Customs Cleara -
+RTSA, accessed on May 30, 2026,
+https://www.rtsa.org.zm/wp-content/uploads/2019/09/REGISTRATION-REQUIREM
+ENTS-edited.pdf
+32. VEHICLE REGISTRATION - RTSA, accessed on May 30, 2026,
+https://www.rtsa.org.zm/transport/registration/
+33. Public Notice - Revised RTSA ROAD USER FEES - Esse Clearing Limited, accessed
+on May 30, 2026,
+https://esseclearing.com/uploads/public_documents/PUBLIC_NOTICE_-_REVISED
+_RTSA_ROAD_USER_FEES_-2022.pdf
+--- PAGE 17 ---
+34. Revised-Fees-Public - RTSA, accessed on May 30, 2026,
+https://www.rtsa.org.zm/wp-content/uploads/2024/05/Revised-Fees-Public-Notic
+e-2024-1.rtf
+35. How to Calculate Road Tax in Zambia (2026 RTSA Fees) - Zamcalc, accessed on
+May 30, 2026, https://zamcalc.com/blog/how-to-calculate-road-tax-zambia
+36. Deliverable 4.1: Safe Vehicles: Existing standards for vehicle safety, including
+suggestions for updates - AfroSAFE project, accessed on May 30, 2026,
+https://afrosafe-eu.africa/wp-content/uploads/2024/02/D4.1-Safe-vehicles.pdf
+37. Deliverable 4.1: Safe Vehicles: Existing standards for vehicle safety, including
+suggestions for updates - ictct, accessed on May 30, 2026,
+https://www.ictct.net/wp-content/uploads/AfroSAFE/D4.1.pdf
+38. ZRA Duty calculator - CHICARGOS, accessed on May 30, 2026,
+https://chicargos.com/zambia/zra-vehicle-duty-calculator
+39. Frequently Asked Questions - SA Trade Connect, accessed on May 30, 2026,
+https://satradeconnect.com/frequently-asked-questions/
+40. Trade Agreements & Certificates of Origin - Import Export License, accessed on
+May 30, 2026,
+https://importexportlicense.co.za/blog/trade-agreements-certificates-origin/
+41. Frequently Asked Questions - Import Export License, accessed on May 30, 2026,
+https://importexportlicense.co.za/faq/
+42. Zambia Import Duty Calculator 2026 | Customs Duty & VAT Estimator - M&J
+Consultants, accessed on May 30, 2026,
+https://mjconsultants.co.zm/tools/zambia-import-duty-calculator/
+43. TRADER'S GUIDE on SADC Rules of Origin, accessed on May 30, 2026,
+https://www.sadc.int/sites/default/files/2021-08/3._Rules_of_Origin__Exporters_Gu
+ide_Manual.pdf
+
