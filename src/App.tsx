@@ -3,22 +3,85 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { Calculator as CalcIcon, Bookmark, Settings, Car, Shield } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
 import Calculator from './components/Calculator';
+import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
-import { WatchlistItem, zmwFormat } from './types';
+import { WatchlistItem } from './types';
+import { Shield } from 'lucide-react';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
+
+/** Monochrome brand mark — pure black shield with a grey inner plate. */
+const BrandMark = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#000000" />
+    <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#525252" />
+    <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round" />
+    <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round" />
+    <rect x="30" y="55" width="40" height="15" rx="3" fill="white" />
+    <circle cx="38" cy="62" r="3" fill="#000000" />
+    <circle cx="62" cy="62" r="3" fill="#000000" />
+  </svg>
+);
+
+/** A soft grey glow that smoothly trails the mouse pointer. The animation loop
+ *  idles whenever the pointer is still, so it costs nothing at rest. */
+function CursorBlob() {
+  const blobRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const blob = blobRef.current;
+    if (!blob) return;
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let frame = 0;
+    let running = false;
+
+    const render = () => {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+
+      if (Math.abs(targetX - currentX) > 0.5 || Math.abs(targetY - currentY) > 0.5) {
+        frame = requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
+    };
+
+    const onMove = (e: PointerEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!running) {
+        running = true;
+        frame = requestAnimationFrame(render);
+      }
+    };
+
+    blob.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%)`;
+    window.addEventListener('pointermove', onMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return <div id="cursor-blob" ref={blobRef} aria-hidden="true" />;
+}
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -76,110 +139,109 @@ export default function App() {
 
   const watchlistCount = watchlist.length;
 
+  const navTabs: { id: typeof activeTab; label: string }[] = [
+    { id: 'calc', label: 'Calculate Duty' },
+    { id: 'discover', label: 'Find Your Vehicle' },
+    { id: 'watchlist', label: 'Watchlist' },
+    { id: 'agents', label: 'Clearing Agents' },
+    { id: 'guide', label: 'Import Guide' },
+  ];
+
   return (
-    <div className="bg-slate-50 min-h-[100dvh] font-sans flex flex-col justify-between pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+    <div className="min-h-[100dvh] font-sans flex flex-col text-[color:var(--text)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+      {/* Reactive cursor-tracking blob */}
+      <CursorBlob />
+
       {/* Splash Screen */}
       {showSplash && (
         <div
-          className={`fixed inset-0 flex flex-col items-center justify-center bg-white z-[9999] transition-opacity duration-500 ease-in-out ${
+          id="splash-screen"
+          className={`fixed inset-0 flex flex-col items-center justify-center bg-[color:var(--bg)] z-[9999] transition-opacity duration-500 ease-in-out ${
             isAnimatingOut ? 'opacity-0' : 'opacity-100'
           }`}
         >
           <div className="flex flex-col items-center justify-center animate-pulse">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24 drop-shadow-sm mb-6">
-              <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#1e293b"/>
-              <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#10b981"/>
-              <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-              <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round"/>
-              <rect x="30" y="55" width="40" height="15" rx="3" fill="white"/>
-              <circle cx="38" cy="62" r="3" fill="#1e293b"/>
-              <circle cx="62" cy="62" r="3" fill="#1e293b"/>
-            </svg>
-            <h1 className="text-4xl font-black font-display text-slate-800 tracking-tight text-center">
+            <BrandMark className="w-24 h-24 mb-6" />
+            <h1 className="text-4xl font-black font-display tracking-tight text-center">
               DUTY BOSS
             </h1>
-            <p className="text-xs text-slate-500 font-bold tracking-widest uppercase mt-2">
+            <p className="text-xs text-[color:var(--text-muted)] font-bold tracking-widest uppercase mt-2">
               Vehicle Tariff Estimator
             </p>
           </div>
         </div>
       )}
 
-      <div>
+      <div className="flex flex-col flex-1">
         
         {/* Sticky Legal Disclaimer Banner */}
-        <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm sticky top-0 z-50">
+        <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm relative z-50">
           <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
           <span>Duty Boss is an independent tool. We are NOT affiliated with, endorsed by, or operated by the Zambia Revenue Authority (ZRA).</span>
         </div>
 
-        {/* App Header Bar */}
-        <header id="main-app-header" className="bg-white py-3 border-b border-slate-200">
-          <div className="container mx-auto px-4 max-w-7xl flex items-center gap-6 sm:gap-8 md:gap-10 overflow-x-auto scrollbar-none">
-            <button 
-              className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none"
+        {/* App Header Bar — sticky so navigation stays in reach during the single page scroll */}
+        <header
+          id="main-app-header"
+          className="sticky top-0 z-30 bg-[color:var(--surface)]/85 backdrop-blur-md border-b border-[color:var(--border)]"
+        >
+          <div className="container mx-auto px-4 max-w-7xl flex items-center gap-4 sm:gap-8 py-3">
+            <button
+              className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none rounded-xl"
               onClick={() => setActiveTab('calc')}
             >
-              <div className="flex-shrink-0">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 drop-shadow-sm">
-                  <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#1e293b"/>
-                  <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#10b981"/>
-                  <path d="M30 55 L 70 55" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-                  <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="white" strokeWidth="4" strokeLinejoin="round"/>
-                  <rect x="30" y="55" width="40" height="15" rx="3" fill="white"/>
-                  <circle cx="38" cy="62" r="3" fill="#1e293b"/>
-                  <circle cx="62" cy="62" r="3" fill="#1e293b"/>
-                </svg>
-              </div>
-              <div className="flex flex-col justify-center border-r border-slate-200 pr-6 group">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display text-slate-800 leading-none group-hover:text-emerald-600 transition-colors">
+              <BrandMark className="w-10 h-10 flex-shrink-0" />
+              <div className="flex flex-col justify-center">
+                <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display leading-none">
                   DUTY BOSS
                 </h1>
-                <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap group-hover:text-emerald-500 transition-colors">
+                <p className="text-[10px] sm:text-[11px] text-[color:var(--text-muted)] font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap">
                   Vehicle Tariff Estimator
                 </p>
               </div>
-            </button>
+          </button>
 
-            <div className="flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-bold text-slate-500">
-              <button
-                onClick={() => setActiveTab('calc')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'calc' ? 'text-slate-900' : ''}`}
-              >
-                Calculate Duty
-              </button>
-              <button
-                onClick={() => setActiveTab('watchlist')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 flex items-center gap-1.5 ${activeTab === 'watchlist' ? 'text-slate-900' : ''}`}
-              >
-                Watchlist
-                {watchlistCount > 0 && (
-                  <span className={`text-[9px] font-black rounded-full px-1.5 py-0.5 ${activeTab === 'watchlist' ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-500'}`}>
-                    {watchlistCount}
-                  </span>
-                )}
-              </button>
-              <button
-                onClick={() => setActiveTab('agents')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'agents' ? 'text-slate-900' : ''}`}
-              >
-                Clearing Agents
-              </button>
-              <button
-                onClick={() => setActiveTab('guide')}
-                className={`transition-colors whitespace-nowrap hover:text-slate-900 ${activeTab === 'guide' ? 'text-slate-900' : ''}`}
-              >
-                Import Guide
-              </button>
-            </div>
-          </div>
-        </header>
+          <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[13px] font-semibold overflow-x-auto scrollbar-none">
+            {navTabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
+                    isActive
+                      ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
+                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
+                  }`}
+                >
+                  {tab.label}
+                  {tab.id === 'watchlist' && watchlistCount > 0 && (
+                    <span
+                      className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1 ${
+                        isActive ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--border-strong)] text-[color:var(--text)]'
+                      }`}
+                    >
+                      {watchlistCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      </header>
 
-        {/* Main Workspace Panels */}
-        <main className="container mx-auto px-4 max-w-7xl pt-5 pb-12 transition-all duration-300">
+      {/* Main Workspace — one natural page scroll, no nested scroll areas */}
+      <main className="relative z-10 flex-1">
+        <div className="container mx-auto px-4 max-w-7xl py-5">
           {activeTab === 'calc' && (
             <div className="animate-fadeIn">
               <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
+            </div>
+          )}
+          {activeTab === 'discover' && (
+            <div className="animate-fadeIn">
+              <VehicleDiscovery />
             </div>
           )}
           {activeTab === 'watchlist' && (
@@ -214,41 +276,23 @@ export default function App() {
               <TermsOfUse onClose={() => setActiveTab('calc')} />
             </div>
           )}
-        </main>
+        </div>
+      </main>
 
-      </div>
-
-      {/* Custom Monochrome Footer */}
-      <footer className="bg-slate-900 border-t border-slate-950 py-8 text-center sm:text-left text-slate-500 text-xs mt-auto">
-        <div className="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 grayscale opacity-80 flex-shrink-0">
-              <path d="M50 90 C 50 90, 85 75, 85 45 V 20 L 50 5 L 15 20 V 45 C 15 75, 50 90, 50 90 Z" fill="#cbd5e1" opacity="0.3"/>
-              <path d="M50 82 C 50 82, 77 70, 77 45 V 25 L 50 13 L 23 25 V 45 C 23 70, 50 82, 50 82 Z" fill="#94a3b8" opacity="0.2"/>
-              <path d="M30 55 L 70 55" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="text-slate-300"/>
-              <path d="M35 55 L 40 40 L 60 40 L 65 55" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" className="text-slate-300"/>
-              <rect x="30" y="55" width="40" height="15" rx="3" fill="currentColor" className="text-slate-300"/>
-              <circle cx="38" cy="62" r="3" fill="currentColor" className="text-slate-900"/>
-              <circle cx="62" cy="62" r="3" fill="currentColor" className="text-slate-900"/>
-            </svg>
-            <div>
-              <p className="font-extrabold text-slate-200 text-sm tracking-tight font-display mb-1">
-                DUTY BOSS <span className="font-medium text-[11px] text-slate-400 uppercase tracking-widest ml-1">Vehicle Tariff Estimator</span>
-              </p>
-              <p className="text-[10px] text-slate-500">
-                &copy; 2026 DUTY BOSS. All rights reserved.
-              </p>
-              <p className="text-[10px] text-slate-500 mt-2">
-                Created independently by <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-emerald-500 hover:text-emerald-400 font-medium transition-colors">t3chpirat3</a>.
-              </p>
-              <p className="text-[10px] text-slate-500 mt-0.5">
-                Not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All calculation outputs are estimates for informational purposes only.
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 font-medium text-slate-400">
-            <button onClick={() => setActiveTab('privacy')} className="hover:text-white transition-colors cursor-pointer">Privacy Policy</button>
-            <button onClick={() => setActiveTab('terms')} className="hover:text-white transition-colors cursor-pointer">Terms of Use</button>
+      {/* Footer */}
+      <footer className="relative z-10 bg-[color:var(--surface)] border-t border-[color:var(--border)] py-3 mt-2">
+        <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-1.5 text-[11px] text-[color:var(--text-muted)]">
+          <p className="text-center sm:text-left leading-tight">
+            <span className="font-extrabold text-[color:var(--text)] font-display">DUTY BOSS</span>
+            <span className="mx-1.5 hidden sm:inline">·</span>
+            <span className="block sm:inline">&copy; 2026 · Independent estimator by{' '}
+              <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] underline hover:no-underline font-semibold">t3chpirat3</a>.
+              Not affiliated with the Zambia Revenue Authority (ZRA). Estimates only.
+            </span>
+          </p>
+          <div className="flex gap-4 font-semibold text-[color:var(--text)] flex-shrink-0">
+            <button onClick={() => setActiveTab('privacy')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Privacy</button>
+            <button onClick={() => setActiveTab('terms')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Terms</button>
           </div>
         </div>
       </footer>
