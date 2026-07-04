@@ -172,9 +172,7 @@ export default function App() {
         </div>
       )}
 
-      <div className="flex flex-col flex-1">
-        
-        {/* Sticky Legal Disclaimer Banner */}
+      {/* Sticky Legal Disclaimer Banner */}
         <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm relative z-50">
           <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
           <span>Duty Boss is an independent tool. We are NOT affiliated with, endorsed by, or operated by the Zambia Revenue Authority (ZRA).</span>
