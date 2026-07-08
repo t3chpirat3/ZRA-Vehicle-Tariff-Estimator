@@ -11,6 +11,7 @@ import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
+import PriceComparison from './components/PriceComparison';
 import { WatchlistItem } from './types';
 import { Shield } from 'lucide-react';
 
@@ -81,7 +82,7 @@ function CursorBlob() {
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'privacy' | 'terms'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -143,6 +144,7 @@ export default function App() {
     { id: 'calc', label: 'Calculate Duty' },
     { id: 'discover', label: 'Find Your Vehicle' },
     { id: 'watchlist', label: 'Watchlist' },
+    { id: 'compare', label: 'Price Comparison' },
     { id: 'agents', label: 'Clearing Agents' },
     { id: 'guide', label: 'Import Guide' },
   ];
@@ -252,6 +254,11 @@ export default function App() {
                 lastCalcFx={lastCalcFx}
                 onActivated={() => {}}
               />
+            </div>
+          )}
+          {activeTab === 'compare' && (
+            <div className="animate-fadeIn">
+              <PriceComparison />
             </div>
           )}
           {activeTab === 'agents' && (
