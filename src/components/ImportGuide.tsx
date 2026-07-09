@@ -62,6 +62,29 @@ export default function ImportGuide() {
             <div className="space-y-6 relative">
               <div className="absolute left-[23px] top-4 bottom-4 w-0.5 bg-slate-200 hidden sm:block"></div>
 
+              {/* Step 0: Sourcing */}
+              <div className="relative flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+                <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 border-4 border-white shadow-sm z-10 text-slate-700 group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300">
+                  <Map className="w-5 h-5" />
+                </div>
+                <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 flex-1 hover:border-slate-300 transition-colors">
+                  <h4 className="text-md font-bold text-slate-800 mb-2">{'Strategic Sourcing & Vehicle Selection'}</h4>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-3">
+                    Selecting the correct source market is critical. <strong>Japan</strong> is the dominant source due to rigorous local maintenance inspections (Shaken). The <strong>UK</strong> is preferred for premium SUVs (ensure it has 4+ months of MOT remaining). <strong>Singapore</strong> offers high-spec luxury cars due to their COE system.
+                  </p>
+                  <ul className="space-y-2 mb-3">
+                    <li className="flex gap-2 text-sm text-slate-600 items-start">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                      <span><strong>Green Incentives:</strong> Zambia offers 0% Customs Duty on battery electric passenger cars and trucks. Hybrid vehicles receive a reduced Excise Duty of 15% (down from 30%).</span>
+                    </li>
+                    <li className="flex gap-2 text-sm text-slate-600 items-start">
+                      <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
+                      <span><strong>LHD Ban:</strong> Zambian law strictly prohibits importing Left-Hand Drive (LHD) vehicles for general use. LHD-to-RHD conversions (often from Dubai) risk being rejected during inspection if deemed substandard.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
               {/* Step 1 */}
               <div className="relative flex flex-col sm:flex-row gap-4 sm:gap-6 group">
                 <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 border-4 border-white shadow-sm z-10 text-slate-700 group-hover:bg-slate-800 group-hover:text-white transition-colors duration-300">
@@ -85,10 +108,13 @@ export default function ImportGuide() {
                   <FileCheck2 className="w-5 h-5" />
                 </div>
                 <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 flex-1 hover:border-slate-300 transition-colors">
-                  <h4 className="text-md font-bold text-slate-800 mb-2">{'2. The 5-Day ASYCUDA Pre-Clearance'}</h4>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    You or your clearing agent must upload all shipping documents (Bill of Lading, Invoice, RWI Certificate) into the ZRA ASYCUDA World system <strong>at least 5 days before</strong> the car arrives at the Zambian border. Failure to do so results in an automatic ZMW 500 penalty.
+                  <h4 className="text-md font-bold text-slate-800 mb-2">{'2. The 5-Day ASYCUDA Pre-Clearance & RIT'}</h4>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-3">
+                    Your clearing agent must upload all shipping documents (Bill of Lading, Invoice, RWI Certificate) into the ZRA ASYCUDA World system <strong>at least 5 days before</strong> the car arrives at the Zambian border. Failure to do so results in an automatic, non-negotiable ZMW 500.10 penalty.
                   </p>
+                  <div className="bg-white border border-slate-200 rounded-lg p-3 text-xs text-slate-600">
+                    <strong>Removal in Transit (RIT):</strong> If you prefer not to pay the final duties at the border, you can defer payment and move the vehicle under your clearing agent's customs bond (T1 transit document). You are legally required to report to a designated inland bonded warehouse (e.g., in Lusaka or Ndola) to finalize clearance within exactly <strong>5 days</strong> of departing the border yard. Missing this deadline results in massive fines against the agent's bond and the vehicle being flagged.
+                  </div>
                 </div>
               </div>
 
@@ -130,14 +156,42 @@ export default function ImportGuide() {
                 <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 flex-1 hover:border-slate-300 transition-colors">
                   <h4 className="text-md font-bold text-slate-800 mb-2">{'4. RTSA Naturalization'}</h4>
                   <p className="text-slate-600 text-sm leading-relaxed mb-3">
-                    After paying the border duties, ZRA issues a Customs Clearance Certificate. Now, you must make it legally Zambian:
+                    After paying the border duties, ZRA issues a Customs Clearance Certificate. Now, you must make it legally Zambian before driving it on public roads:
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700">
-                    <div className="bg-white p-2 rounded border border-slate-200"><strong>Interpol Clearance:</strong> Verifies it's not stolen (ZMW 200)</div>
-                    <div className="bg-white p-2 rounded border border-slate-200"><strong>RTSA Physical Exam:</strong> Identity check (ZMW 64)</div>
-                    <div className="bg-white p-2 rounded border border-slate-200"><strong>White Book:</strong> Official registration (ZMW 238)</div>
-                    <div className="bg-white p-2 rounded border border-slate-200"><strong>Number Plates & Road Tax:</strong> (ZMW 388+ and weight-based annual tax)</div>
+                    <div className="bg-white p-2 rounded border border-slate-200"><strong>Interpol Clearance:</strong> Police verify the chassis/engine numbers against global databases (ZMW 200).</div>
+                    <div className="bg-white p-2 rounded border border-slate-200"><strong>RTSA Physical Exam:</strong> Confirms roadworthiness standards and structural integrity (ZMW 64).</div>
+                    <div className="bg-white p-2 rounded border border-slate-200"><strong>White Book:</strong> The definitive legal title of ownership (ZMW 238).</div>
+                    <div className="bg-white p-2 rounded border border-slate-200"><strong>Plates & Road Tax:</strong> Plates (ZMW 388+). Road tax is based on Gross Vehicle Weight (GVW), payable annually or quarterly.</div>
                   </div>
+                </div>
+              </div>
+
+              {/* Top 4 Pitfalls */}
+              <div className="relative flex flex-col sm:flex-row gap-4 sm:gap-6 group mt-8">
+                <div className="bg-[color:var(--warn-soft)] rounded-xl p-5 border border-[color:#eccdbf] flex-1">
+                  <h4 className="text-md font-bold text-[color:var(--text)] mb-3 flex items-center gap-2">
+                    <BadgeAlert className="w-5 h-5 text-amber-600" />
+                    {'Top 4 Pitfalls to Avoid'}
+                  </h4>
+                  <ul className="space-y-3">
+                    <li className="flex gap-2 text-sm text-slate-700 items-start">
+                      <span className="font-bold text-amber-700">1.</span>
+                      <span><strong>The "Performance Tax" Trap:</strong> Normally, older cars are taxed on flat specific duties. However, if you import a high-performance vehicle (e.g., Mercedes C63, BMW M5) exceeding BOTH 3800cc and 450hp, ZRA ignores the age and charges massive Ad-Valorem (percentage) duty on the CIF value. Many buyers find this out the hard way at the border.</span>
+                    </li>
+                    <li className="flex gap-2 text-sm text-slate-700 items-start">
+                      <span className="font-bold text-amber-700">2.</span>
+                      <span><strong>SUV Duty Shock:</strong> ZRA treats SUV body types as luxury assets regardless of their auction purchase price. Even a small-engine SUV can attract significantly higher specific duty than a larger-engine sedan.</span>
+                    </li>
+                    <li className="flex gap-2 text-sm text-slate-700 items-start">
+                      <span className="font-bold text-amber-700">3.</span>
+                      <span><strong>Skipping Pre-Shipment Inspection:</strong> Forfeiting the $140 pre-shipment fee triggers a minimum destination fine of ZMW 2,500 at the border, plus costly clearance delays.</span>
+                    </li>
+                    <li className="flex gap-2 text-sm text-slate-700 items-start">
+                      <span className="font-bold text-amber-700">4.</span>
+                      <span><strong>The 5-Day Window:</strong> ASYCUDA pre-clearance is automated. If your clearing agent submits the documents less than 5 days before the vehicle arrives, you will be hit with an automatic, non-negotiable ZMW 500 penalty.</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
 
@@ -201,6 +255,7 @@ export default function ImportGuide() {
                   <ul className="text-sm text-slate-700 list-disc pl-4 space-y-1">
                     <li>Late exit penalty: <strong>K900 per day</strong>.</li>
                     <li>If you overstay by more than 10 days, the vehicle is subject to <strong>immediate asset forfeiture (seizure)</strong> by the State.</li>
+                    <li>It is strictly illegal to sell, lease, or lend a temporarily imported vehicle to any Zambian resident without prior Customs consent and full payment of permanent duties.</li>
                   </ul>
                 </div>
               </div>
@@ -287,10 +342,11 @@ export default function ImportGuide() {
                   <h4 className="font-bold text-slate-800 mb-2">{'Physical Safety Gear (Highway Code)'}</h4>
                   <p className="text-sm text-slate-600 mb-2">Failing to have these will result in immediate roadside fines:</p>
                   <ul className="text-sm text-slate-600 list-disc pl-4 space-y-1">
-                    <li><strong>Reflective Tapes (ZS 266 Standard):</strong> Two small white rectangular strips on the extreme left & right front bumper. Two red square strips on the outer rear bumper.</li>
-                    <li><strong>Warning Triangles:</strong> Must carry two red warning triangles constructed with a sturdy <em>metal</em> base (not plastic).</li>
-                    <li><strong>Fire Extinguisher:</strong> Mandatory if you are carrying auxiliary fuel in external jerry cans.</li>
+                    <li><strong>Reflective Tapes (ZS 266 Standard):</strong> Two small white rectangular strips on the extreme left & right front bumper. Two red square strips on the outer rear bumper. Honeycomb-patterned material is highly recommended.</li>
+                    <li><strong>Warning Triangles:</strong> Must carry two red warning triangles constructed with a sturdy <em>metal</em> base (not plastic, so they don't blow over).</li>
+                    <li><strong>Fire Extinguisher:</strong> Mandatory if you are carrying auxiliary fuel in external jerry cans (common for overlanders).</li>
                     <li><strong>T-Signs:</strong> If towing a trailer, you need a white and red "T-sign" mounted on the front and rear right-hand sides of the trailer.</li>
+                    <li><strong>Seatbelts:</strong> Mandatory for the driver and all passengers. Children under ten must ride in the rear seats.</li>
                   </ul>
                 </div>
 

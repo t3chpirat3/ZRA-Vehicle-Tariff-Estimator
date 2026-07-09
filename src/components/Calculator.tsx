@@ -114,6 +114,29 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   // SpecResolver: flag that triggers a jump to results after state is applied
   const [pendingJumpToResults, setPendingJumpToResults] = useState(false);
 
+  // ─── Fetch Live Exchange Rates ────────────────────────────────────────────────
+  useEffect(() => {
+    async function fetchFx() {
+      try {
+        const res = await fetch('/api/exchange-rates');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.rates && data.rates.usdToZmw) {
+          setState((prev) => {
+            // Only overwrite if it's currently 0 (initial state)
+            if (prev.fx === 0) {
+              return { ...prev, fx: data.rates.usdToZmw };
+            }
+            return prev;
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch live FX for calculator:', err);
+      }
+    }
+    fetchFx();
+  }, []);
+
   // Master Sync inputs with state checks
   const handleAgeChange = (age: VehicleAge) => {
     setState((prev) => ({

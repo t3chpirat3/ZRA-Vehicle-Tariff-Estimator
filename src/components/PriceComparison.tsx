@@ -46,7 +46,7 @@ import {
 
 type TrimTier = 1 | 2 | 3 | 4; // 1=Base, 2=Mid, 3=High, 4=Luxury
 type OriginCountry = 'japan' | 'singapore' | 'uae' | 'southafrica' | 'uk' | 'other';
-type ListingCurrency = 'USD' | 'ZAR' | 'GBP' | 'AED' | 'SGD' | 'ZMW';
+type ListingCurrency = 'USD' | 'ZAR' | 'ZMW';
 
 interface SilentSpecs {
   engineCC: number;
@@ -75,9 +75,7 @@ interface Listing {
 interface ComparisonSettings {
   usdToZmw: number;
   zarToZmw: number;
-  gbpToZmw: number;
-  aedToZmw: number;
-  sgdToZmw: number;
+  lastUpdated?: number;
 }
 
 /** AI insight returned by /api/compare-insight */
@@ -107,7 +105,7 @@ const COUNTRY_META: Record<
     inspectionUSD: 140,
     freightUSD: 1100,
     inspectionNote: 'ATJ pre-shipment inspection',
-    defaultCurrency: 'SGD',
+    defaultCurrency: 'USD',
   },
   uae: {
     label: 'UAE',
@@ -115,7 +113,7 @@ const COUNTRY_META: Record<
     inspectionUSD: 140,
     freightUSD: 1000,
     inspectionNote: 'ATJ pre-shipment inspection',
-    defaultCurrency: 'AED',
+    defaultCurrency: 'USD',
   },
   southafrica: {
     label: 'South Africa',
@@ -131,7 +129,7 @@ const COUNTRY_META: Record<
     inspectionUSD: 200,
     freightUSD: 1800,
     inspectionNote: 'EAA pre-shipment inspection',
-    defaultCurrency: 'GBP',
+    defaultCurrency: 'USD',
   },
   other: {
     label: 'Other',
@@ -153,9 +151,6 @@ const TRIM_LABELS: Record<TrimTier, string> = {
 const CURRENCY_SYMBOLS: Record<ListingCurrency, string> = {
   USD: '$',
   ZAR: 'R',
-  GBP: '£',
-  AED: 'د.إ',
-  SGD: 'S$',
   ZMW: 'K',
 };
 
@@ -184,9 +179,6 @@ function toZMW(price: number, currency: ListingCurrency, s: ComparisonSettings):
   switch (currency) {
     case 'USD': return price * s.usdToZmw;
     case 'ZAR': return price * s.zarToZmw;
-    case 'GBP': return price * s.gbpToZmw;
-    case 'AED': return price * s.aedToZmw;
-    case 'SGD': return price * s.sgdToZmw;
     case 'ZMW': return price;
     default:    return price;
   }
@@ -416,9 +408,6 @@ function AIInsightPanel({ insight, loading }: { insight: AIInsight | null; loadi
 const DEFAULT_SETTINGS: ComparisonSettings = {
   usdToZmw: 28.5,
   zarToZmw: 1.55,
-  gbpToZmw: 36.2,
-  aedToZmw: 7.76,
-  sgdToZmw: 21.4,
 };
 
 // ─── Main Component ─────────────────────────────────────────────────────────
@@ -438,6 +427,27 @@ export default function PriceComparison() {
 
   // Debounce timers for description → silent resolve
   const specDebounceTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+
+  // ─── Fetch Live Exchange Rates ────────────────────────────────────────────────
+  useEffect(() => {
+    async function fetchRates() {
+      try {
+        const res = await fetch('/api/exchange-rates');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.rates && data.rates.usdToZmw && data.rates.zarToZmw) {
+          setSettings({
+            usdToZmw: data.rates.usdToZmw,
+            zarToZmw: data.rates.zarToZmw,
+            lastUpdated: data.timestamp
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch live rates:', err);
+      }
+    }
+    fetchRates();
+  }, []);
 
   // ─── AI insight trigger (debounced, runs whenever listings or settings change) ─
 
@@ -620,16 +630,21 @@ export default function PriceComparison() {
             <div className="flex items-center gap-2 mb-4">
               <Globe className="w-4 h-4 text-[color:var(--primary)]" />
               <p className="text-sm font-extrabold text-[color:var(--text)]">Exchange Rates</p>
-              <span className="ml-auto text-[10px] text-[color:var(--text-muted)] font-medium">All rates: 1 unit → ZMW</span>
+              <div className="ml-auto flex items-center gap-2">
+                {settings.lastUpdated && (
+                  <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Live (updated {Math.round((Date.now() - settings.lastUpdated) / 3600000)}h ago)
+                  </span>
+                )}
+                <span className="text-[10px] text-[color:var(--text-muted)] font-medium">All rates: 1 unit → ZMW</span>
+              </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 gap-3 max-w-sm">
               {(
                 [
                   { key: 'usdToZmw' as const, label: 'USD → ZMW', symbol: '$' },
                   { key: 'zarToZmw' as const, label: 'ZAR → ZMW', symbol: 'R' },
-                  { key: 'gbpToZmw' as const, label: 'GBP → ZMW', symbol: '£' },
-                  { key: 'aedToZmw' as const, label: 'AED → ZMW', symbol: 'د.إ' },
-                  { key: 'sgdToZmw' as const, label: 'SGD → ZMW', symbol: 'S$' },
                 ]
               ).map(({ key, label, symbol }) => (
                 <div key={key}>
@@ -797,7 +812,7 @@ export default function PriceComparison() {
                         }}
                         className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] cursor-pointer"
                       >
-                        {(['USD', 'ZAR', 'GBP', 'AED', 'SGD', 'ZMW'] as ListingCurrency[]).map((c) => (
+                        {(['USD', 'ZAR', 'ZMW'] as ListingCurrency[]).map((c) => (
                           <option key={c} value={c}>{CURRENCY_SYMBOLS[c]} {c}</option>
                         ))}
                       </select>

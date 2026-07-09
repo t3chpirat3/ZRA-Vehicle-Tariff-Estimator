@@ -12,6 +12,7 @@ import ImportGuide from './components/ImportGuide';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
+import FaqSection from './components/FaqSection';
 import { WatchlistItem } from './types';
 import { Shield } from 'lucide-react';
 
@@ -177,7 +178,7 @@ export default function App() {
       {/* Sticky Legal Disclaimer Banner */}
         <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm relative z-50">
           <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
-          <span>Duty Boss is an independent tool. We are NOT affiliated with, endorsed by, or operated by the Zambia Revenue Authority (ZRA).</span>
+          <span>Duty Boss is an independent tool built to help Zambians estimate vehicle import costs. We are not affiliated with the Zambia Revenue Authority (ZRA).</span>
         </div>
 
         {/* App Header Bar — sticky so navigation stays in reach during the single page scroll */}
@@ -237,6 +238,7 @@ export default function App() {
           {activeTab === 'calc' && (
             <div className="animate-fadeIn">
               <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
+              <FaqSection />
             </div>
           )}
           {activeTab === 'discover' && (
@@ -292,7 +294,7 @@ export default function App() {
             <span className="mx-1.5 hidden sm:inline">·</span>
             <span className="block sm:inline">&copy; 2026 · Independent estimator by{' '}
               <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] underline hover:no-underline font-semibold">t3chpirat3</a>.
-              Not affiliated with the Zambia Revenue Authority (ZRA). Estimates only.
+              Duty Boss uses official public ZRA tariff schedules but is completely independent.
             </span>
           </p>
           <div className="flex gap-4 font-semibold text-[color:var(--text)] flex-shrink-0">
