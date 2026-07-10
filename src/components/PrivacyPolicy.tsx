@@ -29,7 +29,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           <section>
             <h3 className="text-lg font-bold text-slate-800 mb-2">{'1. Introduction'}</h3>
             <p>
-              Welcome to Duty Boss (Zambia Vehicle Tariff Estimator). We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
+              Welcome to Duty Boss (Zambia Vehicle Import Platform). We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
             </p>
             <p className="mt-2">
               Because our platform is designed to be a quick, accessible utility, we adhere to a principle of minimal data collection: we do not require you to create an account, and we do not actively collect personal identifying information (such as your name, email address, or phone number).

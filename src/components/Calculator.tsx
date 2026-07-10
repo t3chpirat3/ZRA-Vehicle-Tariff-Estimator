@@ -1445,7 +1445,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                 <div className="bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-[9px] text-black flex items-start gap-2 flex-shrink-0 font-semibold leading-relaxed">
                   <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong>Independent estimator:</strong> This application is not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All figures are estimates only. Always confirm the final amounts with a licensed clearing agent.
+                    <strong>Independent platform:</strong> This application is not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All figures are estimates only. Always confirm the final amounts with a licensed clearing agent.
                   </div>
                 </div>
               </div>

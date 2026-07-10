@@ -196,12 +196,12 @@ export default function App() {
         >
           <div className="flex flex-col items-center justify-center animate-pulse">
             <BrandMark className="w-24 h-24 mb-6" />
-            <h1 className="text-4xl font-black font-display tracking-tight text-center">
-              DUTY BOSS
-            </h1>
-            <p className="text-xs text-[color:var(--text-muted)] font-bold tracking-widest uppercase mt-2">
-              Vehicle Tariff Estimator
-            </p>
+              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent group-hover:from-emerald-500 group-hover:to-teal-400 transition-colors text-4xl font-black font-display tracking-tight text-center">
+                Duty Boss
+              </span>
+              <span className="hidden sm:inline font-bold text-slate-500 text-sm uppercase tracking-widest mt-2">
+                Import Planning Platform
+              </span>
           </div>
         </div>
       )}
@@ -223,14 +223,12 @@ export default function App() {
               onClick={() => changeTab('calc')}
             >
               <BrandMark className="w-10 h-10 flex-shrink-0" />
-              <div className="flex flex-col justify-center">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight font-display leading-none">
-                  DUTY BOSS
-                </h1>
-                <p className="text-[10px] sm:text-[11px] text-[color:var(--text-muted)] font-bold tracking-tight uppercase mt-0.5 leading-none whitespace-nowrap">
-                  Vehicle Tariff Estimator
-                </p>
-              </div>
+              <div className="flex flex-col">
+                  <span className="font-bold text-[color:var(--text)] leading-tight text-lg font-display tracking-tight">Duty Boss</span>
+                  <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
+                    Import Planning Platform
+                  </span>
+                </div>
           </button>
 
           <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[13px] font-semibold overflow-x-auto scrollbar-none">
@@ -333,7 +331,7 @@ export default function App() {
           <p className="text-center sm:text-left leading-tight">
             <span className="font-extrabold text-[color:var(--text)] font-display">DUTY BOSS</span>
             <span className="mx-1.5 hidden sm:inline">·</span>
-            <span className="block sm:inline">&copy; 2026 · Independent estimator by{' '}
+            <span className="block sm:inline">&copy; 2026 · Independent import platform by{' '}
               <a href="https://shadreck.carrd.co/" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] underline hover:no-underline font-semibold">t3chpirat3</a>.
               Duty Boss uses official public ZRA tariff schedules but is completely independent.
             </span>

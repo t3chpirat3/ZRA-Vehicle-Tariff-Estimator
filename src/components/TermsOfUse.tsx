@@ -29,7 +29,7 @@ export default function TermsOfUse({ onClose }: TermsOfUseProps) {
           <section>
             <h3 className="text-lg font-bold text-slate-800 mb-2">{'1. Acceptance of Terms'}</h3>
             <p>
-              By accessing and using Duty Boss (the Zambia Vehicle Tariff Estimator, hereafter "the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. We provide this service as a public utility for informational purposes regarding Zambian vehicle import logistics.
+              By accessing and using Duty Boss (the Zambia Vehicle Import Platform, hereafter "the Platform"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Platform. We provide this service as a public utility for informational purposes regarding Zambian vehicle import logistics.
             </p>
           </section>
 

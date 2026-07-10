@@ -1,4 +1,4 @@
-# ZRA Vehicle Tariff Estimator 🇿🇲
+# Duty Boss 🇿🇲
 
 A modern, highly-responsive web application designed to help Zambian vehicle importers estimate their customs duties, taxes, and surcharges. The platform is built around the latest Zambia Revenue Authority (ZRA) schedules, including the 2025 Third Schedule rules for hybrids and standard ICE formulas.
 
