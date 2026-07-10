@@ -41,36 +41,6 @@ import {
   type FreightForwarder,
 } from '../data/shippingData';
 
-// ── Cache layer ────────────────────────────────────────────────────────────────
-const SCHEDULE_CACHE_KEY = 'duty_boss_shipping_schedules_v2';
-const CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
-
-interface CachedData {
-  schedules: VesselSchedule[];
-  timestamp: number;
-}
-
-function getCachedSchedules(): VesselSchedule[] | null {
-  try {
-    const raw = localStorage.getItem(SCHEDULE_CACHE_KEY);
-    if (!raw) return null;
-    const cached: CachedData = JSON.parse(raw);
-    if (Date.now() - cached.timestamp > CACHE_TTL_MS) return null;
-    return cached.schedules;
-  } catch {
-    return null;
-  }
-}
-
-function setCachedSchedules(schedules: VesselSchedule[]) {
-  try {
-    const data: CachedData = { schedules, timestamp: Date.now() };
-    localStorage.setItem(SCHEDULE_CACHE_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.warn('Failed to cache schedules:', e);
-  }
-}
-
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function daysFromNow(dateStr: string): number {
@@ -422,22 +392,14 @@ export default function ShippingSchedule() {
   const [destFilter, setDestFilter] = useState('Dar es Salaam');
   const [originFilter, setOriginFilter] = useState('All');
 
-  // Fetch schedules with caching
+  // Fetch schedules
   useEffect(() => {
-    const cached = getCachedSchedules();
-    if (cached) {
-      setSchedules(cached);
-      setLoading(false);
-      return;
-    }
-
     async function fetchSchedules() {
       try {
         const res = await fetch('/api/schedules');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setSchedules(data.schedules || []);
-        setCachedSchedules(data.schedules || []);
       } catch (e) {
         console.warn('Could not fetch shipping schedules:', e);
         setError('');

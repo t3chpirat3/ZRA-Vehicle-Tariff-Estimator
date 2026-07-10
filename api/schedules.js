@@ -49,8 +49,8 @@ export default async function handler(req, res) {
     return etdA - etdB;
   });
 
-  // 4. Set CDN cache headers (12 hours)
-  res.setHeader('Cache-Control', 's-maxage=43200, stale-while-revalidate');
+  // 4. Set CDN cache headers (60 seconds)
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=86400');
 
   return res.status(200).json({
     schedules,
