@@ -1,5 +1,10 @@
 import crypto from 'crypto';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const kv = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
+});
 
 const CACHE_KEY = 'shipping_schedules';
 
@@ -74,11 +79,12 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: auth.reason });
   }
 
-  const kvConfigured = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+  const kvConfigured = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
+                       (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
 
   // If deployed to Vercel, KV is mandatory. Memory fallback is ONLY for local development!
   if (process.env.VERCEL === "1" && !kvConfigured) {
-    return res.status(500).json({ error: "FATAL: Vercel KV Database is not connected to this project! Please go to Vercel Dashboard -> Storage -> Create KV Database and link it to this project." });
+    return res.status(500).json({ error: "FATAL: Upstash Redis / Vercel KV Database is not connected to this project! Please go to Vercel Dashboard -> Storage -> Create Upstash Redis and link it to this project." });
   }
 
   // --- POST: Add a new schedule(s) ---
