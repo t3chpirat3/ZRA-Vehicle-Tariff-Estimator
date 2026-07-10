@@ -76,44 +76,47 @@ export default async function handler(req, res) {
 
   const kvConfigured = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
 
-  // --- POST: Add a new schedule ---
+  // --- POST: Add a new schedule(s) ---
   if (method === 'POST') {
     const body = req.body || {};
+    const items = Array.isArray(body) ? body : [body];
+    const newSchedules = [];
 
-    // Validate required fields
-    const missing = REQUIRED_FIELDS.filter((f) => !body[f] || typeof body[f] !== 'string' || body[f].trim() === '');
-    if (missing.length > 0) {
-      return res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` });
+    for (const item of items) {
+      // Validate required fields
+      const missing = REQUIRED_FIELDS.filter((f) => !item[f] || typeof item[f] !== 'string' || item[f].trim() === '');
+      if (missing.length > 0) {
+        return res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` });
+      }
+
+      const status = item.status || 'Scheduled';
+      if (!VALID_STATUSES.includes(status)) {
+        return res.status(400).json({ error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}` });
+      }
+
+      const now = new Date().toISOString();
+      newSchedules.push({
+        id: crypto.randomUUID(),
+        carrier: item.carrier.trim(),
+        vessel_name: item.vessel_name.trim(),
+        origin_port: item.origin_port.trim(),
+        destination_port: item.destination_port.trim(),
+        inspection_cutoff: (item.inspection_cutoff || '').trim(),
+        port_cutoff: (item.port_cutoff || '').trim(),
+        etd: item.etd.trim(),
+        eta: item.eta.trim(),
+        transit_days: typeof item.transit_days === 'number' ? item.transit_days : 0,
+        status,
+        created_at: now,
+        updated_at: now,
+      });
     }
-
-    // Validate status if provided
-    const status = body.status || 'Scheduled';
-    if (!VALID_STATUSES.includes(status)) {
-      return res.status(400).json({ error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}` });
-    }
-
-    const now = new Date().toISOString();
-    const newSchedule = {
-      id: crypto.randomUUID(),
-      carrier: body.carrier.trim(),
-      vessel_name: body.vessel_name.trim(),
-      origin_port: body.origin_port.trim(),
-      destination_port: body.destination_port.trim(),
-      inspection_cutoff: (body.inspection_cutoff || '').trim(),
-      port_cutoff: (body.port_cutoff || '').trim(),
-      etd: body.etd.trim(),
-      eta: body.eta.trim(),
-      transit_days: typeof body.transit_days === 'number' ? body.transit_days : 0,
-      status,
-      created_at: now,
-      updated_at: now,
-    };
 
     const schedules = await readSchedules(kvConfigured);
-    schedules.push(newSchedule);
+    schedules.push(...newSchedules);
     await writeSchedules(kvConfigured, schedules);
 
-    return res.status(201).json({ schedule: newSchedule });
+    return res.status(201).json({ added: newSchedules.length });
   }
 
   // --- PUT: Update an existing schedule ---

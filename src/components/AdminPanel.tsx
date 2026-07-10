@@ -233,6 +233,23 @@ export default function AdminPanel() {
     }
   };
 
+  const handleSaveAll = async () => {
+    if (parsedResults.length === 0) return;
+    try {
+      const res = await apiFetch('/api/admin/schedules', {
+        method: 'POST',
+        body: JSON.stringify(parsedResults),
+      });
+      if (!res.ok) {
+        const e = await res.json();
+        throw new Error(e.error || 'Failed to save all schedules');
+      }
+      setParsedResults([]);
+      await fetchSchedules();
+    } catch (err: any) {
+      alert('Error saving schedules: ' + err.message);
+    }
+  };
 
   // ── Render ───────────────────────────────────────────────────────────────────
   if (!isAuthenticated) {
@@ -559,7 +576,16 @@ export default function AdminPanel() {
         {/* Parsed Results */}
         {parsedResults.length > 0 && (
           <div className="border-t border-slate-200 p-5 bg-slate-50/50">
-            <h4 className="text-sm font-bold text-slate-700 mb-3">Extracted Sailings ({parsedResults.length})</h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-bold text-slate-700">Extracted Sailings ({parsedResults.length})</h4>
+              <button 
+                onClick={handleSaveAll}
+                className="btn-primary px-4 py-1.5 text-xs flex items-center gap-1.5"
+              >
+                <Check className="w-3.5 h-3.5" />
+                Save All {parsedResults.length}
+              </button>
+            </div>
             <div className="space-y-3">
               {parsedResults.map((res, i) => {
                 const confidenceColor = 
