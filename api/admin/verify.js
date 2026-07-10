@@ -1,18 +1,15 @@
+import { authenticate } from './auth.js';
+
 export default function handler(req, res) {
   // Validate method
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Check Authorization header
-  const authHeader = req.headers.authorization || '';
-  if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Missing or invalid Authorization header' });
-  }
-
-  const token = authHeader.split(' ')[1];
-  if (token !== process.env.ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Invalid password' });
+  // Check Authorization
+  const auth = authenticate(req);
+  if (!auth.valid) {
+    return res.status(401).json({ error: auth.reason });
   }
 
   // If valid, return success

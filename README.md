@@ -46,7 +46,7 @@ A modern, highly-responsive web application designed to help Zambian vehicle imp
    ```
    Open the `.env` file and replace the placeholder with your actual DeepSeek API key:
    ```env
-   VITE_DEEPSEEK_API_KEY=your_deepseek_api_key_here
+   DEEPSEEK_API_KEY=your_deepseek_api_key_here
    ```
 
 4. **Start the development server:**

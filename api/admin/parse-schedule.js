@@ -1,3 +1,4 @@
+import { authenticate } from './auth.js';
 import { Redis } from '@upstash/redis';
 
 const kv = new Redis({
@@ -62,21 +63,7 @@ function isRateLimitedFallback(ip) {
   return userRecord.count > 5;
 }
 
-function authenticate(req) {
-  const authHeader = req.headers['authorization'] || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '');
-  const adminPassword = process.env.ADMIN_PASSWORD;
 
-  if (!adminPassword) {
-    return { valid: false, reason: 'Server misconfigured: missing ADMIN_PASSWORD' };
-  }
-
-  if (!token || token !== adminPassword) {
-    return { valid: false, reason: 'Unauthorized' };
-  }
-
-  return { valid: true };
-}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

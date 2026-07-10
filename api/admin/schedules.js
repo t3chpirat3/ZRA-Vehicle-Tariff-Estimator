@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { authenticate } from './auth.js';
 import { Redis } from '@upstash/redis';
 
 const kv = new Redis({
@@ -19,21 +20,7 @@ const REQUIRED_FIELDS = [
 
 const VALID_STATUSES = ['Scheduled', 'Booking Open', 'Booking Closed', 'Departed', 'Arrived', 'Completed'];
 
-function authenticate(req) {
-  const authHeader = req.headers['authorization'] || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '');
-  const adminPassword = process.env.ADMIN_PASSWORD;
 
-  if (!adminPassword) {
-    return { valid: false, reason: 'Server misconfigured: missing ADMIN_PASSWORD' };
-  }
-
-  if (!token || token !== adminPassword) {
-    return { valid: false, reason: 'Unauthorized' };
-  }
-
-  return { valid: true };
-}
 
 async function readSchedules(kvConfigured) {
   let schedules = null;
