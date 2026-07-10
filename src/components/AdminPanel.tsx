@@ -50,15 +50,30 @@ export default function AdminPanel() {
     }
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password.trim()) {
-      setAuthError('Please enter the admin password');
-      return;
-    }
-    sessionStorage.setItem('duty_boss_admin_pw', password);
-    setIsAuthenticated(true);
+    if (!password) return;
+    
     setAuthError('');
+    
+    try {
+      const res = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${password}`
+        }
+      });
+      
+      if (!res.ok) {
+        setAuthError('Invalid password. Please try again.');
+        return;
+      }
+      
+      sessionStorage.setItem('duty_boss_admin_pw', password);
+      setIsAuthenticated(true);
+    } catch (err: any) {
+      setAuthError('Error verifying password. Please check your connection.');
+    }
   };
 
   const handleLogout = () => {
