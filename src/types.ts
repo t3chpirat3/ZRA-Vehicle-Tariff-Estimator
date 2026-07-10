@@ -14,12 +14,15 @@ export type BusFuelType = 'diesel' | 'other-diesel';
 
 export type FuelType = 'petrol' | 'diesel' | 'hybrid' | 'electric';
 
+export type VehicleOrigin = 'Japan' | 'UK' | 'Singapore' | 'South Africa' | 'Thailand' | 'Other' | '';
+
 export interface CalculatorState {
   age: VehicleAge | '';
   cat: VehicleCategory | '';
   type: MotorCarType | GoodsVehicleType | '';
   fuel: FuelType | '';
   busFuel: BusFuelType | '';
+  origin: VehicleOrigin; // Country of export
   engine: string; // e.g., '1000', '1500', '2500', '3000', '3500'
   cifEngine: string; // Engine for carbon surtax under CIF mode
   weight: string; // Gross Vehicle Weight value mapping

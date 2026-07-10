@@ -14,16 +14,26 @@ function localApiPlugin() {
   return {
     name: 'local-api-plugin',
     configureServer(server) {
-      server.middlewares.use('/api/resolve-spec', async (req, res) => {
-        // We simulate the Vercel (Req, Res) objects
-        // Need to parse JSON body
+      server.middlewares.use('/api', async (req, res, next) => {
+        const pathname = req.originalUrl.split('?')[0]; // e.g. /api/schedules
+        const apiPath = pathname.replace('/api', ''); // e.g. /schedules
+        const filePath = path.join(__dirname, 'api', `${apiPath}.js`);
+        
+        if (!fs.existsSync(filePath)) {
+          return next();
+        }
+
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', async () => {
           try {
             req.body = body ? JSON.parse(body) : {};
-            // Import dynamically to get the latest version if needed, or static
-            const apiModule = await import('./api/resolve-spec.js');
+            // Import dynamically
+            // Note: Windows paths for dynamic imports need to be formatted as file:///
+            const importPath = process.platform === 'win32' 
+              ? `file://${filePath.replace(/\\/g, '/')}` 
+              : filePath;
+            const apiModule = await import(importPath);
             const handler = apiModule.default;
             
             // Mock res.status and res.json

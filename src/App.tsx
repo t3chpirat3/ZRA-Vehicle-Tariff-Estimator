@@ -9,6 +9,8 @@ import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
+import ShippingSchedule from './components/ShippingSchedule';
+import AdminPanel from './components/AdminPanel';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
@@ -83,7 +85,7 @@ function CursorBlob() {
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'shipping' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -95,6 +97,34 @@ export default function App() {
       clearTimeout(timer2);
     };
   }, []);
+
+  // Handle hidden admin route
+  useEffect(() => {
+    const handleLocationChange = () => {
+      if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+        setActiveTab('admin');
+        setShowSplash(false);
+        // Normalize URL if it was a hash
+        if (window.location.hash === '#admin') {
+          window.history.replaceState(null, '', '/admin');
+        }
+      }
+    };
+    handleLocationChange();
+    
+    // Fallback: handle popstate if using browser back/forward
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
+  const changeTab = (tab: typeof activeTab) => {
+    setActiveTab(tab);
+    if (tab === 'admin') {
+      window.history.pushState(null, '', '/admin');
+    } else if (window.location.pathname === '/admin') {
+      window.history.pushState(null, '', '/');
+    }
+  };
 
   // Intermediate bridge states to pre-fill Watchlist additions
   const [lastCalcTotal, setLastCalcTotal] = useState<number>(0);
@@ -128,7 +158,7 @@ export default function App() {
     setLastCalcTotal(total);
     setLastCalcUSD(cifUSD);
     setLastCalcFx(fx);
-    setActiveTab('watchlist');
+    changeTab('watchlist');
 
     // Smooth scroll down to the "Add Vehicle to Watchlist" form
     setTimeout(() => {
@@ -148,6 +178,7 @@ export default function App() {
     { id: 'compare', label: 'Price Comparison' },
     { id: 'agents', label: 'Clearing Agents' },
     { id: 'guide', label: 'Import Guide' },
+    { id: 'shipping', label: 'Shipping Schedule' },
   ];
 
   return (
@@ -189,7 +220,7 @@ export default function App() {
           <div className="container mx-auto px-4 max-w-7xl flex items-center gap-4 sm:gap-8 py-3">
             <button
               className="flex flex-shrink-0 items-center gap-3 pr-2 cursor-pointer text-left focus:outline-none rounded-xl"
-              onClick={() => setActiveTab('calc')}
+              onClick={() => changeTab('calc')}
             >
               <BrandMark className="w-10 h-10 flex-shrink-0" />
               <div className="flex flex-col justify-center">
@@ -208,7 +239,7 @@ export default function App() {
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => changeTab(tab.id)}
                   className={`whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
                     isActive
                       ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
@@ -273,14 +304,24 @@ export default function App() {
               <ImportGuide />
             </div>
           )}
+          {activeTab === 'shipping' && (
+            <div className="animate-fadeIn">
+              <ShippingSchedule />
+            </div>
+          )}
+          {activeTab === 'admin' && (
+            <div className="animate-fadeIn">
+              <AdminPanel />
+            </div>
+          )}
           {activeTab === 'privacy' && (
             <div className="animate-fadeIn">
-              <PrivacyPolicy onClose={() => setActiveTab('calc')} />
+              <PrivacyPolicy onClose={() => changeTab('calc')} />
             </div>
           )}
           {activeTab === 'terms' && (
             <div className="animate-fadeIn">
-              <TermsOfUse onClose={() => setActiveTab('calc')} />
+              <TermsOfUse onClose={() => changeTab('calc')} />
             </div>
           )}
         </div>
@@ -298,8 +339,8 @@ export default function App() {
             </span>
           </p>
           <div className="flex gap-4 font-semibold text-[color:var(--text)] flex-shrink-0">
-            <button onClick={() => setActiveTab('privacy')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Privacy</button>
-            <button onClick={() => setActiveTab('terms')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Terms</button>
+            <button onClick={() => changeTab('privacy')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Privacy</button>
+            <button onClick={() => changeTab('terms')} className="hover:text-[color:var(--primary-hover)] cursor-pointer">Terms</button>
           </div>
         </div>
       </footer>

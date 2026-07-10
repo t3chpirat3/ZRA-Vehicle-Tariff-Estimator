@@ -20,6 +20,11 @@ import {
   RotateCcw,
   CheckCircle2,
   ExternalLink,
+  Ship,
+  MapPin,
+  Calendar,
+  Clock,
+  Navigation
 } from 'lucide-react';
 import {
   CalculatorState,
@@ -33,8 +38,10 @@ import {
   zmwFormat,
   CARBON_RATES,
   WEIGHT_OPTIONS_MAP,
+  VehicleOrigin
 } from '../types';
 import SpecResolver, { ResolvedSpecs } from './SpecResolver';
+import { VesselSchedule } from '../data/shippingData';
 
 interface CalculatorProps {
   onSaveToWatchlist: (total: number, cifUSD: number, fx: number) => void;
@@ -55,6 +62,7 @@ const INITIAL_STATE: CalculatorState = {
   fx: 0,
   hpCC: '',
   hpHP: '',
+  origin: '',
 };
 
 const VehicleRender = ({ cat, type }: { cat: string; type: string }) => {
@@ -102,6 +110,90 @@ const VehicleRender = ({ cat, type }: { cat: string; type: string }) => {
   );
 };
 
+const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedules: VesselSchedule[] }) => {
+  const origin = state.origin || 'Japan';
+  
+  // Filter schedules by origin
+  const upcomingSchedules = schedules
+    .filter(s => {
+      if (origin === 'Japan') return ['Yokohama', 'Nagoya', 'Kobe'].includes(s.origin_port);
+      if (origin === 'UK') return ['Southampton', 'Tilbury'].includes(s.origin_port);
+      if (origin === 'Singapore') return s.origin_port === 'Singapore';
+      return true; // For others, show all or could filter better
+    })
+    .slice(0, 2); // Show top 2 nearest
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 mt-4 lg:mt-0">
+      <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+        <Navigation className="w-3.5 h-3.5 text-[color:var(--primary)]" />
+        Import Timeline & Next Steps
+      </h4>
+      
+      {state.origin === 'Thailand' && (
+        <div className="mb-4 bg-amber-50 border border-amber-200 rounded-xl p-3 flex gap-2">
+          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+          <p className="text-[10px] text-amber-800 leading-relaxed font-medium">
+            <strong>Inspection Caution:</strong> JEVIC inspection centers are not available in Thailand. You will likely pay a 15% penalty fee on arrival.
+          </p>
+        </div>
+      )}
+
+      <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+        
+        {/* Step 1: Procurement & Duty */}
+        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-[color:var(--primary)] text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+            <CheckCircle2 className="w-3 h-3" />
+          </div>
+          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <h5 className="font-bold text-xs text-slate-800 mb-1">1. Estimate & Procurement</h5>
+            <p className="text-[10px] text-slate-500">You've estimated the duties. Next, complete the purchase of the vehicle from {state.origin || 'the exporter'}.</p>
+          </div>
+        </div>
+
+        {/* Step 2: Shipping */}
+        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+            <Ship className="w-3 h-3" />
+          </div>
+          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+            <h5 className="font-bold text-xs text-slate-800 mb-2">2. Book Shipping</h5>
+            {upcomingSchedules.length > 0 ? (
+              <div className="space-y-2">
+                <p className="text-[10px] text-slate-600 mb-2">Upcoming sailings from {origin}:</p>
+                {upcomingSchedules.map(s => (
+                  <div key={s.id} className="bg-white p-2 rounded border border-blue-100 text-[10px]">
+                    <div className="font-bold text-slate-800">{s.carrier} - {s.vessel_name}</div>
+                    <div className="text-slate-500 flex justify-between mt-1">
+                      <span>Depart: {new Date(s.etd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                      <span>Arrive: {new Date(s.eta).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[10px] text-slate-500">Coordinate with your shipping agent to find the next available RoRo vessel.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Step 3: Clearance */}
+        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-slate-300 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+            <MapPin className="w-3 h-3" />
+          </div>
+          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <h5 className="font-bold text-xs text-slate-800 mb-1">3. Port Clearance & Transit</h5>
+            <p className="text-[10px] text-slate-500">Engage a clearing agent at the destination port (Dar es Salaam / Durban) to handle customs and inland transit to Zambia.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   const [state, setState] = useState<CalculatorState>(INITIAL_STATE);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -114,7 +206,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   // SpecResolver: flag that triggers a jump to results after state is applied
   const [pendingJumpToResults, setPendingJumpToResults] = useState(false);
 
-  // ─── Fetch Live Exchange Rates ────────────────────────────────────────────────
+  // Schedules state for the unified timeline
+  const [schedules, setSchedules] = useState<VesselSchedule[]>([]);
+
+  // ─── Fetch Live Exchange Rates & Schedules ─────────────────────────────────────
   useEffect(() => {
     async function fetchFx() {
       try {
@@ -137,6 +232,22 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
     fetchFx();
   }, []);
 
+  useEffect(() => {
+    async function fetchSchedules() {
+      try {
+        const res = await fetch('/api/schedules');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.schedules) {
+          setSchedules(data.schedules);
+        }
+      } catch (err) {
+        console.error('Failed to fetch schedules for calculator:', err);
+      }
+    }
+    fetchSchedules();
+  }, []);
+
   // Master Sync inputs with state checks
   const handleAgeChange = (age: VehicleAge) => {
     setState((prev) => ({
@@ -148,6 +259,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
       vdp: '',
       cifUSD: 0,
     }));
+  };
+
+  const handleOriginChange = (origin: VehicleOrigin) => {
+    setState((prev) => ({ ...prev, origin }));
   };
 
   const handleCategoryChange = (cat: VehicleCategory) => {
@@ -207,7 +322,15 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   //   Age → Cat → [type/fuel/bus-details] → [CIF or Spec]
   const activeSteps = [];
 
-  // Step 1 (always): Vehicle Category
+  // Step 1: Origin
+  activeSteps.push({
+    id: 'origin',
+    title: 'Import Origin',
+    subtitle: 'Where are you importing the vehicle from?',
+    isValid: state.origin !== '',
+  });
+
+  // Step 2: Vehicle Category
   activeSteps.push({
     id: 'cat',
     title: 'Vehicle Category',
@@ -652,6 +775,55 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
           </div>
         );
 
+      case 'origin':
+        return (
+          <div className="w-full flex flex-col md:flex-row gap-8 max-w-4xl mx-auto">
+            <div className="flex-1">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {[
+                  { id: 'Japan', label: 'Japan', icon: '🇯🇵' },
+                  { id: 'UK', label: 'United Kingdom', icon: '🇬🇧' },
+                  { id: 'Singapore', label: 'Singapore', icon: '🇸🇬' },
+                  { id: 'South Africa', label: 'South Africa', icon: '🇿🇦' },
+                  { id: 'Thailand', label: 'Thailand', icon: '🇹🇭' },
+                  { id: 'Other', label: 'Other', icon: '🌍' },
+                ].map((o) => (
+                  <button
+                    key={o.id}
+                    onClick={() => {
+                      handleOriginChange(o.id as VehicleOrigin);
+                      setTimeout(() => {
+                        setCurrentStepIndex((prev) => Math.min(prev + 1, activeSteps.length - 1));
+                      }, 250);
+                    }}
+                    className={`flex flex-col items-center justify-center gap-3 p-4 border-2 rounded-2xl transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                      state.origin === o.id
+                        ? 'border-black bg-slate-50'
+                        : 'border-slate-200 bg-white hover:border-black hover:bg-slate-50'
+                    }`}
+                  >
+                    <span className="text-3xl">{o.icon}</span>
+                    <span className="font-extrabold text-sm text-slate-800 text-center">{o.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {state.origin === 'Thailand' && (
+              <div className="w-full md:w-64 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col gap-3 flex-shrink-0 self-start animate-fadeIn">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0">
+                    <AlertTriangle className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wide">Inspection Caution</h4>
+                </div>
+                <p className="text-xs text-amber-800 leading-relaxed font-medium">
+                  Zambia requires JEVIC inspection for vehicle imports. Thailand does not currently have approved JEVIC inspection centers. You will likely face a <strong>15% penalty fee</strong> (on CIF value) upon arrival at the Zambian border.
+                </p>
+              </div>
+            )}
+          </div>
+        );
+
       case 'cat':
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
@@ -1043,7 +1215,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   mobileResultsTab === 'resources' ? 'bw-active' : 'text-[color:var(--text-muted)]'
                 }`}
               >
-                Rules & Resources
+                Timeline & Rules
               </button>
             </div>
 
@@ -1206,6 +1378,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               <div className={`col-span-1 lg:col-span-2 flex flex-col space-y-3 ${
                 mobileResultsTab === 'resources' ? 'flex' : 'hidden lg:flex'
               }`}>
+                {/* Import Timeline Component */}
+                <ImportTimeline state={state} schedules={schedules} />
                 {/* Visual Anchor Card (Sleek minimalist side-profile) */}
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex items-center justify-center relative overflow-hidden group">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-100 via-white to-white opacity-80 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
