@@ -66,7 +66,26 @@ export default defineConfig(() => {
       localApiPlugin(),
       VitePWA({
         registerType: 'autoUpdate',
-        manifest: false, // You could generate a manifest if needed, but the main goal is offline caching
+        manifest: {
+          name: 'Duty Boss',
+          short_name: 'Duty Boss',
+          description: 'Vehicle customs duty and tariff calculator',
+          theme_color: '#0f172a',
+          background_color: '#ffffff',
+          display: 'standalone',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png'
+            }
+          ]
+        },
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
           runtimeCaching: [
