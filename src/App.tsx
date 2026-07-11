@@ -16,7 +16,7 @@ import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
 import FaqSection from './components/FaqSection';
 import { WatchlistItem } from './types';
-import { Shield } from 'lucide-react';
+import { Shield, Menu, X } from 'lucide-react';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
 
@@ -85,6 +85,7 @@ function CursorBlob() {
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
@@ -231,7 +232,7 @@ export default function App() {
                 </div>
           </button>
 
-          <nav className="ml-auto flex items-center gap-1 sm:gap-2 text-[11px] sm:text-[13px] font-semibold overflow-x-auto scrollbar-none">
+          <nav className="ml-auto hidden sm:flex items-center gap-2 text-[13px] font-semibold">
             {navTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -258,8 +259,71 @@ export default function App() {
               );
             })}
           </nav>
+
+          <button 
+            className="ml-auto sm:hidden p-2 -mr-2 rounded-xl text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(true)}
+            aria-label="Open mobile menu"
+          >
+            <Menu className="w-7 h-7" />
+          </button>
         </div>
       </header>
+
+      {/* Mobile Slide-out Drawer */}
+      <div 
+        className={`fixed inset-0 z-[100] transform transition-transform duration-300 ease-in-out sm:hidden ${
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div 
+          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+            isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`} 
+          onClick={() => setIsMobileMenuOpen(false)} 
+        />
+        <div className="absolute inset-y-0 left-0 w-[280px] bg-[color:var(--bg)] border-r border-[color:var(--border)] shadow-2xl flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b border-[color:var(--border)]">
+             <div className="flex items-center gap-3">
+               <BrandMark className="w-8 h-8 flex-shrink-0" />
+               <span className="font-bold text-[color:var(--text)] text-lg font-display tracking-tight">Duty Boss</span>
+             </div>
+             <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] rounded-lg">
+                <X className="w-6 h-6" />
+             </button>
+          </div>
+          <div className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1.5">
+            {navTabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    changeTab(tab.id);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`w-full px-4 py-3.5 rounded-xl flex items-center justify-between text-left transition-colors font-semibold ${
+                    isActive
+                      ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
+                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
+                  }`}
+                >
+                  {tab.label}
+                  {tab.id === 'watchlist' && watchlistCount > 0 && (
+                    <span
+                      className={`text-xs font-bold rounded-full min-w-[22px] h-[22px] inline-flex items-center justify-center px-1.5 ${
+                        isActive ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--border-strong)] text-[color:var(--text)]'
+                      }`}
+                    >
+                      {watchlistCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       {/* Main Workspace — one natural page scroll, no nested scroll areas */}
       <main className="relative z-10 flex-1">
