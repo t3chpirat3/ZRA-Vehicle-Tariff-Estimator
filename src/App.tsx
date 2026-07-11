@@ -9,7 +9,7 @@ import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
-import ShippingSchedule from './components/ShippingSchedule';
+import Logistics from './components/Logistics';
 import AdminPanel from './components/AdminPanel';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
@@ -85,7 +85,7 @@ function CursorBlob() {
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'shipping' | 'admin'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
 
   // Implement splash screen exit
@@ -178,7 +178,7 @@ export default function App() {
     { id: 'compare', label: 'Price Comparison' },
     { id: 'agents', label: 'Clearing Agents' },
     { id: 'guide', label: 'Import Guide' },
-    { id: 'shipping', label: 'Shipping Schedule' },
+    { id: 'logistics', label: 'Logistics' },
   ];
 
   return (
@@ -302,9 +302,9 @@ export default function App() {
               <ImportGuide />
             </div>
           )}
-          {activeTab === 'shipping' && (
+          {activeTab === 'logistics' && (
             <div className="animate-fadeIn">
-              <ShippingSchedule />
+              <Logistics />
             </div>
           )}
           {activeTab === 'admin' && (

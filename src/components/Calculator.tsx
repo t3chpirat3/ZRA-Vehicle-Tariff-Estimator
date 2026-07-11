@@ -781,11 +781,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
             <div className="flex-1">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {[
-                  { id: 'Japan', label: 'Japan', icon: '🇯🇵' },
-                  { id: 'UK', label: 'United Kingdom', icon: '🇬🇧' },
-                  { id: 'Singapore', label: 'Singapore', icon: '🇸🇬' },
-                  { id: 'South Africa', label: 'South Africa', icon: '🇿🇦' },
-                  { id: 'Thailand', label: 'Thailand', icon: '🇹🇭' },
+                  { id: 'Japan', label: 'Japan', flag: 'https://flagcdn.com/w40/jp.png', icon: '🇯🇵' },
+                  { id: 'UK', label: 'United Kingdom', flag: 'https://flagcdn.com/w40/gb.png', icon: '🇬🇧' },
+                  { id: 'Singapore', label: 'Singapore', flag: 'https://flagcdn.com/w40/sg.png', icon: '🇸🇬' },
+                  { id: 'South Africa', label: 'South Africa', flag: 'https://flagcdn.com/w40/za.png', icon: '🇿🇦' },
+                  { id: 'Thailand', label: 'Thailand', flag: 'https://flagcdn.com/w40/th.png', icon: '🇹🇭' },
                   { id: 'Other', label: 'Other', icon: '🌍' },
                 ].map((o) => (
                   <button
@@ -802,7 +802,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                         : 'border-slate-200 bg-white hover:border-black hover:bg-slate-50'
                     }`}
                   >
-                    <span className="text-3xl">{o.icon}</span>
+                    {o.flag ? (
+                      <img src={o.flag} alt={`${o.label} flag`} className="w-8 h-auto drop-shadow-sm rounded-[2px]" />
+                    ) : (
+                      <span className="text-3xl">{o.icon}</span>
+                    )}
                     <span className="font-extrabold text-sm text-slate-800 text-center">{o.label}</span>
                   </button>
                 ))}
