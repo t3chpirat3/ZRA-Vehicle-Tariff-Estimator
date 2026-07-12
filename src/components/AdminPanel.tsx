@@ -43,9 +43,8 @@ export default function AdminPanel() {
 
   // ── Auth ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    const savedPw = sessionStorage.getItem('duty_boss_admin_pw');
-    if (savedPw) {
-      setPassword(savedPw);
+    const savedToken = localStorage.getItem('duty_boss_admin_token');
+    if (savedToken) {
       setIsAuthenticated(true);
     }
   }, []);
@@ -60,24 +59,32 @@ export default function AdminPanel() {
       const res = await fetch('/api/admin/verify', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${password}`
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
       });
       
       if (!res.ok) {
-        setAuthError('Invalid password. Please try again.');
+        if (res.status === 429) {
+          setAuthError('Too many attempts. Please try again later.');
+        } else {
+          setAuthError('Invalid password. Please try again.');
+        }
         return;
       }
       
-      sessionStorage.setItem('duty_boss_admin_pw', password);
-      setIsAuthenticated(true);
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('duty_boss_admin_token', data.token);
+        setIsAuthenticated(true);
+      }
     } catch (err: any) {
       setAuthError('Error verifying password. Please check your connection.');
     }
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('duty_boss_admin_pw');
+    localStorage.removeItem('duty_boss_admin_token');
     setPassword('');
     setIsAuthenticated(false);
     setSchedules([]);
@@ -86,7 +93,10 @@ export default function AdminPanel() {
 
   const apiFetch = async (url: string, options: RequestInit = {}) => {
     const headers = new Headers(options.headers || {});
-    headers.set('Authorization', `Bearer ${password}`);
+    const token = localStorage.getItem('duty_boss_admin_token');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
     if (!headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json');
     }
@@ -94,7 +104,7 @@ export default function AdminPanel() {
     const res = await fetch(url, { ...options, headers });
     if (res.status === 401) {
       handleLogout();
-      setAuthError('Session expired or invalid password.');
+      setAuthError('Session expired or invalid token. Please log in again.');
       throw new Error('Unauthorized');
     }
     return res;
@@ -284,6 +294,7 @@ export default function AdminPanel() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[color:var(--primary)] transition-colors"
                 placeholder="Enter password..."
+                autoComplete="off"
                 autoFocus
               />
             </div>

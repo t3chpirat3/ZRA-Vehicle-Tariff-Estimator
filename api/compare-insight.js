@@ -43,11 +43,17 @@ const ALLOWED_ORIGINS = new Set(['Japan', 'Singapore', 'UAE', 'South Africa', 'U
 // ── Rate Limiter ──────────────────────────────────────────────────────────────
 // Primary: Vercel KV (distributed). Fail-closed on Redis failure.
 // Fallback: In-memory per-instance (only used when KV is not configured, e.g. local dev).
-const ratelimit = new Ratelimit({
-  redis: kv,
-  limiter: Ratelimit.slidingWindow(8, '1 m'),
-  analytics: true,
-});
+const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
+                       (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
+
+const ratelimit = kvConfigured 
+  ? new Ratelimit({
+      redis: kv,
+      limiter: Ratelimit.slidingWindow(8, '1 m'),
+      analytics: true,
+      prefix: '@upstash/ratelimit/compare_insight',
+    })
+  : null;
 
 const fallbackRateLimitMap = new Map();
 function isRateLimitedFallback(ip) {
@@ -68,10 +74,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
 
   // ── Rate Limiting (fail-closed) ────────────────────────────────────────────
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+  if (kvConfigured) {
     try {
       const { success } = await ratelimit.limit(ip);
       if (!success) {

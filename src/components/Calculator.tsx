@@ -636,10 +636,10 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   ];
 
   const carbonSurtaxOptions = [
-    { v: '1000', l: 'Under 1,500cc', desc: 'Carbon tax: ZMW 123.20' },
-    { v: '2000', l: '1,501cc to 2,000cc', desc: 'Carbon tax: ZMW 246.40' },
-    { v: '3000', l: '2,001cc to 3,000cc', desc: 'Carbon tax: ZMW 352.00' },
-    { v: '3500', l: 'Exceeding 3,000cc', desc: 'Carbon tax: ZMW 484.00' },
+    { v: '1500', l: '0 – 1,500cc', desc: 'Carbon tax: ZMW 123.20' },
+    { v: '2000', l: '1,501 – 2,000cc', desc: 'Carbon tax: ZMW 246.40' },
+    { v: '3000', l: '2,001 – 3,000cc', desc: 'Carbon tax: ZMW 352.00' },
+    { v: '3500', l: '3,001cc +', desc: 'Carbon tax: ZMW 484.00' },
   ];
 
   // Render individual wizards components within fixed workspace
@@ -1086,7 +1086,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   >
                     <span className="text-xs font-extrabold font-mono block">{opt.l}</span>
                     <span className={`text-[9px] mt-1 font-semibold leading-none ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-400'}`}>
-                      {opt.v === '1000' ? 'ZMW 123.20' : opt.v === '2000' ? 'ZMW 246.40' : opt.v === '3000' ? 'ZMW 352.00' : 'ZMW 484.00'}
+                      {opt.v === '1500' ? 'ZMW 123.20' : opt.v === '2000' ? 'ZMW 246.40' : opt.v === '3000' ? 'ZMW 352.00' : 'ZMW 484.00'}
                     </span>
                   </button>
                 );

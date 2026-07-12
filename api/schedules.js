@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
 
 const kv = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
@@ -14,6 +15,34 @@ export default async function handler(req, res) {
 
   const kvConfigured = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
                        (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+
+  // Rate Limiting Logic
+  const rateLimit = kvConfigured
+    ? new Ratelimit({
+        redis: kv,
+        limiter: Ratelimit.slidingWindow(30, '1 m'), // 30 requests per minute
+        analytics: true,
+        prefix: '@upstash/ratelimit/schedules_public',
+      })
+    : null;
+
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || '127.0.0.1';
+  let success = true;
+
+  if (rateLimit) {
+    try {
+      const { success: rlSuccess, reset } = await rateLimit.limit(ip);
+      success = rlSuccess;
+      if (!success) res.setHeader('X-RateLimit-Reset', reset.toString());
+    } catch (err) {
+      console.warn('[RedisFailure] Rate limiting failed.');
+    }
+  }
+
+  if (!success) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
+
   let schedules = null;
   let source = 'memory';
 

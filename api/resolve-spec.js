@@ -1,11 +1,13 @@
-import fetch from 'node-fetch'; // Vercel provides fetch globally in Node 18+, but we can just use native fetch
 import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
 
 const kv = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
   token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
 });
-import { Ratelimit } from '@upstash/ratelimit';
+
+const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
+                       (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
 
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
 
@@ -94,14 +96,15 @@ If you absolutely cannot identify the vehicle, return:
 { "error": "Cannot resolve: brief reason" }`;
 
 // Configure Vercel KV Rate Limiter
-// Limit: 10 requests per minute
-const ratelimit = new Ratelimit({
-  redis: kv,
-  limiter: Ratelimit.slidingWindow(10, "1 m"),
-  analytics: true,
-});
+const ratelimit = kvConfigured 
+  ? new Ratelimit({
+      redis: kv,
+      limiter: Ratelimit.slidingWindow(10, "1 m"),
+      analytics: true,
+      prefix: '@upstash/ratelimit/resolve_spec',
+    })
+  : null;
 
-// Fallback in-memory rate limiter if KV is not configured locally
 const fallbackRateLimitMap = new Map();
 function isRateLimitedFallback(ip) {
   const now = Date.now();
@@ -123,10 +126,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
   
-  // Apply Distributed Rate Limiting (or fallback)
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+  if (ratelimit) {
     try {
       const { success } = await ratelimit.limit(ip);
       if (!success) {
@@ -135,11 +137,9 @@ export default async function handler(req, res) {
       }
     } catch (err) {
       console.error(`[RedisFailure] Failed to connect to KV rate limiter:`, err);
-      // Fail closed to prevent bypassing rate limits during infrastructure outages
       return res.status(503).json({ error: 'Service temporarily unavailable. Please try again later.' });
     }
   } else {
-    // Fallback if user hasn't created the Vercel KV database yet
     if (isRateLimitedFallback(ip)) {
       console.warn(`Local rate limit exceeded for IP: ${ip}`);
       return res.status(429).json({ error: 'Too many requests. Please try again in a minute.' });
@@ -206,14 +206,14 @@ export default async function handler(req, res) {
 
     const parsed = JSON.parse(raw);
     
-    // Explicit error returned by LLM (fallback failure or injection)
+    // Explicit error returned by LLM
     if (parsed.error) {
-      console.warn(`[ResolutionFailed] LLM returned explicit error for query: "${trimmedQuery}". IP: ${ip}`);
-      return res.status(400).json({ error: parsed.error });
+      console.warn(`[ResolutionFailed] LLM returned explicit error. IP: ${ip}`);
+      return res.status(400).json({ error: 'Cannot resolve query. Please provide more details.' });
     }
 
     // Output schema validation
-    const { make, model, engineCC, bodyType, fuelType, ageBracket, confidence } = parsed;
+    const { make, model, engineCode, engineCC, bodyType, fuelType, ageBracket, productionYears, confidence, notes } = parsed;
     
     const isValidSchema = 
       typeof make === 'string' &&
@@ -225,11 +225,24 @@ export default async function handler(req, res) {
       ['high', 'medium', 'low'].includes(confidence);
 
     if (!isValidSchema) {
-      console.error(`[SchemaValidation] Invalid LLM response schema for query: "${trimmedQuery}". IP: ${ip}. Output: ${raw}`);
+      console.error(`[SchemaValidation] Invalid LLM response schema for query from IP: ${ip}`);
       return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
-    return res.status(200).json(parsed);
+    const safeStr = (s) => (typeof s === 'string' ? s.slice(0, 100).trim() : '');
+
+    return res.status(200).json({
+      make: safeStr(make),
+      model: safeStr(model),
+      engineCode: safeStr(engineCode),
+      engineCC: engineCC, // Assumed valid number based on schema check
+      bodyType,
+      fuelType,
+      ageBracket,
+      productionYears: safeStr(productionYears),
+      confidence,
+      notes: safeStr(notes)
+    });
 
   } catch (error) {
     if (error.name === 'AbortError') {

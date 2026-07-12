@@ -32,11 +32,17 @@ Return STRICT JSON only, no markdown, in exactly this shape:
   "extraSuggestions": [ { "name": "Make Model", "reason": "string" } ]
 }`;
 
-const ratelimit = new Ratelimit({
-  redis: kv,
-  limiter: Ratelimit.slidingWindow(8, '1 m'),
-  analytics: true,
-});
+const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
+                       (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
+
+const ratelimit = kvConfigured 
+  ? new Ratelimit({
+      redis: kv,
+      limiter: Ratelimit.slidingWindow(8, '1 m'),
+      analytics: true,
+      prefix: '@upstash/ratelimit/enhance_discovery',
+    })
+  : null;
 
 const fallbackRateLimitMap = new Map();
 function isRateLimitedFallback(ip) {
@@ -53,9 +59,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
 
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+  if (kvConfigured) {
     try {
       const { success } = await ratelimit.limit(ip);
       if (!success) {

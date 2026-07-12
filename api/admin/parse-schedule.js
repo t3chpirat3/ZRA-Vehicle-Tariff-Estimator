@@ -78,8 +78,11 @@ export default async function handler(req, res) {
 
   const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
 
+  const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
+                       (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
+
   // Apply Rate Limiting
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+  if (kvConfigured) {
     try {
       const { success } = await ratelimit.limit(ip);
       if (!success) {
@@ -171,7 +174,7 @@ export default async function handler(req, res) {
     // Handle explicit error from LLM
     if (parsed.error) {
       console.warn(`[ParseSchedule] LLM returned error: ${parsed.error}. IP: ${ip}`);
-      return res.status(400).json({ error: parsed.error });
+      return res.status(400).json({ error: 'Cannot parse input. Please provide a valid shipping schedule.' });
     }
 
     // Normalize: DeepSeek may return { schedules: [...] } or just [...]
