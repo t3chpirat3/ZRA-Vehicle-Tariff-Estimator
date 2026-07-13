@@ -37,6 +37,7 @@ interface WatchlistProps {
   lastCalcTotal: number;
   lastCalcUSD: number;
   lastCalcFx: number;
+  lastCalcState?: any;
   onActivated: () => void;
 }
 
@@ -46,13 +47,15 @@ export default function Watchlist({
   lastCalcTotal,
   lastCalcUSD,
   lastCalcFx,
+  lastCalcState,
   onActivated,
 }: WatchlistProps) {
   // Form State
   const [formOpen, setFormOpen] = useState(true);
   const [url, setUrl] = useState('');
   const [notes, setNotes] = useState('');
-  const [userTargetPrice, setUserTargetPrice] = useState('');
+  const [listingCurrency, setListingCurrency] = useState<'USD' | 'ZAR'>('USD');
+  const [listingPrice, setListingPrice] = useState<number | ''>('');
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState('');
 
@@ -65,6 +68,7 @@ export default function Watchlist({
 
   // Status Checking State
   const [checkingIds, setCheckingIds] = useState<Record<string | number, boolean>>({});
+  const [resolvingIds, setResolvingIds] = useState<Record<string | number, boolean>>({});
 
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +97,6 @@ export default function Watchlist({
         id: Date.now().toString(),
         url: url.trim(),
         notes: notes.trim(),
-        userTargetPrice: userTargetPrice.trim(),
         savedAt: new Date().toISOString(),
         lastChecked: new Date().toISOString(),
         hasChangedStatus: false,
@@ -101,7 +104,7 @@ export default function Watchlist({
         make: data.make || 'Unknown',
         model: data.model || 'Vehicle',
         year: data.year || new Date().getFullYear(),
-        price: data.price || 'Unknown',
+        price: listingPrice === '' ? (data.price || 'Unknown') : `${listingCurrency} ${listingPrice}`,
         mileage: data.mileage || 'N/A',
         location: data.location || 'N/A',
         description: data.description || 'Specifications extracted from listing.',
@@ -115,17 +118,19 @@ export default function Watchlist({
           }
         ],
         // Default Duty Boss fields
-        fob: 0,
-        duty: 0,
-        fx: 0,
+        fob: listingPrice === '' ? 0 : Number(listingPrice),
+        duty: lastCalcState ? lastCalcTotal : 0,
+        fx: lastCalcState ? lastCalcFx : 0,
+        currency: listingCurrency,
         desc: data.title || 'Unknown Vehicle',
-        source: data.make || 'Web Listing'
+        source: data.make || 'Web Listing',
+        calcState: lastCalcState || undefined
       };
 
       onUpdateWatchlist([newItem, ...watchlist]);
       setUrl('');
       setNotes('');
-      setUserTargetPrice('');
+      setListingPrice('');
     } catch (err: any) {
       setFormError(err.message || 'An error occurred while adding the listing.');
     } finally {
@@ -201,6 +206,54 @@ export default function Watchlist({
     }
   };
 
+  const handleResolveAndCalculate = async (item: WatchlistItem, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    
+    // If state is already resolved or panel is open, just toggle it
+    if (inlineStates[item.id] || item.calcState) {
+      toggleInlineCalc(item.id);
+      return;
+    }
+
+    setResolvingIds(prev => ({ ...prev, [item.id]: true }));
+    try {
+      const q = `${item.make} ${item.model} ${item.year} ${item.description || ''}`.trim();
+      const res = await fetch('/api/resolve-spec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q })
+      });
+      if (!res.ok) throw new Error('Spec resolution failed');
+      const data = await res.json();
+      
+      const newState: CalculatorState = {
+        age: data.ageBracket || '',
+        cat: 'motor-car', // Default to motor-car, user can change if wrong
+        type: data.bodyType || '',
+        fuel: data.fuelType || '',
+        busFuel: '',
+        engine: data.engineCC || '',
+        cifEngine: '',
+        weight: '',
+        seats: '',
+        vdp: '',
+        cifUSD: item.fob || 0,
+        fx: item.fx || 0,
+        hpCC: '',
+        hpHP: ''
+      };
+      
+      setInlineStates(prev => ({ ...prev, [item.id]: newState }));
+      setOpenInlineCalcs(prev => ({ ...prev, [item.id]: true }));
+    } catch (err) {
+      console.error('Failed to resolve specs', err);
+      // Fallback to empty inline calc
+      toggleInlineCalc(item.id);
+    } finally {
+      setResolvingIds(prev => ({ ...prev, [item.id]: false }));
+    }
+  };
+
   const updateInlineState = (id: string | number, fields: Partial<CalculatorState>) => {
     setInlineStates((prev) => ({
       ...prev,
@@ -263,26 +316,53 @@ export default function Watchlist({
             
             <div className="wl-input-row">
               <div className="wl-input-group">
-                <label className="wl-label">Target Budget (ZMW)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 150000"
-                  value={userTargetPrice}
-                  onChange={(e) => setUserTargetPrice(e.target.value)}
-                  className="wl-input"
-                />
+                <label className="wl-label">Listing Currency</label>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => setListingCurrency('USD')}
+                    style={{ flex: 1, padding: '0.5rem', border: `1px solid ${listingCurrency === 'USD' ? '#0f172a' : '#cbd5e1'}`, borderRadius: '0.5rem', backgroundColor: listingCurrency === 'USD' ? '#f8fafc' : 'white', fontWeight: listingCurrency === 'USD' ? 700 : 500 }}
+                  >
+                    USD
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setListingCurrency('ZAR')}
+                    style={{ flex: 1, padding: '0.5rem', border: `1px solid ${listingCurrency === 'ZAR' ? '#0f172a' : '#cbd5e1'}`, borderRadius: '0.5rem', backgroundColor: listingCurrency === 'ZAR' ? '#f8fafc' : 'white', fontWeight: listingCurrency === 'ZAR' ? 700 : 500 }}
+                  >
+                    ZAR
+                  </button>
+                </div>
               </div>
               <div className="wl-input-group">
-                <label className="wl-label">Personal Notes</label>
+                <label className="wl-label">Manual Listing Price (Optional)</label>
                 <input
-                  type="text"
-                  placeholder="e.g. Needs inspection"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
+                  type="number"
+                  placeholder="e.g. 15000"
+                  value={listingPrice}
+                  onChange={(e) => setListingPrice(e.target.value === '' ? '' : Number(e.target.value))}
                   className="wl-input"
                 />
               </div>
             </div>
+
+            <div className="wl-input-group">
+              <label className="wl-label">Personal Notes</label>
+              <input
+                type="text"
+                placeholder="e.g. Needs inspection"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="wl-input"
+              />
+            </div>
+
+            {lastCalcState && (
+              <div style={{ padding: '0.75rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.5rem', fontSize: '0.75rem', color: '#166534', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Check className="w-4 h-4" />
+                <span>Pre-loaded Duty Estimate ({zmwFormat(lastCalcTotal)}) will be attached.</span>
+              </div>
+            )}
 
             {formError && <div className="wl-alert-error">{formError}</div>}
 
@@ -353,8 +433,8 @@ export default function Watchlist({
                     <a href={item.url} target="_blank" rel="noreferrer" className="wl-icon-btn" title="Open Original Listing">
                       <ExternalLink className="w-4 h-4" />
                     </a>
-                    <button className="wl-icon-btn" onClick={(e) => toggleInlineCalc(item.id, e)} title="Duty Calculator">
-                      <Plus className="w-4 h-4" />
+                    <button className="wl-btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }} onClick={(e) => handleResolveAndCalculate(item, e)} title="Duty Calculator">
+                      {resolvingIds[item.id] ? <RefreshCw className="w-3.5 h-3.5 wl-spinner" /> : 'Calculate Duty'}
                     </button>
                     <button className="wl-btn-danger" onClick={() => handleRemove(item.id)} title="Remove">
                       <Trash className="w-4 h-4" />

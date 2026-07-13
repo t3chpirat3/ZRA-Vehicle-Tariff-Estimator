@@ -133,6 +133,7 @@ export default function App() {
   const [lastCalcTotal, setLastCalcTotal] = useState<number>(0);
   const [lastCalcUSD, setLastCalcUSD] = useState<number>(0);
   const [lastCalcFx, setLastCalcFx] = useState<number>(0);
+  const [lastCalcState, setLastCalcState] = useState<any>(null);
 
   // Load from local storage initially
   useEffect(() => {
@@ -157,10 +158,11 @@ export default function App() {
   };
 
   // Callback when user taps "Save to Watchlist" within Calculator side results
-  const handleSaveToWatchlistFromCalculator = (total: number, cifUSD: number, fx: number) => {
+  const handleSaveToWatchlistFromCalculator = (total: number, cifUSD: number, fx: number, calcState: any) => {
     setLastCalcTotal(total);
     setLastCalcUSD(cifUSD);
     setLastCalcFx(fx);
+    setLastCalcState(calcState);
     changeTab('watchlist');
 
     // Smooth scroll down to the "Add Vehicle to Watchlist" form
@@ -363,6 +365,7 @@ export default function App() {
                 lastCalcTotal={lastCalcTotal}
                 lastCalcUSD={lastCalcUSD}
                 lastCalcFx={lastCalcFx}
+                lastCalcState={lastCalcState}
                 onActivated={() => {}}
               />
             </div>

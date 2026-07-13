@@ -46,7 +46,7 @@ import { VesselSchedule } from '../data/shippingData';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 interface CalculatorProps {
-  onSaveToWatchlist: (total: number, cifUSD: number, fx: number) => void;
+  onSaveToWatchlist: (total: number, cifUSD: number, fx: number, calcState: CalculatorState) => void;
 }
 
 const INITIAL_STATE: CalculatorState = {
@@ -1372,7 +1372,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     id="wizard-save-watchlist-btn_s"
                     type="button"
                     onClick={() => {
-                      onSaveToWatchlist(result.total, state.cifUSD, state.fx);
+                      onSaveToWatchlist(result.total, state.cifUSD, state.fx, state);
                     }}
                     className="w-full flex items-center justify-center gap-2 btn-primary text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 cursor-pointer"
                   >
