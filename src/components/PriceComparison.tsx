@@ -41,6 +41,7 @@ import {
   MotorCarType,
   FuelType,
 } from '../types';
+import { getApiUrl } from '../utils/api';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -257,7 +258,7 @@ function computeScores(listings: Listing[], s: ComparisonSettings): Record<strin
 // ─── Silent API calls ────────────────────────────────────────────────────────
 
 async function silentResolveSpecs(description: string): Promise<SilentSpecs> {
-  const res = await fetch('/api/resolve-spec', {
+  const res = await fetch(getApiUrl('/api/resolve-spec'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: description }),
@@ -290,7 +291,7 @@ async function fetchCompareInsight(
   if (payload.length < 1) return null;
 
   try {
-    const res = await fetch('/api/compare-insight', {
+    const res = await fetch(getApiUrl('/api/compare-insight'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ listings: payload }),
@@ -432,7 +433,7 @@ export default function PriceComparison() {
   useEffect(() => {
     async function fetchRates() {
       try {
-        const res = await fetch('/api/exchange-rates');
+        const res = await fetch(getApiUrl('/api/exchange-rates'));
         if (!res.ok) return;
         const data = await res.json();
         if (data.rates && data.rates.usdToZmw && data.rates.zarToZmw) {

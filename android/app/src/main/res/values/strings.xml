@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Duty Boss</string>
+    <string name="title_activity_main">Duty Boss</string>
+    <string name="package_name">com.dutyboss.app</string>
+    <string name="custom_url_scheme">com.dutyboss.app</string>
+</resources>

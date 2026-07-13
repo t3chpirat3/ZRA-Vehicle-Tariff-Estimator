@@ -10,6 +10,7 @@ import {
   VESSEL_STATUSES,
   type VesselStatus
 } from '../data/shippingData';
+import { getApiUrl } from '../utils/api';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function formatDateForInput(isoString: string): string {
@@ -56,7 +57,7 @@ export default function AdminPanel() {
     setAuthError('');
     
     try {
-      const res = await fetch('/api/admin/verify', {
+      const res = await fetch(getApiUrl('/api/admin/verify'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +102,7 @@ export default function AdminPanel() {
         headers.set('Content-Type', 'application/json');
     }
 
-    const res = await fetch(url, { ...options, headers });
+    const res = await fetch(getApiUrl(url), { ...options, headers });
     if (res.status === 401) {
       handleLogout();
       setAuthError('Session expired or invalid token. Please log in again.');

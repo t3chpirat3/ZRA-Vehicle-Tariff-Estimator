@@ -14,6 +14,8 @@
  * Calls the secure backend proxy `/api/enhance-discovery` to avoid exposing the API key.
  */
 
+import type { VehicleSpec } from './discovery';
+import { getApiUrl } from './api';
 import { DiscoveryProfile, ScoredVehicle } from './discovery';
 import { UseCase, Terrain } from '../data/vehiclesData';
 
@@ -81,7 +83,7 @@ export async function enhanceWithAI(
   shortlist: ScoredVehicle[],
 ): Promise<AIInsight | null> {
   try {
-    const response = await fetch('/api/enhance-discovery', {
+    const response = await fetch(getApiUrl('/api/enhance-discovery'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

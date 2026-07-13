@@ -40,6 +40,7 @@ import {
   type PortInfo as PortInfoType,
   type FreightForwarder,
 } from '../data/shippingData';
+import { getApiUrl } from '../utils/api';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -396,7 +397,7 @@ export default function ShippingSchedule() {
   useEffect(() => {
     async function fetchSchedules() {
       try {
-        const res = await fetch('/api/schedules');
+        const res = await fetch(getApiUrl('/api/schedules'));
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setSchedules(data.schedules || []);

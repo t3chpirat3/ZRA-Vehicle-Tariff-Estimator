@@ -7,8 +7,9 @@
  * and get back structured specs that pre-fill the duty calculator.
  */
 
-import React, { useState, useRef } from 'react';
-import { WifiOff } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Bot, Sparkles, Loader2, Info, CheckCircle2, AlertCircle, WifiOff } from 'lucide-react';
+import { getApiUrl } from '../utils/api';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ interface SpecResolverProps {
 
 // The frontend now calls our secure Vercel Serverless Function instead of the DeepSeek API directly.
 // This ensures our API key is not exposed to the client.
-const LOCAL_API_URL = '/api/resolve-spec';
+const LOCAL_API_URL = getApiUrl('/api/resolve-spec');
 
 async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
   const response = await fetch(LOCAL_API_URL, {

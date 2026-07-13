@@ -216,7 +216,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   useEffect(() => {
     async function fetchFx() {
       try {
-        const res = await fetch('/api/exchange-rates');
+        const res = await fetch(getApiUrl('/api/exchange-rates'));
         if (!res.ok) return;
         const data = await res.json();
         if (data.rates && data.rates.usdToZmw) {
@@ -238,7 +238,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   useEffect(() => {
     async function fetchSchedules() {
       try {
-        const res = await fetch('/api/schedules');
+        const res = await fetch(getApiUrl('/api/schedules'));
         if (!res.ok) return;
         const data = await res.json();
         if (data.schedules) {
