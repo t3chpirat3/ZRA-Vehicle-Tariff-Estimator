@@ -39,10 +39,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+          java-version: '21'
 
       - name: Build Android APK
         working-directory: android
