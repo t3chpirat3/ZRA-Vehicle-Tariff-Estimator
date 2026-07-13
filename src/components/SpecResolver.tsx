@@ -8,6 +8,8 @@
  */
 
 import React, { useState, useRef } from 'react';
+import { WifiOff } from 'lucide-react';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -100,6 +102,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
   const [result, setResult]         = useState<ResolvedSpecs | null>(null);
   const [errorMsg, setErrorMsg]     = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const isOffline = useNetworkStatus();
 
   const EXAMPLES = ['Vitz 1KR', 'Allion 1NZ', 'Aqua hybrid', 'Hilux 1GD'];
 
@@ -177,6 +180,14 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
 
           <div className="p-4 space-y-3">
             {/* Search Input */}
+            {isOffline && (
+              <div className="mb-3 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2">
+                <WifiOff className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-amber-700">
+                  <strong>Offline:</strong> AI features require an active internet connection. Please reconnect to use the Spec Resolver.
+                </p>
+              </div>
+            )}
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -185,13 +196,14 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                 maxLength={100}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
+                disabled={isOffline}
                 placeholder='e.g. "Vitz 1KR" or "Premio 1NZ 2015"'
-                className="flex-1 border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] bg-[color:var(--surface-soft)] placeholder:text-slate-400 text-[color:var(--text)] transition-all"
+                className="flex-1 border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-medium outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] bg-[color:var(--surface-soft)] placeholder:text-slate-400 text-[color:var(--text)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
                 type="button"
                 onClick={handleResolve}
-                disabled={!query.trim() || status === 'loading'}
+                disabled={!query.trim() || status === 'loading' || isOffline}
                 className="px-4 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed btn-primary text-xs font-extrabold cursor-pointer outline-none flex-shrink-0"
               >
                 {status === 'loading' ? 'Resolving…' : 'Resolve'}

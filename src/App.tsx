@@ -16,7 +16,8 @@ import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
 import FaqSection from './components/FaqSection';
 import { WatchlistItem } from './types';
-import { Shield, Menu, X } from 'lucide-react';
+import { Shield, Menu, X, WifiOff } from 'lucide-react';
+import { useNetworkStatus } from './hooks/useNetworkStatus';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
 
@@ -88,6 +89,7 @@ export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
+  const isOffline = useNetworkStatus();
 
   // Implement splash screen exit
   useEffect(() => {
@@ -229,46 +231,60 @@ export default function App() {
                   <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">
                     Import Planning Platform
                   </span>
-                </div>
-          </button>
+              </div>
+            </button>
 
-          <nav className="ml-auto hidden sm:flex items-center gap-2 text-[13px] font-semibold">
-            {navTabs.map((tab) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => changeTab(tab.id)}
-                  className={`whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
-                    isActive
-                      ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
-                      : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
-                  }`}
-                >
-                  {tab.label}
-                  {tab.id === 'watchlist' && watchlistCount > 0 && (
-                    <span
-                      className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1 ${
-                        isActive ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--border-strong)] text-[color:var(--text)]'
+            <div className="ml-auto hidden sm:flex items-center gap-4">
+              {isOffline && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold shadow-sm animate-pulse">
+                  <WifiOff className="w-3.5 h-3.5" />
+                  Offline
+                </div>
+              )}
+              <nav className="flex items-center gap-2 text-[13px] font-semibold">
+                {navTabs.map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => changeTab(tab.id)}
+                      className={`whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors ${
+                        isActive
+                          ? 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]'
+                          : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
                       }`}
                     >
-                      {watchlistCount}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+                      {tab.label}
+                      {tab.id === 'watchlist' && watchlistCount > 0 && (
+                        <span
+                          className={`text-[10px] font-bold rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1 ${
+                            isActive ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--border-strong)] text-[color:var(--text)]'
+                          }`}
+                        >
+                          {watchlistCount}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
 
-          <button 
-            className="ml-auto sm:hidden p-2 -mr-2 rounded-xl text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] focus:outline-none"
-            onClick={() => setIsMobileMenuOpen(true)}
-            aria-label="Open mobile menu"
-          >
-            <Menu className="w-7 h-7" />
-          </button>
-        </div>
-      </header>
+            {isOffline && (
+              <div className="ml-auto sm:hidden flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold shadow-sm mr-2 animate-pulse">
+                <WifiOff className="w-3.5 h-3.5" />
+              </div>
+            )}
+
+            <button 
+              className={`${isOffline ? '' : 'ml-auto'} sm:hidden p-2 -mr-2 rounded-xl text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] focus:outline-none`}
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open mobile menu"
+            >
+              <Menu className="w-7 h-7" />
+            </button>
+          </div>
+        </header>
 
       {/* Mobile Slide-out Drawer */}
       <div 
@@ -373,7 +389,19 @@ export default function App() {
           )}
           {activeTab === 'admin' && (
             <div className="animate-fadeIn">
-              <AdminPanel />
+              {isOffline ? (
+                <div className="p-8 text-center bg-white rounded-2xl border border-[color:var(--border)] shadow-sm">
+                  <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <WifiOff className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">Offline Mode</h3>
+                  <p className="text-slate-500 max-w-md mx-auto">
+                    The Admin Panel requires an active internet connection to communicate with the secure server. Please reconnect to access administrative features.
+                  </p>
+                </div>
+              ) : (
+                <AdminPanel />
+              )}
             </div>
           )}
           {activeTab === 'privacy' && (

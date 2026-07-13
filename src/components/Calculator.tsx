@@ -24,7 +24,8 @@ import {
   MapPin,
   Calendar,
   Clock,
-  Navigation
+  Navigation,
+  WifiOff
 } from 'lucide-react';
 import {
   CalculatorState,
@@ -42,6 +43,7 @@ import {
 } from '../types';
 import SpecResolver, { ResolvedSpecs } from './SpecResolver';
 import { VesselSchedule } from '../data/shippingData';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 interface CalculatorProps {
   onSaveToWatchlist: (total: number, cifUSD: number, fx: number) => void;
@@ -199,6 +201,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [whatsIncludedOpen, setWhatsIncludedOpen] = useState(false);
   const [surtaxRefOpen, setSurtaxRefOpen] = useState(false);
+  const isOffline = useNetworkStatus();
   
   // Results tab view for mobile (Breakdown vs Help/Resources) to ensure zero scrolling
   const [mobileResultsTab, setMobileResultsTab] = useState<'breakdown' | 'resources'>('breakdown');
@@ -1047,6 +1050,11 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   onChange={(e) => setState((prev) => ({ ...prev, fx: parseFloat(e.target.value) || 0 }))}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-slate-800 outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white transition-all shadow-inner"
                 />
+                {isOffline && (
+                  <p className="mt-1.5 text-[9px] font-bold text-amber-600 flex items-center gap-1">
+                    <WifiOff className="w-3 h-3" /> Offline: Enter FX manually
+                  </p>
+                )}
               </div>
             </div>
 
