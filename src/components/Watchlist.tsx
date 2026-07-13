@@ -83,7 +83,7 @@ export default function Watchlist({
       const res = await fetch('/api/watchlist-scrape', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url.trim(), notes, userTargetPrice })
+        body: JSON.stringify({ url: url.trim(), notes, listingPrice })
       });
 
       if (!res.ok) {
