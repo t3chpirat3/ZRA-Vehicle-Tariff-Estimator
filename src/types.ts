@@ -56,22 +56,53 @@ export interface CalculationResult {
   hsCode?: string;
 }
 
+export interface WatchlistHistory {
+  timestamp: string;
+  status: 'available' | 'unavailable' | 'checking';
+  details: string;
+}
+
 export interface WatchlistItem {
-  id: number;
-  desc: string;
-  currency: 'USD' | 'ZAR';
-  price: number;
-  fob: number;
-  source: string;
+  id: string | number;
+  desc?: string;
+  currency?: 'USD' | 'ZAR';
+  price: number | string;
+  fob?: number;
+  source?: string;
   url: string;
-  dcId: string;
-  dcUrl: string;
+  dcId?: string;
+  dcUrl?: string;
   notes: string;
-  duty: number;
-  fx: number;
-  savedAt: string;
+  duty?: number;
+  fx?: number;
+  savedAt?: string;
+  createdAt?: string; // from standalone
   lastChecked?: string;
-  calcState?: CalculatorState; // Saved state of inline calculation
+  calcState?: CalculatorState;
+
+  // AI-driven properties
+  title?: string;
+  make?: string;
+  model?: string;
+  year?: number;
+  mileage?: string;
+  location?: string;
+  image?: string;
+  description?: string;
+  status?: 'available' | 'unavailable' | 'checking';
+  userTargetPrice?: string;
+  hasChangedStatus?: boolean;
+  history?: WatchlistHistory[];
+}
+
+export interface AppNotification {
+  id: string;
+  listingId: string | number;
+  vehicleTitle: string;
+  oldStatus: 'available' | 'unavailable';
+  newStatus: 'available' | 'unavailable';
+  timestamp: string;
+  read: boolean;
 }
 
 export const CARBON_RATES: Record<string, number> = {
