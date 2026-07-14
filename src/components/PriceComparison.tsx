@@ -31,6 +31,8 @@ import {
   Lightbulb,
   ShieldAlert,
   Sparkles,
+  Bookmark,
+  Download
 } from 'lucide-react';
 import {
   calculateDuty,
@@ -40,6 +42,7 @@ import {
   VehicleCategory,
   MotorCarType,
   FuelType,
+  WatchlistItem
 } from '../types';
 import { getApiUrl } from '../utils/api';
 
@@ -413,12 +416,58 @@ const DEFAULT_SETTINGS: ComparisonSettings = {
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
-export default function PriceComparison() {
+interface PriceComparisonProps {
+  watchlist?: WatchlistItem[];
+  importedListing?: WatchlistItem | null;
+  onSaveToWatchlist?: (listing: Listing) => void;
+  clearImportedListing?: () => void;
+}
+
+export default function PriceComparison({
+  watchlist = [],
+  importedListing,
+  onSaveToWatchlist,
+  clearImportedListing
+}: PriceComparisonProps = {}) {
   const [listings, setListings] = useState<Listing[]>([newListing('japan'), newListing('southafrica')]);
   const [settings, setSettings] = useState<ComparisonSettings>(DEFAULT_SETTINGS);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tableOpen, setTableOpen] = useState(false);
   const [sortBy, setSortBy] = useState<'score' | 'cost' | 'mileage'>('score');
+  const [showImportMenu, setShowImportMenu] = useState(false);
+
+  useEffect(() => {
+    if (importedListing) {
+      const newL = newListing(
+        (importedListing.location?.toLowerCase().replace(/\s+/g, '') as OriginCountry) || 'japan'
+      );
+      newL.description = importedListing.title || importedListing.desc || '';
+      newL.listingPrice = Number(importedListing.price?.toString().replace(/[^0-9.]/g, '') || importedListing.fob || '');
+      newL.currency = importedListing.currency || 'USD';
+      newL.year = importedListing.year || '';
+      newL.mileageKm = Number(importedListing.mileage?.toString().replace(/[^0-9]/g, '') || '');
+      
+      setListings(prev => [...prev, newL]);
+      
+      if (clearImportedListing) {
+        clearImportedListing();
+      }
+    }
+  }, [importedListing, clearImportedListing]);
+
+  const handleImportWatchlistItem = (item: WatchlistItem) => {
+    const newL = newListing(
+      (item.location?.toLowerCase().replace(/\s+/g, '') as OriginCountry) || 'japan'
+    );
+    newL.description = item.title || item.desc || '';
+    newL.listingPrice = Number(item.price?.toString().replace(/[^0-9.]/g, '') || item.fob || '');
+    newL.currency = item.currency || 'USD';
+    newL.year = item.year || '';
+    newL.mileageKm = Number(item.mileage?.toString().replace(/[^0-9]/g, '') || '');
+    
+    setListings(prev => [...prev, newL]);
+    setShowImportMenu(false);
+  };
 
   // AI insight state
   const [aiInsight, setAiInsight] = useState<AIInsight | null>(null);
@@ -599,7 +648,7 @@ export default function PriceComparison() {
             Compare the same model from multiple markets — all costs converted to ZMW, with ZRA duty, freight, and inspection fees factored in.
           </p>
         </div>
-        <div className="flex gap-2 flex-shrink-0">
+        <div className="flex gap-2 flex-shrink-0 relative">
           <button
             onClick={() => setSettingsOpen((o) => !o)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors ${settingsOpen ? 'bw-active' : 'btn-ghost'}`}
@@ -607,6 +656,43 @@ export default function PriceComparison() {
             <Settings2 className="w-3.5 h-3.5" />
             Rates
           </button>
+          
+          <div className="relative">
+            <button
+              onClick={() => setShowImportMenu((o) => !o)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors ${showImportMenu ? 'bw-active' : 'btn-secondary'}`}
+            >
+              <Download className="w-3.5 h-3.5" />
+              Import
+            </button>
+            <AnimatePresence>
+              {showImportMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  className="absolute right-0 top-full mt-2 w-64 bg-white border border-[color:var(--border-strong)] shadow-xl rounded-xl p-2 z-50 max-h-64 overflow-y-auto"
+                >
+                  <p className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase px-2 py-1 mb-1">Select from Watchlist</p>
+                  {watchlist && watchlist.length > 0 ? (
+                    watchlist.map(item => (
+                      <button
+                        key={item.id}
+                        onClick={() => handleImportWatchlistItem(item)}
+                        className="w-full text-left px-2 py-2 text-xs font-medium text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] rounded-lg flex flex-col gap-0.5"
+                      >
+                        <span className="font-bold truncate">{item.title || item.desc}</span>
+                        <span className="text-[10px] text-[color:var(--text-muted)] truncate">{item.price} • {item.make} {item.model}</span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-2 py-3 text-xs text-center text-[color:var(--text-muted)]">Watchlist is empty</div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <button
             onClick={addListing}
             disabled={listings.length >= 6}
@@ -755,6 +841,15 @@ export default function PriceComparison() {
                         Retry
                       </button>
                     )}
+                    {onSaveToWatchlist && (
+                      <button
+                        onClick={() => onSaveToWatchlist(l)}
+                        className="text-[color:var(--text-muted)] hover:text-[color:var(--primary)] transition-colors p-1 rounded-lg hover:bg-[color:var(--surface-soft)] mr-1"
+                        title="Save to Watchlist"
+                      >
+                        <Bookmark className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                     {listings.length > 1 && (
                       <button
                         onClick={() => removeListing(l.id)}
@@ -823,8 +918,13 @@ export default function PriceComparison() {
                   {/* Price + Mileage */}
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-[10px] font-bold text-[color:var(--text-muted)] uppercase tracking-wider mb-1">
-                        Price ({CURRENCY_SYMBOLS[l.currency]})
+                      <label className="flex items-center justify-between text-[10px] font-bold text-[color:var(--text-muted)] uppercase tracking-wider mb-1">
+                        <span>Price ({CURRENCY_SYMBOLS[l.currency]})</span>
+                        {l.currency !== 'ZMW' && l.listingPrice && (
+                          <span className="text-[9px] text-[color:var(--primary)] lowercase ml-1">
+                            ≈ {zmwFormat(toZMW(Number(l.listingPrice), l.currency, settings))}
+                          </span>
+                        )}
                       </label>
                       <input
                         type="number"

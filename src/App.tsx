@@ -174,6 +174,43 @@ export default function App() {
     }, 150);
   };
 
+  const [importedListingForCompare, setImportedListingForCompare] = useState<WatchlistItem | null>(null);
+
+  const handleSendToCompare = (item: WatchlistItem) => {
+    setImportedListingForCompare(item);
+    changeTab('compare');
+  };
+
+  const handleSaveToWatchlistFromCompare = (listing: any) => {
+    const newItem: WatchlistItem = {
+      id: Date.now().toString(),
+      url: '',
+      notes: 'Imported from Price Comparison',
+      savedAt: new Date().toISOString(),
+      lastChecked: new Date().toISOString(),
+      hasChangedStatus: false,
+      title: listing.description || 'Imported Vehicle',
+      make: 'Unknown',
+      model: 'Vehicle',
+      year: listing.year || new Date().getFullYear(),
+      price: listing.listingPrice ? `${listing.currency} ${listing.listingPrice}` : 'Unknown',
+      mileage: listing.mileageKm ? `${listing.mileageKm} km` : 'N/A',
+      location: listing.origin || 'N/A',
+      description: listing.description || 'Imported from comparison tab.',
+      status: 'available',
+      image: '',
+      fob: listing.listingPrice || 0,
+      duty: listing.dutyZMW || 0,
+      fx: 0,
+      currency: listing.currency,
+      desc: listing.description || 'Imported Vehicle',
+      source: 'Price Comparison',
+    };
+
+    handleUpdateWatchlist([newItem, ...watchlist]);
+    changeTab('watchlist');
+  };
+
   const watchlistCount = watchlist.length;
 
   const navTabs: { id: typeof activeTab; label: string }[] = [
@@ -367,12 +404,18 @@ export default function App() {
                 lastCalcFx={lastCalcFx}
                 lastCalcState={lastCalcState}
                 onActivated={() => {}}
+                onSendToCompare={handleSendToCompare}
               />
             </div>
           )}
           {activeTab === 'compare' && (
             <div className="animate-fadeIn">
-              <PriceComparison />
+              <PriceComparison
+                watchlist={watchlist}
+                importedListing={importedListingForCompare}
+                onSaveToWatchlist={handleSaveToWatchlistFromCompare}
+                clearImportedListing={() => setImportedListingForCompare(null)}
+              />
             </div>
           )}
           {activeTab === 'agents' && (

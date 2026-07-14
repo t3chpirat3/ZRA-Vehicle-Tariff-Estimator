@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Bookmark,
   Plus,
@@ -13,7 +13,8 @@ import {
   Search,
   RefreshCw,
   Eye,
-  Info
+  Info,
+  BarChart3
 } from 'lucide-react';
 import {
   WatchlistItem,
@@ -29,6 +30,7 @@ import {
   BusFuelType,
   WEIGHT_OPTIONS_MAP,
 } from '../types';
+import { getApiUrl } from '../utils/api';
 import './Watchlist.css';
 
 interface WatchlistProps {
@@ -39,6 +41,7 @@ interface WatchlistProps {
   lastCalcFx: number;
   lastCalcState?: any;
   onActivated: () => void;
+  onSendToCompare?: (item: WatchlistItem) => void;
 }
 
 export default function Watchlist({
@@ -49,6 +52,7 @@ export default function Watchlist({
   lastCalcFx,
   lastCalcState,
   onActivated,
+  onSendToCompare,
 }: WatchlistProps) {
   // Form State
   const [formOpen, setFormOpen] = useState(true);
@@ -69,6 +73,25 @@ export default function Watchlist({
   // Status Checking State
   const [checkingIds, setCheckingIds] = useState<Record<string | number, boolean>>({});
   const [resolvingIds, setResolvingIds] = useState<Record<string | number, boolean>>({});
+
+  // Rates State
+  const [rates, setRates] = useState<{ usdToZmw: number; zarToZmw: number }>({ usdToZmw: 28.5, zarToZmw: 1.55 });
+  
+  useEffect(() => {
+    async function fetchRates() {
+      try {
+        const res = await fetch(getApiUrl('/api/exchange-rates'));
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.rates) {
+          setRates({ usdToZmw: data.rates.usdToZmw, zarToZmw: data.rates.zarToZmw });
+        }
+      } catch (err) {
+        // silently fail and use defaults
+      }
+    }
+    fetchRates();
+  }, []);
 
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -335,7 +358,14 @@ export default function Watchlist({
                 </div>
               </div>
               <div className="wl-input-group">
-                <label className="wl-label">Manual Listing Price (Optional)</label>
+                <label className="flex items-center justify-between wl-label">
+                  <span>Manual Listing Price (Optional)</span>
+                  {listingPrice !== '' && listingPrice > 0 && (
+                    <span className="text-[10px] text-emerald-600 font-bold lowercase">
+                      ≈ {zmwFormat(Number(listingPrice) * (listingCurrency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
+                    </span>
+                  )}
+                </label>
                 <input
                   type="number"
                   placeholder="e.g. 15000"
@@ -407,8 +437,13 @@ export default function Watchlist({
                 <div className="wl-card-title-row">
                   <h4 className="wl-card-title-text">{item.title || item.desc}</h4>
                   {(item.price || (item.duty && item.duty > 0)) && (
-                    <div className="wl-card-price">
-                      {item.price ? item.price : zmwFormat(item.duty || 0)}
+                    <div className="wl-card-price" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
+                      <span>{item.price ? item.price : zmwFormat(item.duty || 0)}</span>
+                      {item.price && item.currency && item.currency !== 'ZMW' && item.fob && item.fob > 0 && (
+                        <span className="text-[10px] text-emerald-600 font-bold opacity-80" style={{ fontSize: '11px', marginTop: '-2px' }}>
+                          ≈ {zmwFormat(item.fob * (item.currency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>
@@ -436,6 +471,11 @@ export default function Watchlist({
                     <button className="wl-btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }} onClick={(e) => handleResolveAndCalculate(item, e)} title="Duty Calculator">
                       {resolvingIds[item.id] ? <RefreshCw className="w-3.5 h-3.5 wl-spinner" /> : 'Calculate Duty'}
                     </button>
+                    {onSendToCompare && (
+                      <button className="wl-icon-btn" onClick={(e) => { e.stopPropagation(); onSendToCompare(item); }} title="Compare Prices">
+                        <BarChart3 className="w-4 h-4" />
+                      </button>
+                    )}
                     <button className="wl-btn-danger" onClick={() => handleRemove(item.id)} title="Remove">
                       <Trash className="w-4 h-4" />
                     </button>
