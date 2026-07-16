@@ -9,6 +9,7 @@ import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
 import ClearingAgents from './components/ClearingAgents';
 import ImportGuide from './components/ImportGuide';
+import BuyersGuide from './components/BuyersGuide';
 import Logistics from './components/Logistics';
 import AdminPanel from './components/AdminPanel';
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -87,7 +88,7 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'buyers-guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
   const isOffline = useNetworkStatus();
 
@@ -220,6 +221,7 @@ export default function App() {
     { id: 'compare', label: 'Price Comparison' },
     { id: 'agents', label: 'Clearing Agents' },
     { id: 'guide', label: 'Import Guide' },
+    { id: 'buyers-guide', label: 'Buyer\'s Guide' },
     { id: 'logistics', label: 'Logistics' },
   ];
 
@@ -426,6 +428,11 @@ export default function App() {
           {activeTab === 'guide' && (
             <div className="animate-fadeIn">
               <ImportGuide />
+            </div>
+          )}
+          {activeTab === 'buyers-guide' && (
+            <div className="animate-fadeIn">
+              <BuyersGuide />
             </div>
           )}
           {activeTab === 'logistics' && (
