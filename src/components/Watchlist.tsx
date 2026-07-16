@@ -436,16 +436,24 @@ export default function Watchlist({
               <div className="wl-card-body" onClick={() => setModalItem(item)}>
                 <div className="wl-card-title-row">
                   <h4 className="wl-card-title-text">{item.title || item.desc}</h4>
-                  {(item.price || (item.duty && item.duty > 0)) && (
-                    <div className="wl-card-price" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
-                      <span>{item.price ? item.price : zmwFormat(item.duty || 0)}</span>
-                      {item.price && item.currency && item.currency !== 'ZMW' && item.fob && item.fob > 0 && (
-                        <span className="text-[10px] text-emerald-600 font-bold opacity-80" style={{ fontSize: '11px', marginTop: '-2px' }}>
-                          ≈ {zmwFormat(item.fob * (item.currency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  <div className="wl-card-price" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px' }}>
+                    {item.price && (
+                      <>
+                        <span>{item.price}</span>
+                        {item.currency && item.currency !== 'ZMW' && item.fob && item.fob > 0 && (
+                          <span className="text-[10px] text-emerald-600 font-bold opacity-80" style={{ fontSize: '11px', marginTop: '-2px' }}>
+                            ≈ {zmwFormat(item.fob * (item.currency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    {(item.duty ?? 0) > 0 && (
+                      <div style={{ marginTop: '0.25rem', padding: '0.2rem 0.4rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Duty:</span>
+                        <span className="text-[11px] font-black text-emerald-700">{zmwFormat(item.duty!)}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
                 <p className="wl-card-desc">{item.description || item.notes}</p>
@@ -469,7 +477,7 @@ export default function Watchlist({
                       <ExternalLink className="w-4 h-4" />
                     </a>
                     <button className="wl-btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }} onClick={(e) => handleResolveAndCalculate(item, e)} title="Duty Calculator">
-                      {resolvingIds[item.id] ? <RefreshCw className="w-3.5 h-3.5 wl-spinner" /> : 'Calculate Duty'}
+                      {resolvingIds[item.id] ? <RefreshCw className="w-3.5 h-3.5 wl-spinner" /> : ((item.duty ?? 0) > 0 ? 'Recalculate Duty' : 'Calculate Duty')}
                     </button>
                     {onSendToCompare && (
                       <button className="wl-icon-btn" onClick={(e) => { e.stopPropagation(); onSendToCompare(item); }} title="Compare Prices">
