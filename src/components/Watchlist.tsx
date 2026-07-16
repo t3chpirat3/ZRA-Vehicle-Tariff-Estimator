@@ -95,60 +95,99 @@ export default function Watchlist({
 
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!url.trim()) {
-      setFormError('Please enter a valid listing URL.');
+    if (!url.trim() && !notes.trim()) {
+      setFormError('Please enter either a Listing URL or a Vehicle Title/Note.');
       return;
     }
     setFormError('');
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/watchlist-scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url.trim(), notes, listingPrice })
-      });
+      let newItem: WatchlistItem;
+      
+      if (url.trim()) {
+        const res = await fetch('/api/watchlist-scrape', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: url.trim(), notes, listingPrice })
+        });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Failed to fetch listing data.');
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || 'Failed to fetch listing data.');
+        }
+
+        const data = await res.json();
+
+        newItem = {
+          id: Date.now().toString(),
+          url: url.trim(),
+          notes: notes.trim(),
+          savedAt: new Date().toISOString(),
+          lastChecked: new Date().toISOString(),
+          hasChangedStatus: false,
+          title: data.title || 'Unknown Vehicle',
+          make: data.make || 'Unknown',
+          model: data.model || 'Vehicle',
+          year: data.year || new Date().getFullYear(),
+          price: listingPrice === '' ? (data.price || 'Unknown') : `${listingCurrency} ${listingPrice}`,
+          mileage: data.mileage || 'N/A',
+          location: data.location || 'N/A',
+          description: data.description || 'Specifications extracted from listing.',
+          status: data.status === 'unavailable' ? 'unavailable' : 'available',
+          image: data.image || '',
+          history: [
+            {
+              timestamp: new Date().toISOString(),
+              status: data.status === 'unavailable' ? 'unavailable' : 'available',
+              details: `Bookmark established. ${data.reason || ''}`
+            }
+          ],
+          // Default Duty Boss fields
+          fob: listingPrice === '' ? 0 : Number(listingPrice),
+          duty: lastCalcState ? lastCalcTotal : 0,
+          fx: lastCalcState ? lastCalcFx : 0,
+          currency: listingCurrency,
+          desc: data.title || 'Unknown Vehicle',
+          source: data.make || 'Web Listing',
+          calcState: lastCalcState || undefined
+        };
+      } else {
+        // No URL provided, create a manual entry
+        const titleText = notes.trim().split('\n')[0] || 'Manual Entry';
+        newItem = {
+          id: Date.now().toString(),
+          url: '',
+          notes: notes.trim(),
+          savedAt: new Date().toISOString(),
+          lastChecked: new Date().toISOString(),
+          hasChangedStatus: false,
+          title: titleText,
+          make: 'Unknown',
+          model: 'Vehicle',
+          year: new Date().getFullYear(),
+          price: listingPrice === '' ? 'Unknown' : `${listingCurrency} ${listingPrice}`,
+          mileage: 'N/A',
+          location: 'N/A',
+          description: notes.trim(),
+          status: 'available',
+          image: '',
+          history: [
+            {
+              timestamp: new Date().toISOString(),
+              status: 'available',
+              details: `Manual bookmark established.`
+            }
+          ],
+          fob: listingPrice === '' ? 0 : Number(listingPrice),
+          duty: lastCalcState ? lastCalcTotal : 0,
+          fx: lastCalcState ? lastCalcFx : 0,
+          currency: listingCurrency,
+          desc: titleText,
+          source: 'Manual Entry',
+          calcState: lastCalcState || undefined
+        };
       }
-
-      const data = await res.json();
-
-      const newItem: WatchlistItem = {
-        id: Date.now().toString(),
-        url: url.trim(),
-        notes: notes.trim(),
-        savedAt: new Date().toISOString(),
-        lastChecked: new Date().toISOString(),
-        hasChangedStatus: false,
-        title: data.title || 'Unknown Vehicle',
-        make: data.make || 'Unknown',
-        model: data.model || 'Vehicle',
-        year: data.year || new Date().getFullYear(),
-        price: listingPrice === '' ? (data.price || 'Unknown') : `${listingCurrency} ${listingPrice}`,
-        mileage: data.mileage || 'N/A',
-        location: data.location || 'N/A',
-        description: data.description || 'Specifications extracted from listing.',
-        status: data.status === 'unavailable' ? 'unavailable' : 'available',
-        image: data.image || '',
-        history: [
-          {
-            timestamp: new Date().toISOString(),
-            status: data.status === 'unavailable' ? 'unavailable' : 'available',
-            details: `Bookmark established. ${data.reason || ''}`
-          }
-        ],
-        // Default Duty Boss fields
-        fob: listingPrice === '' ? 0 : Number(listingPrice),
-        duty: lastCalcState ? lastCalcTotal : 0,
-        fx: lastCalcState ? lastCalcFx : 0,
-        currency: listingCurrency,
-        desc: data.title || 'Unknown Vehicle',
-        source: data.make || 'Web Listing',
-        calcState: lastCalcState || undefined
-      };
 
       onUpdateWatchlist([newItem, ...watchlist]);
       setUrl('');
@@ -173,16 +212,24 @@ export default function Watchlist({
     setCheckingIds(prev => ({ ...prev, [item.id]: true }));
     
     try {
-      const res = await fetch('/api/watchlist-scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: item.url, checkOnly: true })
-      });
+      let newStatus = item.status;
+      let reason = 'Verification check completed.';
 
-      if (!res.ok) throw new Error('Check failed');
-      const data = await res.json();
-      
-      const newStatus = data.status === 'unavailable' ? 'unavailable' : 'available';
+      if (item.url) {
+        const res = await fetch('/api/watchlist-scrape', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: item.url, checkOnly: true })
+        });
+
+        if (!res.ok) throw new Error('Check failed');
+        const data = await res.json();
+        
+        newStatus = data.status === 'unavailable' ? 'unavailable' : 'available';
+        reason = data.reason || 'Verification check completed.';
+      } else {
+        reason = 'Manual entry (no URL) - unable to verify online.';
+      }
       
       onUpdateWatchlist(watchlist.map(w => {
         if (w.id === item.id) {
@@ -190,7 +237,7 @@ export default function Watchlist({
           updatedHistory.unshift({
             timestamp: new Date().toISOString(),
             status: newStatus,
-            details: data.reason || 'Verification check completed.'
+            details: reason
           });
           
           return {
@@ -326,11 +373,10 @@ export default function Watchlist({
           </div>
           <form onSubmit={handleAddSubmit} className="wl-form-body">
             <div className="wl-input-group">
-              <label className="wl-label">Listing URL <span style={{color: '#ef4444'}}>*</span></label>
+              <label className="wl-label">Listing URL <span style={{color: '#94a3b8', fontSize: '0.75rem', fontWeight: 500, marginLeft: '0.25rem'}}>(Optional)</span></label>
               <input
                 type="url"
-                required
-                placeholder="https://www.sbtjapan.com/..."
+                placeholder="https://www.sbtjapan.com/... (Optional)"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 className="wl-input"
@@ -377,10 +423,10 @@ export default function Watchlist({
             </div>
 
             <div className="wl-input-group">
-              <label className="wl-label">Personal Notes</label>
+              <label className="wl-label">Vehicle Title / Notes</label>
               <input
                 type="text"
-                placeholder="e.g. Needs inspection"
+                placeholder="e.g. 2015 Toyota Auris 1.5L"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 className="wl-input"
@@ -470,12 +516,14 @@ export default function Watchlist({
                 <div className="wl-card-footer">
                   <span>Checked: {new Date(item.lastChecked || item.savedAt || '').toLocaleDateString()}</span>
                   <div className="wl-card-actions" onClick={e => e.stopPropagation()}>
-                    <button className="wl-icon-btn" onClick={() => handleVerifyStatus(item)} title="Verify Availability">
+                    <button className="wl-icon-btn" onClick={() => handleVerifyStatus(item)} title={item.url ? "Verify Availability" : "Manual Check"}>
                       <RefreshCw className={`w-4 h-4 ${checkingIds[item.id] ? 'wl-spinner' : ''}`} />
                     </button>
-                    <a href={item.url} target="_blank" rel="noreferrer" className="wl-icon-btn" title="Open Original Listing">
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                    {item.url && (
+                      <a href={item.url} target="_blank" rel="noreferrer" className="wl-icon-btn" title="Open Original Listing">
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
                     <button className="wl-btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }} onClick={(e) => handleResolveAndCalculate(item, e)} title="Duty Calculator">
                       {resolvingIds[item.id] ? <RefreshCw className="w-3.5 h-3.5 wl-spinner" /> : ((item.duty ?? 0) > 0 ? 'Recalculate Duty' : 'Calculate Duty')}
                     </button>
