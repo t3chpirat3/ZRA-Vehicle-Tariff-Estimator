@@ -387,7 +387,10 @@ export default function App() {
         <div className="container mx-auto px-4 max-w-7xl py-5">
           {activeTab === 'calc' && (
             <div className="animate-fadeIn">
-              <Calculator onSaveToWatchlist={handleSaveToWatchlistFromCalculator} />
+              <Calculator 
+                onSaveToWatchlist={handleSaveToWatchlistFromCalculator}
+                onNavigate={changeTab}
+              />
               <FaqSection />
             </div>
           )}

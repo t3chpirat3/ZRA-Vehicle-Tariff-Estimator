@@ -25,7 +25,9 @@ import {
   Calendar,
   Clock,
   Navigation,
-  WifiOff
+  WifiOff,
+  Search,
+  BarChart3
 } from 'lucide-react';
 import {
   CalculatorState,
@@ -47,6 +49,7 @@ import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
 interface CalculatorProps {
   onSaveToWatchlist: (total: number, cifUSD: number, fx: number, calcState: CalculatorState) => void;
+  onNavigate?: (tab: any) => void;
 }
 
 const INITIAL_STATE: CalculatorState = {
@@ -126,10 +129,10 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
     .slice(0, 2); // Show top 2 nearest
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 mt-4 lg:mt-0">
-      <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 mt-6">
+      <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-1.5">
         <Navigation className="w-3.5 h-3.5 text-[color:var(--primary)]" />
-        Import Timeline & Next Steps
+        Import Timeline
       </h4>
       
       {state.origin === 'Thailand' && (
@@ -141,53 +144,61 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
         </div>
       )}
 
-      <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-2 relative">
         
         {/* Step 1: Procurement & Duty */}
-        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-[color:var(--primary)] text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-            <CheckCircle2 className="w-3 h-3" />
-          </div>
-          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <h5 className="font-bold text-xs text-slate-800 mb-1">1. Estimate & Procurement</h5>
-            <p className="text-[10px] text-slate-500">You've estimated the duties. Next, complete the purchase of the vehicle from {state.origin || 'the exporter'}.</p>
+        <div className="flex-1 flex flex-col relative group">
+          <div className="hidden md:block absolute top-3 left-6 right-0 h-0.5 bg-slate-200 z-0"></div>
+          <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-[color:var(--primary)] text-white shadow shrink-0 z-10 md:mb-3">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 w-full p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <h5 className="font-bold text-xs text-slate-800 mb-1">1. Procurement</h5>
+              <p className="text-[10px] text-slate-500">Estimate saved. Complete the purchase from {state.origin || 'the exporter'}.</p>
+            </div>
           </div>
         </div>
 
         {/* Step 2: Shipping */}
-        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-blue-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-            <Ship className="w-3 h-3" />
-          </div>
-          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-blue-50/50 border border-blue-100">
-            <h5 className="font-bold text-xs text-slate-800 mb-2">2. Book Shipping</h5>
-            {upcomingSchedules.length > 0 ? (
-              <div className="space-y-2">
-                <p className="text-[10px] text-slate-600 mb-2">Upcoming sailings from {origin}:</p>
-                {upcomingSchedules.map(s => (
-                  <div key={s.id} className="bg-white p-2 rounded border border-blue-100 text-[10px]">
-                    <div className="font-bold text-slate-800">{s.carrier} - {s.vessel_name}</div>
-                    <div className="text-slate-500 flex justify-between mt-1">
-                      <span>Depart: {new Date(s.etd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
-                      <span>Arrive: {new Date(s.eta).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+        <div className="flex-1 flex flex-col relative group">
+          <div className="hidden md:block absolute top-3 left-6 right-0 h-0.5 bg-slate-200 z-0"></div>
+          <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-blue-500 text-white shadow shrink-0 z-10 md:mb-3">
+              <Ship className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 w-full p-3 rounded-xl bg-blue-50/50 border border-blue-100">
+              <h5 className="font-bold text-xs text-slate-800 mb-2">2. Book Shipping</h5>
+              {upcomingSchedules.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-[10px] text-slate-600 mb-2 hidden md:block">Upcoming sailings from {origin}:</p>
+                  {upcomingSchedules.map(s => (
+                    <div key={s.id} className="bg-white p-2 rounded border border-blue-100 text-[10px]">
+                      <div className="font-bold text-slate-800">{s.carrier} - {s.vessel_name}</div>
+                      <div className="text-slate-500 flex justify-between mt-1">
+                        <span>Dep: {new Date(s.etd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                        <span>Arr: {new Date(s.eta).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-[10px] text-slate-500">Coordinate with your shipping agent to find the next available RoRo vessel.</p>
-            )}
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[10px] text-slate-500">Coordinate with your shipping agent to find the next available RoRo vessel.</p>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Step 3: Clearance */}
-        <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-          <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-white bg-slate-300 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-            <MapPin className="w-3 h-3" />
-          </div>
-          <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <h5 className="font-bold text-xs text-slate-800 mb-1">3. Port Clearance & Transit</h5>
-            <p className="text-[10px] text-slate-500">Engage a clearing agent at the destination port (Dar es Salaam / Durban) to handle customs and inland transit to Zambia.</p>
+        <div className="flex-1 flex flex-col relative group">
+          <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-slate-300 text-slate-700 shadow shrink-0 z-10 md:mb-3">
+              <MapPin className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex-1 w-full p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <h5 className="font-bold text-xs text-slate-800 mb-1">3. Clearance & Transit</h5>
+              <p className="text-[10px] text-slate-500">Engage a clearing agent at the destination port to handle customs and inland transit to Zambia.</p>
+            </div>
           </div>
         </div>
 
@@ -196,7 +207,38 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
   );
 };
 
-export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
+const NextSteps = ({ onReset, onSave, onNavigate }: { onReset: () => void, onSave: () => void, onNavigate?: (tab: string) => void }) => {
+  return (
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-5 mt-4">
+      <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4 text-center md:text-left">What would you like to do next?</h4>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <button onClick={onReset} className="flex flex-col items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl p-3 transition-colors text-center border border-slate-700 h-24">
+          <RotateCcw className="w-6 h-6 text-slate-300" />
+          <span className="text-[11px] font-bold leading-tight">New<br/>Calculation</span>
+        </button>
+        <button onClick={onSave} className="flex flex-col items-center justify-center gap-2 bg-[color:var(--primary)] hover:opacity-90 text-white rounded-xl p-3 transition-colors text-center shadow-[0_0_15px_rgba(239,68,68,0.3)] border border-red-500 h-24">
+          <BookmarkPlus className="w-6 h-6 text-white" />
+          <span className="text-[11px] font-bold leading-tight">Add to<br/>Watchlist</span>
+        </button>
+        <button onClick={() => onNavigate && onNavigate('discover')} className="flex flex-col items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl p-3 transition-colors text-center border border-slate-700 h-24">
+          <Search className="w-6 h-6 text-emerald-400" />
+          <span className="text-[11px] font-bold leading-tight">Find a<br/>Vehicle</span>
+        </button>
+        <button onClick={() => onNavigate && onNavigate('compare')} className="flex flex-col items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl p-3 transition-colors text-center border border-slate-700 h-24">
+          <BarChart3 className="w-6 h-6 text-blue-400" />
+          <span className="text-[11px] font-bold leading-tight">Compare<br/>Prices</span>
+        </button>
+        <button onClick={() => onNavigate && onNavigate('logistics')} className="flex flex-col items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl p-3 transition-colors text-center border border-slate-700 h-24">
+          <Ship className="w-6 h-6 text-purple-400" />
+          <span className="text-[11px] font-bold leading-tight">Plan<br/>Logistics</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+export default function Calculator({ onSaveToWatchlist, onNavigate }: CalculatorProps) {
   const [state, setState] = useState<CalculatorState>(INITIAL_STATE);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [whatsIncludedOpen, setWhatsIncludedOpen] = useState(false);
@@ -1366,20 +1408,8 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                   </div>
                 )}
 
-                {/* Save Watchlist and inclusion help */}
-                <div className="space-y-2 flex-shrink-0 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                  <button
-                    id="wizard-save-watchlist-btn_s"
-                    type="button"
-                    onClick={() => {
-                      onSaveToWatchlist(result.total, state.cifUSD, state.fx, state);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 btn-primary text-[10.5px] font-extrabold uppercase tracking-wide py-2.5 cursor-pointer"
-                  >
-                    <BookmarkPlus className="w-3.5 h-3.5" />
-                    Save this estimate to Watchlist
-                  </button>
-
+                {/* Inclusion help */}
+                <div className="flex-shrink-0 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-2">
                   <div className="text-[9.5px] leading-relaxed text-slate-500 font-medium font-sans">
                     <strong>Included charges:</strong> {result.note}
                   </div>
@@ -1390,9 +1420,7 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               <div className={`col-span-1 lg:col-span-2 flex flex-col space-y-3 ${
                 mobileResultsTab === 'resources' ? 'flex' : 'hidden lg:flex'
               }`}>
-                {/* Import Timeline Component */}
-                <ImportTimeline state={state} schedules={schedules} />
-                {/* Visual Anchor Card (Sleek minimalist side-profile) */}
+                {/* Visual Anchor Card (Sleek minimalist side-profile) - Moved to top */}
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex items-center justify-center relative overflow-hidden group">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-100 via-white to-white opacity-80 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
                   <div className="relative z-10 flex flex-col items-center justify-center w-full">
@@ -1400,7 +1428,6 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
                     <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mt-2 mb-1"></div>
                   </div>
                 </div>
-
                 {/* ZRA Surtax Table Reference */}
                 <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
                   <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1.5">{'ZRA Carbon Tariff Table'}</h4>
@@ -1463,6 +1490,17 @@ export default function Calculator({ onSaveToWatchlist }: CalculatorProps) {
               </div>
 
             </div>
+
+            {/* Import Timeline & Next Steps CTA */}
+            <div className={`mt-4 ${mobileResultsTab === 'resources' ? 'block' : 'hidden lg:block'}`}>
+              <ImportTimeline state={state} schedules={schedules} />
+              <NextSteps 
+                onReset={handleResetWizard} 
+                onSave={() => onSaveToWatchlist(result.total, state.cifUSD, state.fx, state)} 
+                onNavigate={onNavigate} 
+              />
+            </div>
+
           </div>
         );
 
