@@ -67,12 +67,6 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
-  const apiKey = process.env.EXCHANGE_RATE_API_KEY;
-  if (!apiKey) {
-    console.error('Missing EXCHANGE_RATE_API_KEY');
-    return res.status(500).json({ error: 'Service temporarily unavailable. Please try again later.' });
-  }
-
   // 1. Try to get from Cache
   let cachedRates = null;
 
@@ -96,9 +90,14 @@ export default async function handler(req, res) {
     });
   }
 
-  // 2. Fetch fresh rates from ExchangeRate-API (Free tier)
+  // 2. Fetch fresh rates
   try {
-    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+    let url = 'https://open.er-api.com/v6/latest/USD';
+    const apiKey = process.env.EXCHANGE_RATE_API_KEY;
+    if (apiKey) {
+      url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+    }
+    
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -110,8 +109,8 @@ export default async function handler(req, res) {
       throw new Error('API returned unsuccessful result');
     }
 
-    const rates = data.conversion_rates;
-    if (!rates.ZMW || !rates.ZAR) {
+    const rates = data.conversion_rates || data.rates;
+    if (!rates || !rates.ZMW || !rates.ZAR) {
       throw new Error('Required currencies not found in API response');
     }
 
