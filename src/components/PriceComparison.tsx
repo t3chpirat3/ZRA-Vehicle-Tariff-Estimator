@@ -49,7 +49,7 @@ import { getApiUrl } from '../utils/api';
 // ─── Types ─────────────────────────────────────────────────────────────────
 
 type TrimTier = 1 | 2 | 3 | 4; // 1=Base, 2=Mid, 3=High, 4=Luxury
-type OriginCountry = 'japan' | 'singapore' | 'uae' | 'southafrica' | 'uk' | 'other';
+type OriginCountry = 'japan' | 'singapore' | 'uae' | 'southafrica' | 'uk' | 'thailand' | 'korea' | 'other';
 type ListingCurrency = 'USD' | 'ZAR' | 'ZMW';
 
 interface SilentSpecs {
@@ -133,6 +133,22 @@ const COUNTRY_META: Record<
     inspectionUSD: 200,
     freightUSD: 1800,
     inspectionNote: 'EAA pre-shipment inspection',
+    defaultCurrency: 'USD',
+  },
+  thailand: {
+    label: 'Thailand',
+    flag: '🇹🇭',
+    inspectionUSD: 140,
+    freightUSD: 1500,
+    inspectionNote: 'ATJ pre-shipment inspection',
+    defaultCurrency: 'USD',
+  },
+  korea: {
+    label: 'South Korea',
+    flag: '🇰🇷',
+    inspectionUSD: 140,
+    freightUSD: 1400,
+    inspectionNote: 'ATJ pre-shipment inspection',
     defaultCurrency: 'USD',
   },
   other: {
