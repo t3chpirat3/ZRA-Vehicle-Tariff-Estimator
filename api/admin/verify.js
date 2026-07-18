@@ -1,4 +1,4 @@
-import { verifyPassword, generateToken } from './auth.js';
+import { verifyPassword, generateToken } from '../_lib/auth.js';
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 

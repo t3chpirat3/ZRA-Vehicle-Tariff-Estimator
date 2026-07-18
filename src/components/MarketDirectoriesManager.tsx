@@ -59,7 +59,7 @@ export default function MarketDirectoriesManager({ apiFetch }: { apiFetch: (url:
     setError('');
     setSuccess('');
     try {
-      const res = await apiFetch('/api/admin/directories', {
+      const res = await apiFetch('/api/directories', {
         method: 'PUT',
         body: JSON.stringify({ directories })
       });

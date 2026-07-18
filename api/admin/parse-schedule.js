@@ -1,4 +1,4 @@
-import { authenticate } from './auth.js';
+import { authenticate } from '../_lib/auth.js';
 import { Redis } from '@upstash/redis';
 
 const kv = new Redis({
