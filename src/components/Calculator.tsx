@@ -255,6 +255,9 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
   // Schedules state for the unified timeline
   const [schedules, setSchedules] = useState<VesselSchedule[]>([]);
 
+  // Dynamic Tax Rates
+  const [taxRates, setTaxRates] = useState<any>(null);
+
   // ─── Fetch Live Exchange Rates & Schedules ─────────────────────────────────────
   useEffect(() => {
     async function fetchFx() {
@@ -292,6 +295,22 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
       }
     }
     fetchSchedules();
+  }, []);
+
+  useEffect(() => {
+    async function fetchTaxRates() {
+      try {
+        const res = await fetch(getApiUrl('/api/app-data?type=tax'));
+        if (!res.ok) return;
+        const json = await res.json();
+        if (json.data) {
+          setTaxRates(json.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic tax rates:', err);
+      }
+    }
+    fetchTaxRates();
   }, []);
 
   // Master Sync inputs with state checks
@@ -359,7 +378,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
     state.age === '0-2' ||
     (state.cat !== 'motorcycle' && state.fuel === 'electric');
 
-  const result = calculateDuty(state);
+  const result = calculateDuty(state, taxRates);
 
   // ─── 4-Stage Funnel Step Sequence ─────────────────────────────────────────
   // Motor Cars follow the new funnel architecture:

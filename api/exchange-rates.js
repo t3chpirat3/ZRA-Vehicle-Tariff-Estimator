@@ -67,6 +67,25 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
+  // 0. Check for Manual Override
+  if (kvConfigured) {
+    try {
+      const override = await kv.get('fx_override');
+      if (override && override.enabled && override.usdToZmw && override.zarToZmw) {
+        return res.status(200).json({
+          source: 'override',
+          rates: {
+            usdToZmw: parseFloat(override.usdToZmw),
+            zarToZmw: parseFloat(override.zarToZmw)
+          },
+          timestamp: Date.now()
+        });
+      }
+    } catch (err) {
+      console.warn('[RedisFailure] Failed to read fx_override from KV:', err);
+    }
+  }
+
   // 1. Try to get from Cache
   let cachedRates = null;
 

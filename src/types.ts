@@ -364,8 +364,16 @@ export function getBusSeatBand(seatsStr: string): string {
   return '45+';
 }
 
+export interface TaxRatesOverride {
+  CARBON_RATES?: Record<string, number>;
+  T_SPECIFIC_RATES?: any;
+  T_HYBRID_MOTOR_CAR_RATES?: any;
+  MOTO_RATES?: any;
+  CIF_PERCENTAGES?: any;
+}
+
 // Global calculation function
-export function calculateDuty(state: CalculatorState): CalculationResult | null {
+export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverride): CalculationResult | null {
   const { age, cat, type, fuel, busFuel, engine, cifEngine, weight, seats, vdp, cifUSD, fx, hpCC, hpHP } = state;
   if (!age || !cat) return null;
 
@@ -387,7 +395,8 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
     const cz = cifUSD * fx;
 
     const fk = (cat === 'bus' ? busFuel : fuel) || '';
-    const cr = CIF_PERCENTAGES[cat]?.[fk];
+    const percentagesMap = overrides?.CIF_PERCENTAGES || CIF_PERCENTAGES;
+    const cr = percentagesMap[cat]?.[fk];
     if (!cr) return null;
 
     const cd = cz * cr.cd;
@@ -398,7 +407,8 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
     let cb = '';
     if (cat === 'motor-car' && fuel !== 'electric' && cifEngine && parseInt(cifEngine, 10) > 0) {
       cb = getCarbonBand(parseInt(cifEngine, 10));
-      carbon = CARBON_RATES[cb] || 0;
+      const carbonRatesMap = overrides?.CARBON_RATES || CARBON_RATES;
+      carbon = carbonRatesMap[cb] || 0;
     }
 
       // High-performance note for CIF result
@@ -429,7 +439,8 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
     if (cat === 'motorcycle') {
       if (!vdp) return null;
       if (age === '0-2') return null; // handled under CIF
-      const d = MOTO_RATES[age][vdp];
+      const motoMap = overrides?.MOTO_RATES || MOTO_RATES;
+      const d = motoMap[age]?.[vdp];
       if (d === undefined) return null;
       const carbon = 123.20;
       return {
@@ -447,7 +458,8 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
       if (!busFuel || !seats) return null;
       if (age === '0-2') return null; // handled under CIF
       const key = `bus-${busFuel}`;
-      const row = T_SPECIFIC_RATES[age][key];
+      const specificMap = overrides?.T_SPECIFIC_RATES || T_SPECIFIC_RATES;
+      const row = specificMap[age]?.[key];
       if (!row) return null;
       const v = row[getBusSeatBand(seats)];
       if (v === undefined) return null;
@@ -470,12 +482,14 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
         // Stage 2 — Propulsion Fork: Hybrid routes to Third Schedule tables.
         // The 2025 Revised Specific Duty Rates are NOT applicable to used hybrid vehicles.
         const band = getEngineBand(parseInt(engine, 10));
-        const cell = T_HYBRID_MOTOR_CAR_RATES[age as '2-5' | '5+']?.[type as MotorCarType]?.[band];
+        const hybridMap = overrides?.T_HYBRID_MOTOR_CAR_RATES || T_HYBRID_MOTOR_CAR_RATES;
+        const cell = hybridMap[age as '2-5' | '5+']?.[type as MotorCarType]?.[band];
         if (!cell) return null;
         const cd = cell.cd;
         const ed = cell.ed;
         const cb = getCarbonBand(parseInt(engine, 10));
-        const carbon = CARBON_RATES[cb] || 0;
+        const carbonRatesMap = overrides?.CARBON_RATES || CARBON_RATES;
+        const carbon = carbonRatesMap[cb] || 0;
         const isProvisional = type === 'hatchback' || type === 'station';
         return {
           mode: 'specific',
@@ -493,12 +507,14 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
       } else {
         // ICE — petrol or diesel: ZRA Revised Specific Duty Rates 2025
         const key = `${type}-${fuel}`;
-        const row = T_SPECIFIC_RATES[age as '2-5' | '5+'][key];
+        const specificMap = overrides?.T_SPECIFIC_RATES || T_SPECIFIC_RATES;
+        const row = specificMap[age as '2-5' | '5+']?.[key];
         if (!row) return null;
         const base = row[getEngineBand(parseInt(engine, 10))];
         if (base === undefined) return null;
         const cb = getCarbonBand(parseInt(engine, 10));
-        const carbon = CARBON_RATES[cb] || 0;
+        const carbonRatesMap = overrides?.CARBON_RATES || CARBON_RATES;
+        const carbon = carbonRatesMap[cb] || 0;
         return {
           mode: 'specific',
           base,
@@ -516,7 +532,8 @@ export function calculateDuty(state: CalculatorState): CalculationResult | null 
       if (!type || !fuel || !weight) return null;
       if (age === '0-2') return null; // handled under CIF
       const key = `${type}-${fuel}`;
-      const row = T_SPECIFIC_RATES[age][key];
+      const specificMap = overrides?.T_SPECIFIC_RATES || T_SPECIFIC_RATES;
+      const row = specificMap[age as '2-5' | '5+']?.[key];
       if (!row) return null;
       const v = row[getWeightBand(weight, type as GoodsVehicleType)];
       if (v === undefined) return null;

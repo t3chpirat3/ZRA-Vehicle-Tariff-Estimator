@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { getApiUrl } from '../utils/api';
 import {
   Search,
   MapPin,
@@ -64,6 +65,25 @@ const LICENSE_TYPES = [
 const PAGE_SIZE = 18;
 
 export default function ClearingAgents() {
+  const [featuredAgents, setFeaturedAgents] = useState<Agent[]>([]);
+  
+  useEffect(() => {
+    async function fetchFeatured() {
+      try {
+        const res = await fetch(getApiUrl('/api/app-data?type=agents'));
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data && Array.isArray(json.data)) {
+            setFeaturedAgents(json.data);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch featured agents', err);
+      }
+    }
+    fetchFeatured();
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [selectedLicense, setSelectedLicense] = useState('All');
@@ -234,6 +254,60 @@ export default function ClearingAgents() {
 
         {/* CONTAINER AREA FOR THE DATA — flows with the single page scroll */}
         <div className="p-4 bg-[color:var(--surface-soft)] space-y-3">
+          
+          {/* FEATURED AGENTS SECTION */}
+          {featuredAgents.length > 0 && searchTerm === '' && selectedLocation === 'All' && selectedLicense === 'All' && (
+            <div className="mb-8">
+              <h3 className="font-bold text-[color:var(--text)] mb-3 flex items-center gap-2">
+                <span className="text-[color:var(--primary)] text-sm">★</span>
+                Featured Agencies
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {featuredAgents.map((agent) => (
+                  <div
+                    key={agent.company}
+                    className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-sm transition-all duration-150"
+                  >
+                    <div>
+                      <div className="flex justify-between items-start gap-2 mb-1.5">
+                        <h4 className="font-extrabold text-[11px] md:text-[12px] text-blue-900 leading-snug uppercase min-w-0 flex-grow font-display">
+                          {agent.company}
+                        </h4>
+                        <span className="bg-blue-100 text-blue-800 border border-blue-200 text-[9px] font-bold px-1.5 py-0.5 rounded-md text-center max-w-[100px] truncate leading-tight flex-shrink-0">
+                          {agent.licenseType}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[10px] text-blue-700 font-medium mb-3 pb-2 border-b border-blue-100">
+                        <MapPin className="w-3 h-3 text-blue-400" />
+                        {agent.location}
+                        <span className="text-blue-300">|</span>
+                        TPIN: <span className="font-bold font-mono">{agent.tpin || 'N/A'}</span>
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-slate-700">
+                          <Phone className="w-3 h-3 text-blue-500" />
+                          <span className="font-mono font-medium truncate flex-grow">
+                            {agent.phone}
+                          </span>
+                        </div>
+                        {agent.email && agent.email.trim() && (
+                          <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-slate-700">
+                            <Mail className="w-3 h-3 text-blue-500" />
+                            <span className="truncate flex-grow">{agent.email}</span>
+                          </div>
+                        )}
+                        <div className="flex items-start gap-2 text-[10px] text-slate-500 mt-0.5">
+                          <Building className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                          <span className="truncate">{agent.address || 'Zambia'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {filteredAgents.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {visibleAgents.map((agent) => (

@@ -12,6 +12,10 @@ import {
 } from '../data/shippingData';
 import { getApiUrl } from '../utils/api';
 import MarketDirectoriesManager from './MarketDirectoriesManager';
+import FxOverrideManager from './admin/FxOverrideManager';
+import TaxRatesManager from './admin/TaxRatesManager';
+import AgentsManager from './admin/AgentsManager';
+import InlandRatesManager from './admin/InlandRatesManager';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function formatDateForInput(isoString: string): string {
@@ -43,7 +47,7 @@ export default function AdminPanel() {
   const [parsedResults, setParsedResults] = useState<Partial<VesselSchedule>[]>([]);
   const [parseError, setParseError] = useState('');
 
-  const [activeTab, setActiveTab] = useState<'schedules' | 'directories'>('schedules');
+  const [activeTab, setActiveTab] = useState<'schedules' | 'directories' | 'fx' | 'tax' | 'agents' | 'inland'>('schedules');
 
   // ── Auth ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -338,16 +342,48 @@ export default function AdminPanel() {
         >
           Shipping Schedules
         </button>
-        <button 
-          onClick={() => setActiveTab('directories')} 
+        <button
+          onClick={() => setActiveTab('directories')}
           className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'directories' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
         >
-          Market Directories
+          Directories
+        </button>
+        <button
+          onClick={() => setActiveTab('fx')}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'fx' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Exchange Rates
+        </button>
+        <button
+          onClick={() => setActiveTab('tax')}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'tax' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Tax & Depreciation
+        </button>
+        <button
+          onClick={() => setActiveTab('agents')}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'agents' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Featured Agents
+        </button>
+        <button
+          onClick={() => setActiveTab('inland')}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'inland' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Inland Logistics
         </button>
       </div>
 
       {activeTab === 'directories' ? (
         <MarketDirectoriesManager apiFetch={apiFetch as any} />
+      ) : activeTab === 'fx' ? (
+        <FxOverrideManager />
+      ) : activeTab === 'tax' ? (
+        <TaxRatesManager />
+      ) : activeTab === 'agents' ? (
+        <AgentsManager />
+      ) : activeTab === 'inland' ? (
+        <InlandRatesManager />
       ) : (
         <div className="space-y-8 animate-fadeIn">
           {/* Schedule Manager */}

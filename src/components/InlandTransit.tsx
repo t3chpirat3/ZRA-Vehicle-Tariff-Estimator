@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
-import { INLAND_ROUTES, InlandRouteId, CARBON_TAX_ZMW } from '../data/inlandData';
+import React, { useState, useEffect } from 'react';
+import { INLAND_ROUTES as FALLBACK_ROUTES, CARBON_TAX_ZMW } from '../data/inlandData';
 import { Truck, Navigation, Clock, Banknote, ShieldAlert, AlertTriangle, Ship } from 'lucide-react';
+import { getApiUrl } from '../utils/api';
 
 export default function InlandTransit() {
-  const [selectedRoute, setSelectedRoute] = useState<InlandRouteId>(INLAND_ROUTES[0].id);
+  const [inlandRoutes, setInlandRoutes] = useState<any[]>(FALLBACK_ROUTES);
+  const [selectedRoute, setSelectedRoute] = useState<string>(FALLBACK_ROUTES[0].id);
   const [engineCC, setEngineCC] = useState<number>(1800);
 
-  const route = INLAND_ROUTES.find(r => r.id === selectedRoute) || INLAND_ROUTES[0];
+  useEffect(() => {
+    async function fetchRoutes() {
+      try {
+        const res = await fetch(getApiUrl('/api/app-data?type=inland'));
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+            setInlandRoutes(json.data);
+            setSelectedRoute(json.data[0].id);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic inland routes', err);
+      }
+    }
+    fetchRoutes();
+  }, []);
+
+  const route = inlandRoutes.find(r => r.id === selectedRoute) || inlandRoutes[0];
   const carbonTax = CARBON_TAX_ZMW.find(c => engineCC <= c.maxCC) || CARBON_TAX_ZMW[CARBON_TAX_ZMW.length - 1];
 
   return (
@@ -36,7 +56,7 @@ export default function InlandTransit() {
             </h3>
             
             <div className="space-y-3">
-              {INLAND_ROUTES.map(r => (
+              {inlandRoutes.map(r => (
                 <label 
                   key={r.id}
                   className={`flex flex-col p-3 rounded-xl border-2 cursor-pointer transition-all ${
@@ -51,7 +71,7 @@ export default function InlandTransit() {
                       name="route" 
                       value={r.id} 
                       checked={selectedRoute === r.id}
-                      onChange={() => setSelectedRoute(r.id as InlandRouteId)}
+                      onChange={() => setSelectedRoute(r.id)}
                       className="w-4 h-4 text-[color:var(--primary)] focus:ring-[color:var(--primary)]"
                     />
                     <span className="font-bold text-sm text-slate-800 leading-tight">{r.label}</span>
