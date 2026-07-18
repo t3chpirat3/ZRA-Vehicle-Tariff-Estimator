@@ -525,6 +525,7 @@ function OptionCard({
   title: string;
   desc: string;
   onClick: () => void;
+  key?: React.Key;
 }) {
   return (
     <button
@@ -550,6 +551,7 @@ function ResultsView({
   aiLoading,
   budgetZMW,
   onRestart,
+  preferredRegion,
 }: {
   results: RecommendationResult;
   ai: AIInsight | null;
@@ -652,12 +654,14 @@ function ResultCard({
   rank,
   aiText,
   wildcard,
+  preferredRegion,
 }: {
   sv: ScoredVehicle;
   rank?: number;
   aiText?: string;
   wildcard?: boolean;
   preferredRegion?: MarketRegion | 'Any';
+  key?: React.Key;
 }) {
   const { vehicle: v, repairability, landed, withinBudget } = sv;
   const reasons = aiText ? [aiText] : sv.reasons;

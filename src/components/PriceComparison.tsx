@@ -229,6 +229,7 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number): Calcula
     fx,
     hpCC: '',
     hpHP: '',
+    origin: '',
   };
 }
 

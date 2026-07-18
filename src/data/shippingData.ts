@@ -19,7 +19,7 @@ export interface VesselSchedule {
   port_cutoff: string;         // ISO date
   etd: string;                 // ISO date — Estimated Time of Departure
   eta: string;                 // ISO date — Estimated Time of Arrival
-  status: 'Scheduled' | 'Booking Open' | 'Booking Closed' | 'Departed' | 'Arrived' | 'Completed';
+  status: 'Scheduled' | 'Booking Open' | 'Booking Closed' | 'Departed' | 'Arrived' | 'Completed' | 'En Route' | 'Delayed';
   transit_days: number;
   created_at: string;
   updated_at: string;

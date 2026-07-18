@@ -14,7 +14,6 @@
  * Calls the secure backend proxy `/api/enhance-discovery` to avoid exposing the API key.
  */
 
-import type { VehicleSpec } from './discovery';
 import { getApiUrl } from './api';
 import { DiscoveryProfile, ScoredVehicle } from './discovery';
 import { UseCase, Terrain } from '../data/vehiclesData';

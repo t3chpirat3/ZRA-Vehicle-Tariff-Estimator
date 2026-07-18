@@ -105,7 +105,7 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
     for (const r of extraRegions) {
       if (preferredRegion === r || preferredRegion === 'Any' || !preferredRegion) {
         // Multi-market inventory platforms
-        let countryParam = r;
+        let countryParam: string = r;
         if (r === 'UAE') countryParam = 'United Arab Emirates';
         if (r === 'Korea') countryParam = 'South Korea';
         

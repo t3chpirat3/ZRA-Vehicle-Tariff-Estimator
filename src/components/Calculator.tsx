@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { getApiUrl } from '../utils/api';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Calculator as CalcIcon,

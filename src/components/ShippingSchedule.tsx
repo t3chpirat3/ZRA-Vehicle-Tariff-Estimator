@@ -117,7 +117,7 @@ const GUIDE_ICONS: Record<string, React.ReactNode> = {
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
 /** A single vessel schedule card in the Bento grid. */
-function VesselCard({ schedule }: { schedule: VesselSchedule }) {
+function VesselCard({ schedule }: { schedule: VesselSchedule; key?: React.Key }) {
   const status = getStatusBadge(schedule.status);
   const milestone = getNextMilestone(schedule);
 
@@ -201,7 +201,7 @@ function VesselCard({ schedule }: { schedule: VesselSchedule }) {
 }
 
 /** Route corridor overview card with mini leg timeline. */
-function RouteCard({ route }: { route: ShippingRoute }) {
+function RouteCard({ route }: { route: ShippingRoute; key?: React.Key }) {
   const [expanded, setExpanded] = useState(false);
   const isOverland = route.seaDaysMin === 0;
 
@@ -278,7 +278,7 @@ function RouteCard({ route }: { route: ShippingRoute }) {
 }
 
 /** Port information expandable card. */
-function PortCard({ port }: { port: PortInfoType }) {
+function PortCard({ port, key }: { port: PortInfoType; key?: React.Key }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -345,7 +345,7 @@ function PortCard({ port }: { port: PortInfoType }) {
 }
 
 /** Freight forwarder card. */
-function ForwarderCard({ forwarder }: { forwarder: FreightForwarder }) {
+function ForwarderCard({ forwarder }: { forwarder: FreightForwarder; key?: React.Key }) {
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
       <div className="flex items-start justify-between mb-2">
@@ -631,7 +631,7 @@ export default function ShippingSchedule() {
 
           <div className="space-y-4">
             {OWN_SHIPPING_GUIDE.map((section, idx) => (
-              <GuideAccordion key={idx} section={section} />
+              <GuideSectionCard key={idx} section={section} />
             ))}
           </div>
         </div>
@@ -688,7 +688,7 @@ export default function ShippingSchedule() {
 }
 
 /** Expandable accordion for own-shipping guide sections. */
-function GuideAccordion({ section }: { section: typeof OWN_SHIPPING_GUIDE[number] }) {
+function GuideSectionCard({ section, key }: { section: typeof OWN_SHIPPING_GUIDE[number]; key?: React.Key }) {
   const [open, setOpen] = useState(false);
   const icon = GUIDE_ICONS[section.icon] || <Info className="w-5 h-5" />;
 

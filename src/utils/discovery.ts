@@ -158,6 +158,7 @@ function buildCalcState(model: VehicleModel, fobUsd: number, fx: number): Calcul
     fx,
     hpCC: '',
     hpHP: '',
+    origin: '',
   };
 }
 

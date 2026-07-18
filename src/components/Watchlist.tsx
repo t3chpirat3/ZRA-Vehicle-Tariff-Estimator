@@ -303,6 +303,7 @@ export default function Watchlist({
         fuel: data.fuelType || '',
         busFuel: '',
         engine: data.engineCC || '',
+        origin: '',
         cifEngine: '',
         weight: '',
         seats: '',
@@ -486,7 +487,7 @@ export default function Watchlist({
                     {item.price && (
                       <>
                         <span>{item.price}</span>
-                        {item.currency && item.currency !== 'ZMW' && item.fob && item.fob > 0 && (
+                        {item.currency && item.fob && item.fob > 0 && (
                           <span className="text-[10px] text-emerald-600 font-bold opacity-80" style={{ fontSize: '11px', marginTop: '-2px' }}>
                             ≈ {zmwFormat(item.fob * (item.currency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
                           </span>
