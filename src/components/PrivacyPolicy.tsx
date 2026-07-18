@@ -44,7 +44,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
                 <strong>Automatically Collected Analytics & Security Data:</strong> To keep the site running smoothly and securely, our hosting provider (Vercel) automatically collects basic technical data (like browser type and region), and our security systems (Upstash/Vercel KV) temporarily process your IP address to enforce rate limits and prevent abuse.
               </li>
               <li>
-                <strong>Search Queries (Spec Resolver):</strong> When you use the Spec Resolver tool, the text you enter is sent to a third-party AI service (DeepSeek) to identify vehicle specifications. Please do not enter any personal identifying information into this search bar.
+                <strong>Search Queries (Spec Resolver):</strong> When you use the Spec Resolver tool, the text you enter is sent to a smart spec resolution service to identify vehicle specifications. Please do not enter any personal identifying information into this search bar.
               </li>
               <li>
                 <strong>Locally Stored Data (Vehicle Watchlist):</strong> If you use the "Vehicle Watchlist" feature to save specific models or calculations, that data is stored locally on your device (using your browser's local storage or session storage). This data is never transmitted to, stored on, or processed by our servers.

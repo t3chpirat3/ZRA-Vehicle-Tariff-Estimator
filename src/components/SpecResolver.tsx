@@ -185,7 +185,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
               <div className="mb-3 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2">
                 <WifiOff className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-700">
-                  <strong>Offline:</strong> AI features require an active internet connection. Please reconnect to use the Spec Resolver.
+                  <strong>Offline:</strong> Spec resolution requires an active internet connection. Please reconnect to use the Spec Resolver.
                 </p>
               </div>
             )}

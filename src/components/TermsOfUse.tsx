@@ -41,7 +41,7 @@ export default function TermsOfUse({ onClose }: TermsOfUseProps) {
             <p className="mt-2 text-slate-800 font-semibold">You explicitly acknowledge and agree that:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
-                <strong>AI Spec Resolver Limitations:</strong> The "Spec Resolver" utilizes artificial intelligence to interpret vehicle descriptions. AI models are probabilistic and may return inaccurate or hallucinatory vehicle specifications (such as incorrect engine capacities or body types). You are solely responsible for verifying the resolved specifications before relying on the subsequent duty estimates.
+                <strong>Spec Resolver Limitations:</strong> The "Spec Resolver" utilizes smart resolution systems to interpret vehicle descriptions. These models are probabilistic and may return inaccurate vehicle specifications (such as incorrect engine capacities or body types). You are solely responsible for verifying the resolved specifications before relying on the subsequent duty estimates.
               </li>
               <li>
                 <strong>All calculations are estimates.</strong> The figures provided by the Platform are not final tax assessments.

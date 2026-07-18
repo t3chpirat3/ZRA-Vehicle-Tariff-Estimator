@@ -347,7 +347,7 @@ export default function Watchlist({
     <div className="wl-container">
       <div className="wl-banner">
         <Info className="wl-banner-icon" />
-        <p>The AI watchlist automatically monitors vehicle listings for price changes and availability.</p>
+        <p>The Watchlist automatically monitors vehicle listings for price changes and availability.</p>
       </div>
 
       <div className="wl-header">
