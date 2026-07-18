@@ -12,7 +12,7 @@
  * it is configured.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { FuelType } from '../types';
 import { UseCase, Terrain, BodyStyle } from '../data/vehiclesData';
 import {
@@ -23,9 +23,11 @@ import {
   recommend,
 } from '../utils/discovery';
 import { AIInsight, enhanceWithAI, isAIConfigured } from '../utils/deepseekDiscovery';
-import { MarketplaceLink, marketplaceLinks, keywordMarketplaceLinks } from '../utils/marketplaces';
+import { MarketplaceLink, marketplaceLinks, keywordMarketplaceLinks, MarketRegion } from '../utils/marketplaces';
 import { SA_MARKET_DIRECTORY, carsZaUrl } from '../data/saMarketDirectory';
 import { JDM_DIRECTORY, beforwardUrl } from '../data/jdmDirectory';
+import { SINGAPORE_DIRECTORY, UK_DIRECTORY, UAE_DIRECTORY, THAILAND_DIRECTORY, KOREA_DIRECTORY } from '../data/marketDirectories';
+import { getApiUrl } from '../utils/api';
 
 /** Both market directories share this shape, so one view can render either. */
 interface DirectoryData {
@@ -36,7 +38,7 @@ interface DirectoryData {
 
 const fmtZMW = (n: number) => 'ZMW ' + Math.round(n).toLocaleString('en-ZM');
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 const USE_CASES: { id: UseCase; label: string; desc: string }[] = [
   { id: 'family', label: 'Carry the family', desc: 'School runs, church, lots of passengers and luggage.' },
@@ -99,15 +101,55 @@ const REPAIR_STYLE: Record<Repairability['label'], string> = {
   Fair: 'text-[color:var(--text-muted)] bg-[color:var(--surface-soft)]',
   Limited: 'text-[color:#9a4b2e] bg-[color:var(--warn-soft)]',
 };
-
 export default function VehicleDiscovery() {
-  const [view, setView] = useState<'quiz' | 'sa' | 'jdm'>('quiz');
+  const [view, setView] = useState<'quiz' | 'sa' | 'jdm' | 'singapore' | 'uk' | 'uae' | 'thailand' | 'korea'>('quiz');
   const [step, setStep] = useState(1);
+
+  // ── Directories state ──
+  const [dynamicDirs, setDynamicDirs] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchDirs = async () => {
+      try {
+        const res = await fetch(getApiUrl('/api/directories'));
+        if (res.ok) {
+          const data = await res.json();
+          if (data.directories) setDynamicDirs(data.directories);
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic directories', err);
+      }
+    };
+    fetchDirs();
+  }, []);
 
   // ── Questionnaire state ──
   const [budget, setBudget] = useState<string>('');
-  const [fx, setFx] = useState<string>('27.5');
+  const [fxRates, setFxRates] = useState<{ usdToZmw: number; zarToZmw: number } | null>(null);
+  const [fxError, setFxError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const res = await fetch(getApiUrl('/api/exchange-rates'));
+        if (!res.ok) throw new Error('Failed to fetch rates');
+        const data = await res.json();
+        if (data.rates) {
+          setFxRates(data.rates);
+        } else {
+          throw new Error('Invalid rate format');
+        }
+      } catch (err) {
+        console.error(err);
+        setFxError('Could not load live exchange rates. Using default values.');
+        setFxRates({ usdToZmw: 27.5, zarToZmw: 1.5 });
+      }
+    };
+    fetchRates();
+  }, []);
+
   const [primaryUse, setPrimaryUse] = useState<UseCase | ''>('');
+  const [prefRegion, setPrefRegion] = useState<MarketRegion | 'Any'>('Any');
   const [terrain, setTerrain] = useState<Terrain | ''>('');
   const [fuelPref, setFuelPref] = useState<FuelType | 'any'>('any');
   const [weights, setWeights] = useState<Record<CriterionKey, number>>({
@@ -125,19 +167,21 @@ export default function VehicleDiscovery() {
   const [aiLoading, setAiLoading] = useState(false);
 
   const budgetNum = parseFloat(budget.replace(/,/g, '')) || 0;
-  const fxNum = parseFloat(fx) || 0;
+  const fxNum = fxRates?.usdToZmw || 0;
 
   const canProceed = useMemo(() => {
     switch (step) {
       case 1:
         return budgetNum > 0 && fxNum > 0;
       case 2:
-        return primaryUse !== '';
+        return prefRegion !== null;
       case 3:
-        return terrain !== '';
+        return primaryUse !== '';
       case 4:
-        return true;
+        return terrain !== '';
       case 5:
+        return true;
+      case 6:
         return true;
       default:
         return false;
@@ -152,11 +196,12 @@ export default function VehicleDiscovery() {
       terrain: terrain as Terrain,
       fuelPref,
       weights,
+      preferredRegion: prefRegion,
     };
     const rec = recommend(profile);
     setResults(rec);
     setAi(null);
-    setStep(6); // results view
+    setStep(7); // results view
 
     if (isAIConfigured()) {
       setAiLoading(true);
@@ -171,6 +216,7 @@ export default function VehicleDiscovery() {
     setResults(null);
     setAi(null);
     setBudget('');
+    setPrefRegion('Any');
     setPrimaryUse('');
     setTerrain('');
     setFuelPref('any');
@@ -178,43 +224,42 @@ export default function VehicleDiscovery() {
   };
 
   // ───────────────────────────── Directory views ─────────────────────────────
-  if (view === 'sa') {
-    return (
-      <DirectoryView
-        onBack={() => setView('quiz')}
-        title="South African Market"
-        intro="Browse nameplates sold in South Africa (2000–present) that can be imported to Zambia — the home of the sought-after SA-spec pickups and SUVs. Tap a make, then a model, to view current listings on cars.co.za."
-        searchPlaceholder="Search a make or model — e.g. Ranger, Pajero, Polo"
-        categories={SA_MARKET_DIRECTORY}
-        linkFor={carsZaUrl}
-        footer="Listings open on cars.co.za in a new tab. This directory is for browsing the South African market; for tailored recommendations with duty estimates, use the questionnaire. We are not affiliated with cars.co.za or any dealer."
-      />
-    );
-  }
-  if (view === 'jdm') {
-    return (
-      <DirectoryView
-        onBack={() => setView('quiz')}
-        title="Japanese (JDM) Market"
-        intro="Browse the Japanese used-export market (2000–2026) — the models that fill SBT Japan, BE FORWARD and Autocom. Tap a make, then a model, to view current listings on BE FORWARD."
-        searchPlaceholder="Search a make or model — e.g. Mark X, Vezel, Forester"
-        categories={JDM_DIRECTORY}
-        linkFor={beforwardUrl}
-        footer="Listings open on BE FORWARD in a new tab. Most of these models are also on SBT Japan and Autocom. This directory is for browsing; for tailored recommendations with duty estimates, use the questionnaire. We are not affiliated with any exporter or dealer."
-      />
-    );
+  if (view !== 'quiz') {
+    let dirProps;
+    if (view === 'sa') dirProps = { title: "South African Market", intro: "Browse nameplates sold in South Africa (2000–present) that can be imported to Zambia — the home of the sought-after SA-spec pickups and SUVs. Tap a make, then a model, to view current listings on cars.co.za.", categories: dynamicDirs?.sa || SA_MARKET_DIRECTORY, linkFor: carsZaUrl, searchPlaceholder: "Search a make or model — e.g. Ranger, Pajero, Polo", footer: "Listings open on cars.co.za in a new tab. This directory is for browsing the South African market; for tailored recommendations with duty estimates, use the questionnaire. We are not affiliated with cars.co.za or any dealer." };
+    else if (view === 'jdm') dirProps = { title: "Japanese (JDM) Market", intro: "Browse the Japanese used-export market (2000–2026) — the models that fill SBT Japan, BE FORWARD and Autocom. Tap a make, then a model, to view current listings on BE FORWARD.", categories: dynamicDirs?.jdm || JDM_DIRECTORY, linkFor: beforwardUrl, searchPlaceholder: "Search a make or model — e.g. Mark X, Vezel, Forester", footer: "Listings open on BE FORWARD in a new tab. Most of these models are also on SBT Japan and Autocom. This directory is for browsing; for tailored recommendations with duty estimates, use the questionnaire. We are not affiliated with any exporter or dealer." };
+    else if (view === 'singapore') dirProps = { title: "Singapore Market", intro: "Luxury & JDM vehicles from a strict 10-year COE market.", categories: dynamicDirs?.singapore || SINGAPORE_DIRECTORY, linkFor: (make: string, model: string) => beforwardUrl(make, model).replace('/keyword=', '/country_of_inventory=Singapore/keyword='), searchPlaceholder: "Search a make or model", footer: "Listings open on BE FORWARD in a new tab." };
+    else if (view === 'uk') dirProps = { title: "UK Market", intro: "Premium British and European RHD vehicles.", categories: dynamicDirs?.uk || UK_DIRECTORY, linkFor: (make: string, model: string) => beforwardUrl(make, model).replace('/keyword=', '/country_of_inventory=UK/keyword='), searchPlaceholder: "Search a make or model", footer: "Listings open on BE FORWARD in a new tab." };
+    else if (view === 'uae') dirProps = { title: "UAE (Dubai) Market", intro: "Heavy-duty luxury SUVs and off-roaders.", categories: dynamicDirs?.uae || UAE_DIRECTORY, linkFor: (make: string, model: string) => beforwardUrl(make, model).replace('/keyword=', '/country_of_inventory=United%20Arab%20Emirates/keyword='), searchPlaceholder: "Search a make or model", footer: "Listings open on BE FORWARD in a new tab." };
+    else if (view === 'thailand') dirProps = { title: "Thailand Market", intro: "The global hub for pickup trucks.", categories: dynamicDirs?.thailand || THAILAND_DIRECTORY, linkFor: (make: string, model: string) => beforwardUrl(make, model).replace('/keyword=', '/country_of_inventory=Thailand/keyword='), searchPlaceholder: "Search a make or model", footer: "Listings open on BE FORWARD in a new tab." };
+    else if (view === 'korea') dirProps = { title: "Korean Market", intro: "High-value, feature-packed Korean SUVs.", categories: dynamicDirs?.korea || KOREA_DIRECTORY, linkFor: (make: string, model: string) => beforwardUrl(make, model).replace('/keyword=', '/country_of_inventory=South%20Korea/keyword='), searchPlaceholder: "Search a make or model", footer: "Listings open on BE FORWARD in a new tab." };
+
+    if (dirProps) {
+      return (
+        <DirectoryView
+          onBack={() => setView('quiz')}
+          title={dirProps.title}
+          intro={dirProps.intro}
+          searchPlaceholder={dirProps.searchPlaceholder}
+          categories={dirProps.categories}
+          linkFor={dirProps.linkFor}
+          footer={dirProps.footer}
+        />
+      );
+    }
   }
 
   // ───────────────────────────── Results view ─────────────────────────────
-  if (step === 6 && results) {
+  if (step === 7 && results) {
     return (
-      <ResultsView
-        results={results}
-        ai={ai}
-        aiLoading={aiLoading}
-        budgetZMW={budgetNum}
-        onRestart={reset}
-      />
+        <ResultsView
+          results={results}
+          ai={ai}
+          aiLoading={aiLoading}
+          budgetZMW={budgetNum}
+          onRestart={reset}
+          preferredRegion={prefRegion}
+        />
     );
   }
 
@@ -229,21 +274,16 @@ export default function VehicleDiscovery() {
           budget and roads — including good options you may never have considered.
         </p>
         <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
-          <span className="text-xs text-[color:var(--text-muted)]">Just browsing? See the full market list:</span>
-          <button
-            type="button"
-            onClick={() => setView('jdm')}
-            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--primary)] hover:text-[color:var(--primary-hover)] transition-colors cursor-pointer"
-          >
-            Japanese (JDM) market
-          </button>
-          <button
-            type="button"
-            onClick={() => setView('sa')}
-            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--primary)] hover:text-[color:var(--primary-hover)] transition-colors cursor-pointer"
-          >
-            South African market
-          </button>
+          <span className="text-xs text-[color:var(--text-muted)]">Browse by market:</span>
+          {(['jdm', 'sa', 'singapore', 'thailand', 'uk', 'uae', 'korea'] as const).map(v => (
+             <button
+               key={v}
+               onClick={() => setView(v)}
+               className="text-[11px] font-bold px-2.5 py-1.5 rounded-lg bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--primary)] hover:text-[color:var(--primary-hover)] transition-colors cursor-pointer capitalize"
+             >
+               {v === 'jdm' ? 'Japan' : v === 'sa' ? 'South Africa' : v === 'uae' ? 'UAE' : v === 'uk' ? 'UK' : v}
+             </button>
+          ))}
         </div>
       </div>
 
@@ -282,26 +322,57 @@ export default function VehicleDiscovery() {
               className="w-full border border-[color:var(--border-strong)] rounded-xl px-4 py-3 text-base font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
             />
 
-            <label className="block text-xs font-bold text-[color:var(--text)] mt-4 mb-1.5">
-              Exchange rate (1 USD = ZMW)
-            </label>
-            <input
-              type="text"
-              inputMode="decimal"
-              value={fx}
-              onChange={(e) => setFx(e.target.value.replace(/[^\d.]/g, ''))}
-              placeholder="e.g. 27.5"
-              className="w-full border border-[color:var(--border-strong)] rounded-xl px-4 py-3 text-base font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
-            />
-            <p className="text-[11px] text-[color:var(--text-muted)] mt-2">
-              We use this to convert import prices into Kwacha. Adjust it to today's rate for the most
-              accurate estimates.
-            </p>
+            {/* Display exchange rates */}
+            <div className="mt-5 p-4 rounded-xl bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] flex flex-col gap-1.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[color:var(--text-muted)]">Live Exchange Rates</span>
+              {fxRates ? (
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
+                  <span className="text-sm font-extrabold text-[color:var(--text)]">1 USD = {fxRates.usdToZmw.toFixed(2)} ZMW</span>
+                  <span className="text-sm font-extrabold text-[color:var(--text)]">1 ZAR = {fxRates.zarToZmw.toFixed(2)} ZMW</span>
+                </div>
+              ) : (
+                <span className="text-sm font-medium text-[color:var(--text-muted)]">Loading rates...</span>
+              )}
+              {fxError && <span className="text-[11px] text-[color:var(--warn)] mt-1">{fxError}</span>}
+              <p className="text-[10px] text-[color:var(--text-muted)] mt-1 leading-relaxed">
+                These rates are automatically updated to provide accurate estimates for landed costs.
+              </p>
+            </div>
           </div>
         )}
 
-        {/* Step 2 — Primary use */}
+        {/* Step 2 — Preferred Region */}
         {step === 2 && (
+          <div>
+            <h3 className="text-lg font-extrabold mb-1">Do you have a preferred source market?</h3>
+            <p className="text-xs text-[color:var(--text-muted)] mb-5">
+              We'll prioritize import links from this region if available, but still recommend the best vehicles overall.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              {(['Any', 'Japan', 'South Africa', 'Singapore', 'UK', 'UAE', 'Thailand', 'Korea'] as (MarketRegion | 'Any')[]).map((r) => (
+                <OptionCard
+                  key={r}
+                  selected={prefRegion === r}
+                  title={r === 'Any' ? 'No Preference' : r}
+                  desc={
+                    r === 'Any' ? 'Show me the best matches globally.' :
+                    r === 'Japan' ? 'The default standard. High volume, great prices.' :
+                    r === 'South Africa' ? 'Great for heavy-duty pickups and SUVs.' :
+                    r === 'Singapore' ? 'Immaculate 10-year COE luxury & JDM.' :
+                    r === 'Thailand' ? 'The global hub for pickup trucks.' :
+                    r === 'UK' ? 'European luxury and Land Rovers.' :
+                    r === 'UAE' ? 'Heavy-duty luxury SUVs and off-roaders.' :
+                    'Value-packed Korean crossovers and sedans.'
+                  }
+                  onClick={() => setPrefRegion(r)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Step 3 — Primary use */}
+        {step === 3 && (
           <div>
             <h3 className="text-lg font-extrabold mb-1">How will you mainly use it?</h3>
             <p className="text-xs text-[color:var(--text-muted)] mb-5">Pick the one that fits best.</p>
@@ -319,8 +390,8 @@ export default function VehicleDiscovery() {
           </div>
         )}
 
-        {/* Step 3 — Terrain */}
-        {step === 3 && (
+        {/* Step 4 — Terrain */}
+        {step === 4 && (
           <div>
             <h3 className="text-lg font-extrabold mb-1">Where do you drive most?</h3>
             <p className="text-xs text-[color:var(--text-muted)] mb-5">The roads you use most of the time.</p>
@@ -338,8 +409,8 @@ export default function VehicleDiscovery() {
           </div>
         )}
 
-        {/* Step 4 — Fuel preference */}
-        {step === 4 && (
+        {/* Step 5 — Fuel preference */}
+        {step === 5 && (
           <div>
             <h3 className="text-lg font-extrabold mb-1">Any fuel preference?</h3>
             <p className="text-xs text-[color:var(--text-muted)] mb-5">
@@ -367,8 +438,8 @@ export default function VehicleDiscovery() {
           </div>
         )}
 
-        {/* Step 5 — Priorities */}
-        {step === 5 && (
+        {/* Step 6 — Priorities */}
+        {step === 6 && (
           <div>
             <h3 className="text-lg font-extrabold mb-1">What matters most to you?</h3>
             <p className="text-xs text-[color:var(--text-muted)] mb-5">
@@ -485,6 +556,7 @@ function ResultsView({
   aiLoading: boolean;
   budgetZMW: number;
   onRestart: () => void;
+  preferredRegion?: MarketRegion | 'Any';
 }) {
   const { topPicks, wildcards } = results;
 
@@ -516,7 +588,7 @@ function ResultsView({
       {/* Top picks */}
       <div className="space-y-3">
         {topPicks.map((sv, i) => (
-          <ResultCard key={sv.vehicle.id} sv={sv} rank={i + 1} aiText={ai?.picks?.[sv.vehicle.id]} />
+          <ResultCard key={sv.vehicle.id} sv={sv} rank={i + 1} aiText={ai?.picks?.[sv.vehicle.id]} preferredRegion={preferredRegion} />
         ))}
       </div>
 
@@ -529,7 +601,7 @@ function ResultsView({
           </p>
           <div className="space-y-3">
             {wildcards.map((sv) => (
-              <ResultCard key={sv.vehicle.id} sv={sv} aiText={ai?.picks?.[sv.vehicle.id]} wildcard />
+              <ResultCard key={sv.vehicle.id} sv={sv} aiText={ai?.picks?.[sv.vehicle.id]} wildcard preferredRegion={preferredRegion} />
             ))}
           </div>
         </div>
@@ -585,11 +657,12 @@ function ResultCard({
   rank?: number;
   aiText?: string;
   wildcard?: boolean;
+  preferredRegion?: MarketRegion | 'Any';
 }) {
   const { vehicle: v, repairability, landed, withinBudget } = sv;
   const reasons = aiText ? [aiText] : sv.reasons;
   const [showSources, setShowSources] = useState(false);
-  const links = useMemo(() => marketplaceLinks(v), [v]);
+  const links = useMemo(() => marketplaceLinks(v, preferredRegion), [v, preferredRegion]);
 
   return (
     <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl p-4 sm:p-5 shadow-[var(--shadow-sm)]">
@@ -680,14 +753,26 @@ function ResultCard({
           {showSources ? 'Hide listings' : `Find a ${v.make} ${v.model} to buy`}
           <span className="text-[10px]">{showSources ? '▴' : '▾'}</span>
         </button>
-        {showSources && <ListingLinks links={links} />}
+        {showSources && <ListingLinks links={links} preferredRegion={preferredRegion} />}
       </div>
     </div>
   );
 }
 
-function ListingLinks({ links }: { links: MarketplaceLink[] }) {
-  const regions: MarketplaceLink['region'][] = ['Japan', 'South Africa'];
+function ListingLinks({ links, preferredRegion }: { links: MarketplaceLink[]; preferredRegion?: MarketRegion | 'Any' }) {
+  const allRegions = Array.from(new Set(links.map((l) => l.region)));
+  
+  // Sort regions: preferred first, then Japan, South Africa, and alphabetical for others
+  const regions = allRegions.sort((a, b) => {
+    if (a === preferredRegion) return -1;
+    if (b === preferredRegion) return 1;
+    if (a === 'Japan') return -1;
+    if (b === 'Japan') return 1;
+    if (a === 'South Africa') return -1;
+    if (b === 'South Africa') return 1;
+    return a.localeCompare(b);
+  });
+
   return (
     <div className="mt-3 space-y-2.5 animate-fadeIn">
       {regions.map((region) => {

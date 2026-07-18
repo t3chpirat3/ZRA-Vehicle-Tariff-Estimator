@@ -20,7 +20,7 @@
 
 import { VehicleModel } from '../data/vehiclesData';
 
-export type MarketRegion = 'Japan' | 'South Africa';
+export type MarketRegion = 'Japan' | 'South Africa' | 'Singapore' | 'UK' | 'UAE' | 'Thailand' | 'Korea';
 
 export interface MarketplaceLink {
   name: string;
@@ -45,58 +45,143 @@ const saSlug = (s: string) =>
     .replace(/^-+|-+$/g, '');
 
 /** Listing links for a catalogued model. */
-export function marketplaceLinks(v: VehicleModel): MarketplaceLink[] {
+export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion | 'Any'): MarketplaceLink[] {
   const keyword = encodeURIComponent(`${v.make} ${v.model}`);
   const links: MarketplaceLink[] = [];
 
-  // The Japanese exporters carry most models; skip them for SA/India-only
-  // nameplates so we never show a search that returns nothing.
-  if (v.jpAvailable !== false) {
+  // DreamCars Directory (Local Zambian portal)
+  // Always surface this as a premium local option, attached to whatever region they are searching.
+  links.push({
+    name: 'DreamCars Directory',
+    region: preferredRegion && preferredRegion !== 'Any' ? preferredRegion as MarketRegion : 'Japan',
+    url: `https://dreamcars.directory/?s=${keyword}`,
+  });
+
+  // South Africa
+  if (v.saName && (preferredRegion === 'South Africa' || preferredRegion === 'Any' || !preferredRegion)) {
     links.push(
       {
-        name: 'SBT Japan',
-        region: 'Japan',
-        url: `https://www.sbtjapan.com/used-cars/${slug(v.make)}/${slug(v.model)}/`,
+        name: 'Cars.co.za',
+        region: 'South Africa',
+        url: `https://www.cars.co.za/usedcars/${encodeURIComponent(v.make)}/${saSlug(v.saName)}/`,
       },
       {
-        name: 'BE FORWARD',
-        region: 'Japan',
-        url: `https://www.beforward.jp/stocklist/keyword=${keyword}/`,
-      },
-      {
-        name: 'Autocom Japan',
-        region: 'Japan',
-        url: `https://autocj.co.jp/used_cars?key=${keyword}`,
-      },
+        name: 'AutoTrader SA',
+        region: 'South Africa',
+        url: `https://www.autotrader.co.za/cars-for-sale/${slug(v.make)}/${saSlug(v.saName)}/`,
+      }
     );
   }
 
-  // South Africa is the sourcing market chiefly for the larger SA-spec
-  // vehicles, so only offer it where we have a confirmed cars.co.za model name.
-  if (v.saName) {
-    links.push({
-      name: 'Cars.co.za',
-      region: 'South Africa',
-      url: `https://www.cars.co.za/usedcars/${encodeURIComponent(v.make)}/${saSlug(v.saName)}/`,
-    });
+  // Japan / Global
+  if (v.jpAvailable !== false) {
+    if (preferredRegion === 'Japan' || preferredRegion === 'Any' || !preferredRegion) {
+      links.push(
+        {
+          name: 'SBT Japan',
+          region: 'Japan',
+          url: `https://www.sbtjapan.com/used-cars/${slug(v.make)}/${slug(v.model)}/`,
+        },
+        {
+          name: 'BE FORWARD',
+          region: 'Japan',
+          url: `https://www.beforward.jp/stocklist/keyword=${keyword}/`,
+        },
+        {
+          name: 'TC-V (Trade Car View)',
+          region: 'Japan',
+          url: `https://www.tc-v.com/used_car/${slug(v.make)}/${slug(v.model)}/`,
+        },
+        {
+          name: 'Enhance Auto',
+          region: 'Japan',
+          url: `https://www.enhance-auto.jp/stock?keyword=${keyword}`,
+        }
+      );
+    }
+
+    // Handle other preferred regions
+    const extraRegions: MarketRegion[] = ['Singapore', 'UK', 'UAE', 'Thailand', 'Korea'];
+    for (const r of extraRegions) {
+      if (preferredRegion === r || preferredRegion === 'Any' || !preferredRegion) {
+        // Multi-market inventory platforms
+        let countryParam = r;
+        if (r === 'UAE') countryParam = 'United Arab Emirates';
+        if (r === 'Korea') countryParam = 'South Korea';
+        
+        links.push({
+          name: `BE FORWARD (${r})`,
+          region: r as MarketRegion,
+          url: `https://www.beforward.jp/stocklist/country_of_inventory=${encodeURIComponent(countryParam)}/keyword=${keyword}/`,
+        });
+
+        // Add region specific aggregators/platforms
+        if (r === 'Singapore') {
+          links.push({
+            name: 'SGCarmart',
+            region: r as MarketRegion,
+            url: `https://www.sgcarmart.com/used_cars/listing.php?MOD=${keyword}`,
+          });
+        }
+        if (r === 'UK') {
+          links.push({
+            name: 'AutoTrader UK',
+            region: r as MarketRegion,
+            url: `https://www.autotrader.co.uk/car-search?make=${encodeURIComponent(v.make)}&model=${encodeURIComponent(v.model)}`,
+          });
+        }
+        if (r === 'UAE') {
+          links.push({
+            name: 'Dubizzle UAE',
+            region: r as MarketRegion,
+            url: `https://uae.dubizzle.com/motors/used-cars/?keywords=${keyword}`,
+          });
+        }
+        if (r === 'Thailand') {
+          links.push({
+            name: 'Thailand-Vehicles',
+            region: r as MarketRegion,
+            url: `https://thailand-vehicles.com/?s=${keyword}`,
+          });
+        }
+        if (r === 'Korea') {
+          links.push({
+            name: 'Autowini',
+            region: r as MarketRegion,
+            url: `https://www.autowini.com/search?keyword=${keyword}`,
+          });
+        }
+      }
+    }
   }
 
   return links;
 }
 
 /** Keyword-only links for free-text AI suggestions that aren't in the catalog. */
-export function keywordMarketplaceLinks(query: string): MarketplaceLink[] {
+export function keywordMarketplaceLinks(query: string, preferredRegion?: MarketRegion | 'Any'): MarketplaceLink[] {
   const keyword = encodeURIComponent(query);
-  return [
+  const links: MarketplaceLink[] = [
+    {
+      name: 'DreamCars Directory',
+      region: preferredRegion && preferredRegion !== 'Any' ? preferredRegion as MarketRegion : 'Japan',
+      url: `https://dreamcars.directory/?s=${keyword}`,
+    },
     {
       name: 'BE FORWARD',
       region: 'Japan',
       url: `https://www.beforward.jp/stocklist/keyword=${keyword}/`,
     },
     {
-      name: 'Autocom Japan',
+      name: 'TC-V',
       region: 'Japan',
-      url: `https://autocj.co.jp/used_cars?key=${keyword}`,
+      url: `https://www.tc-v.com/used_car/search?keyword=${keyword}`,
     },
+    {
+      name: 'Autowini',
+      region: 'Korea',
+      url: `https://www.autowini.com/search?keyword=${keyword}`,
+    }
   ];
+  return links;
 }

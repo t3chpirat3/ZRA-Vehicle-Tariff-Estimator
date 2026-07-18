@@ -11,6 +11,7 @@ import {
   type VesselStatus
 } from '../data/shippingData';
 import { getApiUrl } from '../utils/api';
+import MarketDirectoriesManager from './MarketDirectoriesManager';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function formatDateForInput(isoString: string): string {
@@ -41,6 +42,8 @@ export default function AdminPanel() {
   const [isParsing, setIsParsing] = useState(false);
   const [parsedResults, setParsedResults] = useState<Partial<VesselSchedule>[]>([]);
   const [parseError, setParseError] = useState('');
+
+  const [activeTab, setActiveTab] = useState<'schedules' | 'directories'>('schedules');
 
   // ── Auth ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -319,8 +322,8 @@ export default function AdminPanel() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black font-display text-[color:var(--text)] tracking-tight">Shipping Schedule Manager</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage vessel schedules and process carrier PDFs.</p>
+          <h2 className="text-3xl font-black font-display text-[color:var(--text)] tracking-tight">Admin Dashboard</h2>
+          <p className="text-slate-500 text-sm mt-1">Manage platform data and configuration.</p>
         </div>
         <button onClick={handleLogout} className="btn-ghost px-4 py-2 text-sm flex items-center gap-2 self-start sm:self-auto">
           <LogOut className="w-4 h-4" />
@@ -328,9 +331,28 @@ export default function AdminPanel() {
         </button>
       </div>
 
-      {/* Schedule Manager */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+      <div className="flex border-b border-slate-200">
+        <button 
+          onClick={() => setActiveTab('schedules')} 
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'schedules' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Shipping Schedules
+        </button>
+        <button 
+          onClick={() => setActiveTab('directories')} 
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'directories' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        >
+          Market Directories
+        </button>
+      </div>
+
+      {activeTab === 'directories' ? (
+        <MarketDirectoriesManager apiFetch={apiFetch as any} />
+      ) : (
+        <div className="space-y-8 animate-fadeIn">
+          {/* Schedule Manager */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
           <h3 className="font-bold text-[color:var(--text)] flex items-center gap-2">
             <Ship className="w-5 h-5 text-[color:var(--primary)]" />
             Active Schedules
@@ -569,39 +591,44 @@ export default function AdminPanel() {
       )}
 
       {/* AI Schedule Parser */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-5 border-b border-slate-200 flex items-center gap-2 bg-[color:var(--primary-soft)]">
-          <Sparkles className="w-5 h-5 text-[color:var(--primary)]" />
-          <h3 className="font-bold text-[color:var(--primary-hover)]">AI Schedule Parser</h3>
-        </div>
-        
-        <div className="p-5">
-          <p className="text-sm text-slate-500 mb-3">Paste the text content from a carrier's sailing schedule PDF here to automatically extract vessel dates.</p>
+      {activeTab === 'schedules' && (
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-6 mt-8">
+          <h3 className="font-bold text-[color:var(--text)] flex items-center gap-2 mb-4">
+            <Sparkles className="w-5 h-5 text-indigo-500" />
+            AI Carrier Schedule Parser
+          </h3>
+          <p className="text-sm text-slate-500 mb-4">
+            Paste the raw text from a carrier PDF (e.g. NYK Line, MOL) below. Duty Boss AI will automatically extract the vessels, dates, and ports into standard schedules.
+          </p>
+          
           <textarea
             value={pdfText}
             onChange={(e) => setPdfText(e.target.value)}
-            className="w-full h-32 bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl p-3 text-sm outline-none focus:border-[color:var(--primary)] resize-none font-mono text-slate-600 mb-3"
-            placeholder="Paste raw PDF text here..."
+            className="w-full h-40 bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl p-4 text-xs font-mono outline-none focus:border-indigo-400 mb-4"
+            placeholder="Paste PDF schedule text here..."
           />
           
-          <div className="flex items-center justify-between">
-            {parseError ? (
-              <span className="text-xs font-semibold text-red-600 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5"/>{parseError}</span>
-            ) : <span/>}
-            
+          <div className="flex justify-end">
             <button 
               onClick={handleParse} 
-              disabled={isParsing || !pdfText.trim()} 
-              className="btn-primary px-4 py-2 text-sm flex items-center gap-2"
+              disabled={isParsing || !pdfText.trim()}
+              className="btn-primary bg-indigo-600 hover:bg-indigo-700 px-6 py-2.5 text-sm flex items-center gap-2 disabled:opacity-50"
             >
               {isParsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
               Parse with DeepSeek
             </button>
           </div>
-        </div>
 
-        {/* Parsed Results */}
-        {parsedResults.length > 0 && (
+          {parseError && (
+             <div className="mt-4 text-xs font-semibold text-red-600 bg-red-50 p-3 rounded-lg border border-red-100">
+               {parseError}
+             </div>
+          )}
+        </div>
+      )}
+
+      {/* Parsed Results */}
+      {activeTab === 'schedules' && parsedResults.length > 0 && (
           <div className="border-t border-slate-200 p-5 bg-slate-50/50">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-bold text-slate-700">Extracted Sailings ({parsedResults.length})</h4>
@@ -668,7 +695,9 @@ export default function AdminPanel() {
             </div>
           </div>
         )}
-      </div>
+
+        </div>
+      )}
     </div>
   );
 }

@@ -11,7 +11,7 @@ const categories = [
     id: 'marketplaces',
     label: 'Marketplaces & Sourcing',
     icon: Search,
-    indices: [0, 1, 2, 3, 18, 24],
+    indices: [0, 1, 2, 3, 18, 24, 28],
     desc: 'Understand how platforms operate, where to buy, and the Japanese auction ecosystem.'
   },
   {

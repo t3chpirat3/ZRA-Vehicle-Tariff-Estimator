@@ -27,6 +27,7 @@ import {
   UseCase,
   Terrain,
 } from '../data/vehiclesData';
+import { MarketRegion } from './marketplaces';
 import { CalculatorState, FuelType, calculateDuty } from '../types';
 
 // Rough freight + insurance added to FOB to approximate CIF (Japan → Dar/Nakonde).
@@ -47,6 +48,7 @@ export interface DiscoveryProfile {
     towing: number;
     clearance: number;
   };
+  preferredRegion?: MarketRegion | 'Any';
 }
 
 export interface LandedCost {
