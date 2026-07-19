@@ -97,15 +97,15 @@ export default function MarketDirectoriesManager({ apiFetch }: { apiFetch: (url:
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-8">
-      <div className="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
+    <div className="bg-[color:var(--surface)] rounded-2xl shadow-sm border border-[color:var(--border)] overflow-hidden mt-8">
+      <div className="p-5 border-b border-[color:var(--border)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[color:var(--surface-soft)]/50">
         <h3 className="font-bold text-[color:var(--text)]">Market Directories</h3>
         
         <div className="flex items-center gap-3">
           <select 
             value={selectedMarket}
             onChange={(e) => setSelectedMarket(e.target.value)}
-            className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm outline-none font-medium"
+            className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-lg px-3 py-1.5 text-sm outline-none font-medium"
           >
             {MARKETS.map(m => (
               <option key={m.id} value={m.id}>{m.label}</option>
@@ -135,7 +135,7 @@ export default function MarketDirectoriesManager({ apiFetch }: { apiFetch: (url:
           key={selectedMarket}
           defaultValue={JSON.stringify(directories[selectedMarket] || [], null, 2)}
           onChange={handleJsonChange}
-          className="w-full h-[500px] font-mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-4 outline-none focus:border-[color:var(--primary)]"
+          className="w-full h-[500px] font-mono text-xs bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl p-4 outline-none focus:border-[color:var(--primary)]"
           spellCheck={false}
         />
       </div>

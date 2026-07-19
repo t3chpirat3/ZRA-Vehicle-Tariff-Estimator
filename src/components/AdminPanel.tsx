@@ -288,7 +288,7 @@ export default function AdminPanel() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-md mx-auto mt-20 animate-fadeIn">
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
+        <div className="bg-[color:var(--surface)] rounded-2xl p-8 shadow-sm border border-[color:var(--border)]">
           <div className="w-12 h-12 bg-[color:var(--primary-soft)] text-[color:var(--primary)] rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-6 h-6" />
           </div>
@@ -335,40 +335,40 @@ export default function AdminPanel() {
         </button>
       </div>
 
-      <div className="flex border-b border-slate-200">
+      <div className="flex border-b border-[color:var(--border)]">
         <button 
           onClick={() => setActiveTab('schedules')} 
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'schedules' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'schedules' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Shipping Schedules
         </button>
         <button
           onClick={() => setActiveTab('directories')}
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'directories' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'directories' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Directories
         </button>
         <button
           onClick={() => setActiveTab('fx')}
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'fx' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'fx' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Exchange Rates
         </button>
         <button
           onClick={() => setActiveTab('tax')}
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'tax' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'tax' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Tax & Depreciation
         </button>
         <button
           onClick={() => setActiveTab('agents')}
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'agents' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'agents' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Featured Agents
         </button>
         <button
           onClick={() => setActiveTab('inland')}
-          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'inland' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'inland' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
         >
           Inland Logistics
         </button>
@@ -387,8 +387,8 @@ export default function AdminPanel() {
       ) : (
         <div className="space-y-8 animate-fadeIn">
           {/* Schedule Manager */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+          <div className="bg-[color:var(--surface)] rounded-2xl shadow-sm border border-[color:var(--border)] overflow-hidden">
+            <div className="p-5 border-b border-[color:var(--border)] flex items-center justify-between bg-[color:var(--surface-soft)]/50">
           <h3 className="font-bold text-[color:var(--text)] flex items-center gap-2">
             <Ship className="w-5 h-5 text-[color:var(--primary)]" />
             Active Schedules
@@ -410,7 +410,7 @@ export default function AdminPanel() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-200">
+              <thead className="text-xs text-slate-500 uppercase bg-[color:var(--surface-soft)] border-b border-[color:var(--border)]">
                 <tr>
                   <th className="px-4 py-3 font-bold">Carrier & Vessel</th>
                   <th className="px-4 py-3 font-bold">Route</th>
@@ -421,15 +421,15 @@ export default function AdminPanel() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {schedules.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50/50">
+                  <tr key={s.id} className="hover:bg-[color:var(--surface-soft)]/50">
                     <td className="px-4 py-3">
                       <div className="font-bold text-[color:var(--text)]">{s.vessel_name}</div>
                       <div className="text-xs text-slate-500">{s.carrier}</div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="font-medium text-slate-700">{s.origin_port} <span className="text-slate-400 mx-1">→</span> {s.destination_port}</div>
+                      <div className="font-medium text-[color:var(--text-muted)]">{s.origin_port} <span className="text-slate-400 mx-1">→</span> {s.destination_port}</div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-[color:var(--text-muted)]">
                       <div>{formatDateForInput(s.etd)} <span className="text-slate-400 mx-1">to</span> {formatDateForInput(s.eta)}</div>
                     </td>
                     <td className="px-4 py-3">
@@ -437,7 +437,7 @@ export default function AdminPanel() {
                         value={s.status}
                         onChange={(e) => handleInlineStatusChange(s.id, e.target.value as VesselStatus)}
                         className={`text-xs font-semibold rounded-md px-2 py-1 outline-none cursor-pointer border ${
-                           s.status === 'Scheduled' ? 'bg-slate-100 text-slate-700 border-slate-200' :
+                           s.status === 'Scheduled' ? 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] border-[color:var(--border)]' :
                            s.status === 'Booking Open' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                            s.status === 'Booking Closed' ? 'bg-amber-50 text-amber-700 border-amber-200' :
                            s.status === 'Departed' ? 'bg-blue-50 text-blue-700 border-blue-200' :
@@ -471,12 +471,12 @@ export default function AdminPanel() {
       {/* Add/Edit Form Modal */}
       {isFormOpen && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-2xl max-h-[90vh] flex flex-col animate-fadeIn">
-            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
+          <div className="bg-[color:var(--surface)] rounded-2xl shadow-xl border border-[color:var(--border)] w-full max-w-2xl max-h-[90vh] flex flex-col animate-fadeIn">
+            <div className="p-5 border-b border-[color:var(--border)] flex items-center justify-between">
               <h3 className="font-bold text-lg text-[color:var(--text)]">
                 {editingSchedule ? 'Edit Schedule' : 'Add New Schedule'}
               </h3>
-              <button onClick={closeForm} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeForm} className="text-slate-400 hover:text-[color:var(--text-muted)]">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -615,7 +615,7 @@ export default function AdminPanel() {
               </form>
             </div>
             
-            <div className="p-5 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 rounded-b-2xl">
+            <div className="p-5 border-t border-[color:var(--border)] bg-[color:var(--surface-soft)] flex justify-end gap-3 rounded-b-2xl">
               <button type="button" onClick={closeForm} className="btn-ghost px-4 py-2 text-sm">Cancel</button>
               <button type="submit" form="schedule-form" disabled={formLoading} className="btn-primary px-5 py-2 text-sm flex items-center gap-2">
                 {formLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
@@ -628,7 +628,7 @@ export default function AdminPanel() {
 
       {/* AI Schedule Parser */}
       {activeTab === 'schedules' && (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-6 mt-8">
+        <div className="bg-[color:var(--surface)] rounded-2xl shadow-sm border border-[color:var(--border)] overflow-hidden p-6 mt-8">
           <h3 className="font-bold text-[color:var(--text)] flex items-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-indigo-500" />
             AI Carrier Schedule Parser
@@ -665,9 +665,9 @@ export default function AdminPanel() {
 
       {/* Parsed Results */}
       {activeTab === 'schedules' && parsedResults.length > 0 && (
-          <div className="border-t border-slate-200 p-5 bg-slate-50/50">
+          <div className="border-t border-[color:var(--border)] p-5 bg-[color:var(--surface-soft)]/50">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-sm font-bold text-slate-700">Extracted Sailings ({parsedResults.length})</h4>
+              <h4 className="text-sm font-bold text-[color:var(--text-muted)]">Extracted Sailings ({parsedResults.length})</h4>
               <button 
                 onClick={handleSaveAll}
                 className="btn-primary px-4 py-1.5 text-xs flex items-center gap-1.5"
@@ -684,18 +684,18 @@ export default function AdminPanel() {
                   'bg-red-100 text-red-800 border-red-200';
                   
                 return (
-                  <div key={i} className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div key={i} className="bg-[color:var(--surface)] rounded-xl p-4 border border-[color:var(--border)] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-bold text-[color:var(--text)]">{res.vessel_name}</span>
-                        <span className="text-xs text-slate-500 border-l border-slate-300 pl-2">{res.carrier}</span>
+                        <span className="text-xs text-slate-500 border-l border-[color:var(--border-strong)] pl-2">{res.carrier}</span>
                         {(res as any).confidence && (
                           <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase ml-2 ${confidenceColor}`}>
                             {(res as any).confidence}
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-600 flex items-center gap-3">
+                      <div className="text-xs text-[color:var(--text-muted)] flex items-center gap-3">
                          <span>{res.origin_port} → {res.destination_port}</span>
                          <span className="text-slate-300">|</span>
                          <span>ETD: {formatDateForInput(res.etd || '')}</span>
@@ -724,7 +724,7 @@ export default function AdminPanel() {
             <div className="mt-4 flex justify-end">
               <button 
                 onClick={() => setParsedResults([])}
-                className="text-xs font-semibold text-slate-400 hover:text-slate-600 px-3 py-2"
+                className="text-xs font-semibold text-slate-400 hover:text-[color:var(--text-muted)] px-3 py-2"
               >
                 Clear All
               </button>

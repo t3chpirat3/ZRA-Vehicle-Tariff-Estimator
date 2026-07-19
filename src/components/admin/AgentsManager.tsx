@@ -115,10 +115,10 @@ export default function AgentsManager() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-[color:var(--surface)] rounded-xl shadow-sm border border-[color:var(--border)] p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold text-slate-800">Featured Clearing Agents</h2>
+          <h2 className="text-lg font-bold text-[color:var(--text)]">Featured Clearing Agents</h2>
           <p className="text-sm text-slate-500">Manage the top recommended agents displayed to users.</p>
         </div>
         <button
@@ -133,14 +133,14 @@ export default function AgentsManager() {
       {error && <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>}
 
       {agents.length === 0 ? (
-        <div className="text-center p-8 bg-slate-50 border border-slate-200 border-dashed rounded-xl">
+        <div className="text-center p-8 bg-[color:var(--surface-soft)] border border-[color:var(--border)] border-dashed rounded-xl">
           <p className="text-slate-500 text-sm">No featured agents added yet. The app will fallback to the bulk database.</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
+              <tr className="bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] text-xs uppercase tracking-wider">
                 <th className="px-4 py-3 font-bold rounded-tl-lg">Company</th>
                 <th className="px-4 py-3 font-bold">Location</th>
                 <th className="px-4 py-3 font-bold">Contact</th>
@@ -149,14 +149,14 @@ export default function AgentsManager() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {agents.map((a) => (
-                <tr key={a.id} className="hover:bg-slate-50/50">
+                <tr key={a.id} className="hover:bg-[color:var(--surface-soft)]/50">
                   <td className="px-4 py-3">
-                    <div className="font-bold text-slate-800">{a.company}</div>
+                    <div className="font-bold text-[color:var(--text)]">{a.company}</div>
                     <div className="text-xs text-slate-500">TPIN: {a.tpin}</div>
                   </td>
-                  <td className="px-4 py-3 text-slate-700">{a.location}</td>
+                  <td className="px-4 py-3 text-[color:var(--text-muted)]">{a.location}</td>
                   <td className="px-4 py-3">
-                    <div className="text-sm text-slate-700">{a.phone}</div>
+                    <div className="text-sm text-[color:var(--text-muted)]">{a.phone}</div>
                     <div className="text-xs text-slate-500">{a.email}</div>
                   </td>
                   <td className="px-4 py-3 text-right">
@@ -178,26 +178,26 @@ export default function AgentsManager() {
 
       {isFormOpen && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md animate-fadeIn">
-            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="font-bold text-lg text-slate-800">
+          <div className="bg-[color:var(--surface)] rounded-2xl shadow-xl w-full max-w-md animate-fadeIn">
+            <div className="p-5 border-b border-[color:var(--border)] flex items-center justify-between">
+              <h3 className="font-bold text-lg text-[color:var(--text)]">
                 {editingAgent ? 'Edit Agent' : 'Add New Agent'}
               </h3>
-              <button onClick={closeForm} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeForm} className="text-slate-400 hover:text-[color:var(--text-muted)]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleFormSubmit} className="p-5 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Company Name</label>
-                <input required type="text" value={formData.company || ''} onChange={e => setFormData({...formData, company: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Company Name</label>
+                <input required type="text" value={formData.company || ''} onChange={e => setFormData({...formData, company: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Location</label>
-                  <select required value={formData.location || ''} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Location</label>
+                  <select required value={formData.location || ''} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-[color:var(--surface)]">
                     <option value="Dar es Salaam">Dar es Salaam</option>
                     <option value="Nakonde">Nakonde</option>
                     <option value="Durban">Durban</option>
@@ -207,24 +207,24 @@ export default function AgentsManager() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">TPIN (Optional)</label>
-                  <input type="text" value={formData.tpin || ''} onChange={e => setFormData({...formData, tpin: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">TPIN (Optional)</label>
+                  <input type="text" value={formData.tpin || ''} onChange={e => setFormData({...formData, tpin: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Phone</label>
-                  <input required type="text" value={formData.phone || ''} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Phone</label>
+                  <input required type="text" value={formData.phone || ''} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Email</label>
-                  <input type="email" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Email</label>
+                  <input type="email" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
               </div>
 
               <div className="pt-4 flex justify-end gap-3">
-                <button type="button" onClick={closeForm} className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
+                <button type="button" onClick={closeForm} className="px-4 py-2 text-[color:var(--text-muted)] font-medium hover:bg-[color:var(--surface-soft)] rounded-lg transition-colors">Cancel</button>
                 <button type="submit" disabled={saving} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2">
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Agent

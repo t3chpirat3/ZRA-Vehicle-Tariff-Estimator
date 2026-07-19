@@ -17,7 +17,7 @@ import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
 import FaqSection from './components/FaqSection';
 import { WatchlistItem } from './types';
-import { Shield, Menu, X, WifiOff } from 'lucide-react';
+import { Shield, Menu, X, WifiOff, Moon, Sun } from 'lucide-react';
 import { useNetworkStatus } from './hooks/useNetworkStatus';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
@@ -91,6 +91,17 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'buyers-guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
   const isOffline = useNetworkStatus();
+  
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Toggle theme class on HTML element
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Implement splash screen exit
   useEffect(() => {
@@ -282,6 +293,13 @@ export default function App() {
                   Offline
                 </div>
               )}
+              <button 
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                className="flex items-center justify-center w-10 h-10 rounded-xl text-slate-500 hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] transition-colors"
+                title="Toggle Dark Mode"
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </button>
               <nav className="flex items-center gap-2 text-[13px] font-semibold">
                 {navTabs.map((tab) => {
                   const isActive = activeTab === tab.id;
@@ -350,6 +368,16 @@ export default function App() {
              </button>
           </div>
           <div className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1.5">
+            <button 
+              onClick={() => { setTheme(theme === 'light' ? 'dark' : 'light'); setIsMobileMenuOpen(false); }}
+              className="w-full px-4 py-3.5 rounded-xl flex items-center justify-between text-left transition-colors font-semibold text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] mb-2"
+            >
+              <div className="flex items-center gap-2">
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+              </div>
+            </button>
+            
             {navTabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -446,11 +474,11 @@ export default function App() {
           {activeTab === 'admin' && (
             <div className="animate-fadeIn">
               {isOffline ? (
-                <div className="p-8 text-center bg-white rounded-2xl border border-[color:var(--border)] shadow-sm">
+                <div className="p-8 text-center bg-[color:var(--surface)] rounded-2xl border border-[color:var(--border)] shadow-sm">
                   <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <WifiOff className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Offline Mode</h3>
+                  <h3 className="text-xl font-bold text-[color:var(--text)] mb-2">Offline Mode</h3>
                   <p className="text-slate-500 max-w-md mx-auto">
                     The Admin Panel requires an active internet connection to communicate with the secure server. Please reconnect to access administrative features.
                   </p>

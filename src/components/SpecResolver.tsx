@@ -165,7 +165,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
         </button>
       ) : (
         /* ── Expanded resolver panel ── */
-        <div className="w-full bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        <div className="w-full bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl overflow-hidden">
 
           {/* Header */}
           <div className="px-4 py-3 flex items-center justify-between bg-[color:var(--surface-soft)] border-b border-[color:var(--border)]">
@@ -220,7 +220,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                     key={ex}
                     type="button"
                     onClick={() => { setQuery(ex); setTimeout(handleResolve, 50); }}
-                    className="text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:border-slate-400 hover:text-slate-900 transition-all cursor-pointer"
+                    className="text-[10px] font-bold px-2 py-1 rounded-lg bg-[color:var(--surface-soft)] border border-[color:var(--border)] text-[color:var(--text-muted)] hover:border-slate-400 hover:text-[color:var(--text)] transition-all cursor-pointer"
                   >
                     {ex}
                   </button>
@@ -231,23 +231,23 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
             {/* Loading state */}
             {status === 'loading' && (
               <div className="text-center py-6">
-                <p className="text-xs font-extrabold text-slate-700">Resolving vehicle specs…</p>
+                <p className="text-xs font-extrabold text-[color:var(--text-muted)]">Resolving vehicle specs…</p>
                 <p className="text-[10px] text-slate-400 font-medium mt-1">Checking engine codes, body type, and production years</p>
               </div>
             )}
 
             {/* Error state */}
             {status === 'error' && (
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                <p className="text-xs font-extrabold text-slate-800">Could not resolve specs</p>
-                <p className="text-[10px] font-medium text-slate-600 mt-0.5">{errorMsg}</p>
+              <div className="p-3 bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl">
+                <p className="text-xs font-extrabold text-[color:var(--text)]">Could not resolve specs</p>
+                <p className="text-[10px] font-medium text-[color:var(--text-muted)] mt-0.5">{errorMsg}</p>
                 <p className="text-[10px] text-slate-500 mt-1">Try being more specific, e.g. <em>"Toyota Vitz 1KR-FE 2008"</em></p>
               </div>
             )}
 
             {/* Result card */}
             {status === 'resolved' && result && (
-              <div className="border border-slate-200 rounded-xl overflow-hidden">
+              <div className="border border-[color:var(--border)] rounded-xl overflow-hidden">
 
                 {/* Result header */}
                 <div className="px-3 py-2.5 bg-[color:var(--primary-soft)] flex items-center justify-between">
@@ -270,7 +270,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
                   ].map((item) => (
                     <div key={item.label} className="px-3 py-2.5">
                       <p className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">{item.label}</p>
-                      <p className="text-[11px] font-extrabold text-slate-800 mt-0.5 leading-tight">{item.value}</p>
+                      <p className="text-[11px] font-extrabold text-[color:var(--text)] mt-0.5 leading-tight">{item.value}</p>
                       {item.sub && <p className="text-[9px] font-mono text-slate-500 font-bold mt-0.5">{item.sub}</p>}
                     </div>
                   ))}
@@ -278,9 +278,9 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
 
                 {/* Notes */}
                 {result.notes && (
-                  <div className="px-3 py-2 bg-slate-50 border-t border-slate-100">
+                  <div className="px-3 py-2 bg-[color:var(--surface-soft)] border-t border-slate-100">
                     <p className="text-[9.5px] text-slate-500 font-medium leading-relaxed">
-                      <span className="font-bold text-slate-600">Note: </span>{result.notes}
+                      <span className="font-bold text-[color:var(--text-muted)]">Note: </span>{result.notes}
                     </p>
                   </div>
                 )}

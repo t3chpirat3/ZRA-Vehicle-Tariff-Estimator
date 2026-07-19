@@ -8,11 +8,11 @@ interface PrivacyPolicyProps {
 export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-8 sm:p-10 relative">
+      <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm p-8 sm:p-10 relative">
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-[color:var(--text-muted)] hover:bg-[color:var(--surface-soft)] rounded-full transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -25,9 +25,9 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           {'Effective Date: 2nd July, 2026'}
         </p>
 
-        <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-slate-600 leading-relaxed space-y-6">
+        <div className="prose prose-slate prose-sm sm:prose-base max-w-none text-[color:var(--text-muted)] leading-relaxed space-y-6">
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'1. Introduction'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'1. Introduction'}</h3>
             <p>
               Welcome to Duty Boss (Zambia Vehicle Import Platform). We respect your privacy and are committed to protecting it. This Privacy Policy explains how we handle your information when you visit and use our vehicle calculation and discovery platform.
             </p>
@@ -37,7 +37,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'2. Information We Collect'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'2. Information We Collect'}</h3>
             <p>When you use our platform, the data involved falls into two specific categories:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
@@ -53,7 +53,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'3. How We Use This Information'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'3. How We Use This Information'}</h3>
             <p>We use the automatically collected analytics data exclusively for operational purposes:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>To monitor website traffic and server performance.</li>
@@ -63,7 +63,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'4. Third-Party Services'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'4. Third-Party Services'}</h3>
             <p>We do not sell, rent, or trade any user data to third parties.</p>
             <p className="mt-2">
               We utilize the following trusted third-party services to operate the platform securely and effectively:
@@ -82,7 +82,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'5. Cookies and Local Storage'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'5. Cookies and Local Storage'}</h3>
             <p>Instead of using tracking cookies to monitor your behavior across the internet, we use your browser's local storage solely to provide core functionality:</p>
             <ul className="list-disc pl-5 mt-2 space-y-2">
               <li>
@@ -92,28 +92,28 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'6. Data Security'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'6. Data Security'}</h3>
             <p>
               Even though we do not collect personal profiles or payment information, we take standard security measures to protect the integrity of the site, including utilizing secure hosting environments and SSL encryption for all web traffic.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{"7. Children's Privacy"}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{"7. Children's Privacy"}</h3>
             <p>
               Our platform is built for users researching vehicle importation and is not directed at children under the age of 13. We do not knowingly collect any data from children.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'8. Changes to This Policy'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'8. Changes to This Policy'}</h3>
             <p>
               We may update this Privacy Policy occasionally if we introduce new features or integrate different technical tools. If changes are made, we will update the "Effective Date" at the top of this page.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-slate-800 mb-2">{'9. Contact Us'}</h3>
+            <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">{'9. Contact Us'}</h3>
             <p>If you have any questions about this Privacy Policy or how our platform handles technical data, please contact us at:</p>
             <p className="mt-2">
               <strong>Email:</strong> <a href="mailto:t3chpirat3@zradutycalculator.xyz" className="text-[color:var(--primary-hover)] underline hover:no-underline font-medium">t3chpirat3@zradutycalculator.xyz</a>

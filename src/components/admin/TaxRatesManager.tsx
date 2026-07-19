@@ -104,10 +104,10 @@ export default function TaxRatesManager() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-[color:var(--surface)] rounded-xl shadow-sm border border-[color:var(--border)] p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold text-slate-800">ZRA Tax & Depreciation Rules</h2>
+          <h2 className="text-lg font-bold text-[color:var(--text)]">ZRA Tax & Depreciation Rules</h2>
           <p className="text-sm text-slate-500">Advanced JSON Editor for modifying ZRA Specific Duty bands, CIF percentages, and Carbon Surtax.</p>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function TaxRatesManager() {
         <textarea
           value={jsonText}
           onChange={(e) => setJsonText(e.target.value)}
-          className="w-full h-[500px] font-mono text-sm p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50"
+          className="w-full h-[500px] font-mono text-sm p-4 border border-[color:var(--border-strong)] rounded-xl focus:ring-2 focus:ring-blue-500 outline-none bg-[color:var(--surface-soft)]"
           spellCheck="false"
         />
 
@@ -142,7 +142,7 @@ export default function TaxRatesManager() {
           
           <button
             onClick={resetToDefault}
-            className="text-slate-500 hover:text-slate-700 text-sm font-medium transition-colors"
+            className="text-slate-500 hover:text-[color:var(--text-muted)] text-sm font-medium transition-colors"
           >
             Reset to Defaults
           </button>

@@ -81,10 +81,10 @@ export default function FxOverrideManager() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-[color:var(--surface)] rounded-xl shadow-sm border border-[color:var(--border)] p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold text-slate-800">Exchange Rate Override</h2>
+          <h2 className="text-lg font-bold text-[color:var(--text)]">Exchange Rate Override</h2>
           <p className="text-sm text-slate-500">Manually fix the exchange rate if ZRA deviates from the live market.</p>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function FxOverrideManager() {
       {success && <div className="mb-4 p-3 bg-green-50 text-green-700 rounded-lg text-sm">{success}</div>}
 
       <div className="space-y-6 max-w-md">
-        <label className="flex items-center gap-3 cursor-pointer p-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+        <label className="flex items-center gap-3 cursor-pointer p-4 border border-[color:var(--border)] rounded-xl hover:bg-[color:var(--surface-soft)] transition-colors">
           <div className="relative">
             <input 
               type="checkbox" 
@@ -102,17 +102,17 @@ export default function FxOverrideManager() {
               onChange={(e) => setEnabled(e.target.checked)}
             />
             <div className={`block w-10 h-6 rounded-full transition-colors ${enabled ? 'bg-blue-500' : 'bg-slate-300'}`}></div>
-            <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${enabled ? 'transform translate-x-4' : ''}`}></div>
+            <div className={`dot absolute left-1 top-1 bg-[color:var(--surface)] w-4 h-4 rounded-full transition-transform ${enabled ? 'transform translate-x-4' : ''}`}></div>
           </div>
           <div>
-            <div className="font-medium text-slate-800">Enable Manual Override</div>
+            <div className="font-medium text-[color:var(--text)]">Enable Manual Override</div>
             <div className="text-xs text-slate-500">If disabled, the app uses live market rates from open.er-api.com</div>
           </div>
         </label>
 
         <div className={`space-y-4 ${!enabled && 'opacity-50 pointer-events-none'}`}>
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">USD to ZMW (e.g. 25.50)</label>
+            <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">USD to ZMW (e.g. 25.50)</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                 <DollarSign className="w-4 h-4" />
@@ -122,13 +122,13 @@ export default function FxOverrideManager() {
                 step="0.01"
                 value={usdToZmw}
                 onChange={(e) => setUsdToZmw(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-9 pr-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">ZAR to ZMW (e.g. 1.40)</label>
+            <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">ZAR to ZMW (e.g. 1.40)</label>
             <div className="relative">
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">R</div>
               <input
@@ -136,7 +136,7 @@ export default function FxOverrideManager() {
                 step="0.01"
                 value={zarToZmw}
                 onChange={(e) => setZarToZmw(e.target.value === '' ? '' : Number(e.target.value))}
-                className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-9 pr-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
           </div>

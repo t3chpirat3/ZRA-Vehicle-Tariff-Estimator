@@ -29,6 +29,27 @@
   --shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px rgba(17, 24, 39, 0.06);
 }
 
+.dark {
+  --bg: #0b0c10;             /* deep charcoal/black page */
+  --surface: #1f2833;        /* dark slate cards */
+  --surface-soft: #2b3542;   /* inputs, gentle fills */
+  --border: #384252;         /* hairline borders */
+  --border-strong: #4f5a6b;
+  --text: #e2e8f0;           /* off-white text */
+  --text-muted: #94a3b8;     /* slate secondary text */
+  --primary: #dc2626;        /* crimson red accent */
+  --primary-hover: #b91c1c;
+  --primary-soft: rgba(220, 38, 38, 0.15);   /* dark crimson tint */
+  --primary-border: rgba(220, 38, 38, 0.3);
+  --accent: #c2410c;         /* terracotta brown */
+  --accent-soft: rgba(194, 65, 12, 0.15);
+  --warn: #ea580c;           /* bright terracotta for cautions */
+  --warn-soft: rgba(234, 88, 12, 0.15);
+  --ring: rgba(220, 38, 38, 0.32);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
 html,
 body {
   background-color: var(--bg);

@@ -154,7 +154,7 @@ export default function ClearingAgents() {
     if (lic.includes('RIT')) {
       return 'bg-[color:var(--primary-soft)] text-[color:var(--primary-hover)]';
     }
-    return 'bg-[color:var(--surface-soft)] text-slate-600 border border-[color:var(--border)]';
+    return 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] border border-[color:var(--border)]';
   };
 
   return (
@@ -284,14 +284,14 @@ export default function ClearingAgents() {
                         TPIN: <span className="font-bold font-mono">{agent.tpin || 'N/A'}</span>
                       </div>
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-slate-700">
+                        <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-[color:var(--text-muted)]">
                           <Phone className="w-3 h-3 text-blue-500" />
                           <span className="font-mono font-medium truncate flex-grow">
                             {agent.phone}
                           </span>
                         </div>
                         {agent.email && agent.email.trim() && (
-                          <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-slate-700">
+                          <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-[color:var(--text-muted)]">
                             <Mail className="w-3 h-3 text-blue-500" />
                             <span className="truncate flex-grow">{agent.email}</span>
                           </div>
@@ -322,7 +322,7 @@ export default function ClearingAgents() {
                       <h4 className="font-extrabold text-[11px] md:text-[12px] text-[color:var(--text)] leading-snug uppercase min-w-0 flex-grow font-display">
                         {agent.company}
                       </h4>
-                      <span className="bg-slate-100 text-slate-800 text-[8.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded border border-slate-200/50 flex-shrink-0">
+                      <span className="bg-[color:var(--surface-soft)] text-[color:var(--text)] text-[8.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded border border-[color:var(--border)]/50 flex-shrink-0">
                         {agent.location}
                       </span>
                     </div>
@@ -337,18 +337,18 @@ export default function ClearingAgents() {
                     {/* TPIN & Address breakdown detail */}
                     <div className="space-y-2 mt-2">
                       {/* TPIN row with copy action */}
-                      <div className="flex items-center justify-between bg-slate-50 border border-slate-150 px-2 py-1 rounded text-[10px] font-mono">
+                      <div className="flex items-center justify-between bg-[color:var(--surface-soft)] border border-slate-150 px-2 py-1 rounded text-[10px] font-mono">
                         <span className="text-slate-400 font-sans font-bold">ZRA TPIN:</span>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-slate-800 font-extrabold">{agent.tpin}</span>
+                          <span className="text-[color:var(--text)] font-extrabold">{agent.tpin}</span>
                           <button
                             type="button"
                             onClick={() => handleCopyText(agent.tpin, 'tpin', agent.tpin)}
-                            className="text-slate-400 hover:text-slate-900 p-0.5 transition-colors cursor-pointer"
+                            className="text-slate-400 hover:text-[color:var(--text)] p-0.5 transition-colors cursor-pointer"
                             title="Copy TPIN"
                           >
                             {copiedId === `tpin-${agent.tpin}` ? (
-                              <Check className="w-3.5 h-3.5 text-black" />
+                              <Check className="w-3.5 h-3.5 text-[color:var(--text)]" />
                             ) : (
                               <Copy className="w-3.5 h-3.5" />
                             )}
@@ -369,11 +369,11 @@ export default function ClearingAgents() {
                     <button
                       type="button"
                       onClick={() => handleCopyText(agent.phone, 'phone', agent.tpin)}
-                      className="flex items-center justify-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98]"
+                      className="flex items-center justify-center gap-1.5 bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-[color:var(--border)] py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98]"
                     >
                       <Phone className="w-3 h-3 text-slate-500" />
                       {copiedId === `phone-${agent.tpin}` ? (
-                        <span className="text-black font-bold uppercase text-[9px]">Copied!</span>
+                        <span className="text-[color:var(--text)] font-bold uppercase text-[9px]">Copied!</span>
                       ) : (
                         <span className="truncate">{agent.phone}</span>
                       )}
@@ -382,11 +382,11 @@ export default function ClearingAgents() {
                     <button
                       type="button"
                       onClick={() => handleCopyText(agent.email, 'email', agent.tpin)}
-                      className="flex items-center justify-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98] min-w-0"
+                      className="flex items-center justify-center gap-1.5 bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-[color:var(--border)] py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98] min-w-0"
                     >
                       <Mail className="w-3 h-3 text-slate-500" />
                       {copiedId === `email-${agent.tpin}` ? (
-                        <span className="text-black font-bold uppercase text-[9px]">Copied!</span>
+                        <span className="text-[color:var(--text)] font-bold uppercase text-[9px]">Copied!</span>
                       ) : (
                         <span className="truncate text-left block max-w-full">{agent.email}</span>
                       )}
@@ -424,7 +424,7 @@ export default function ClearingAgents() {
         </div>
 
         {/* BOTTOM INFORMATIONAL STATUS BANNER */}
-        <div className="p-3 bg-slate-50 border-t border-slate-200 flex-shrink-0 flex items-start sm:items-center gap-2 text-[9.5px] font-sans font-medium text-slate-500">
+        <div className="p-3 bg-[color:var(--surface-soft)] border-t border-[color:var(--border)] flex-shrink-0 flex items-start sm:items-center gap-2 text-[9.5px] font-sans font-medium text-slate-500">
           <Info className="w-4 h-4 text-slate-450 flex-shrink-0" />
           <span>
             <strong>Disclaimer:</strong> This list is based on the ZRA Licensed Clearing Agents Schedule as of <strong>May 31, 2024</strong>. The information provided may not be 100% correct or up to date. Users must always verify and confirm the current licensing status of a clearing agent with the relevant authorities before engaging their services.

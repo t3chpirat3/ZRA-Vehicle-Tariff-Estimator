@@ -63,7 +63,7 @@ export default function BuyersGuide() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-fadeIn pb-12">
-      <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200">
+      <div className="bg-[color:var(--surface)] rounded-2xl p-6 sm:p-10 shadow-sm border border-[color:var(--border)]">
         <h2 className="text-3xl font-black font-display text-[color:var(--text)] tracking-tight mb-3">
           The Importer's Knowledge Base
         </h2>
@@ -101,14 +101,14 @@ export default function BuyersGuide() {
           return (
             <div key={cat.id} className="animate-fadeIn space-y-6">
               {/* Category Header */}
-              <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+              <div className="bg-[color:var(--surface-soft)] rounded-xl p-5 border border-[color:var(--border)]">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-[color:var(--text)]">
                     <cat.icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800">{cat.label}</h3>
+                  <h3 className="text-xl font-bold text-[color:var(--text)]">{cat.label}</h3>
                 </div>
-                <p className="text-slate-600 text-sm">{cat.desc}</p>
+                <p className="text-[color:var(--text-muted)] text-sm">{cat.desc}</p>
               </div>
 
               {/* Render each topic inside the category */}
@@ -117,7 +117,7 @@ export default function BuyersGuide() {
                 if (!textContent) return null;
 
                 return (
-                  <div key={index} className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 prose-styles">
+                  <div key={index} className="bg-[color:var(--surface)] rounded-2xl p-6 sm:p-8 shadow-sm border border-[color:var(--border)] prose-styles">
                     <MarkdownContent content={textContent} />
                   </div>
                 );

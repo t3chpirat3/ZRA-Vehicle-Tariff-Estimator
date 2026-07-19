@@ -68,7 +68,7 @@ function getDateDotColor(dateStr: string): string {
 function getStatusBadge(status: VesselSchedule['status']): { bg: string; text: string; dot: string } {
   switch (status) {
     case 'Scheduled':
-      return { bg: 'bg-slate-100 text-slate-700', text: 'Scheduled', dot: 'bg-slate-400' };
+      return { bg: 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]', text: 'Scheduled', dot: 'bg-slate-400' };
     case 'En Route':
       return { bg: 'bg-blue-50 text-blue-700', text: 'En Route', dot: 'bg-blue-500 animate-pulse' };
     case 'Delayed':
@@ -129,7 +129,7 @@ function VesselCard({ schedule }: { schedule: VesselSchedule; key?: React.Key })
   ];
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-300 group">
+    <div className="bg-[color:var(--surface)] rounded-2xl p-5 shadow-sm border border-[color:var(--border)] hover:border-[color:var(--border-strong)] hover:shadow-md transition-all duration-300 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
@@ -152,8 +152,8 @@ function VesselCard({ schedule }: { schedule: VesselSchedule; key?: React.Key })
       </div>
 
       {schedule.transit_days > 0 && (
-        <div className="flex items-center gap-2 text-sm text-slate-600 mb-4">
-          <span className="font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs">
+        <div className="flex items-center gap-2 text-sm text-[color:var(--text-muted)] mb-4">
+          <span className="font-semibold bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] px-2 py-0.5 rounded text-xs">
             Typical transit time: {schedule.transit_days} days
           </span>
         </div>
@@ -185,7 +185,7 @@ function VesselCard({ schedule }: { schedule: VesselSchedule; key?: React.Key })
             ? 'bg-amber-50 text-amber-700 border border-amber-200'
             : milestone.days <= 7
               ? 'bg-blue-50 text-blue-700 border border-blue-100'
-              : 'bg-slate-50 text-slate-600 border border-slate-200'
+              : 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] border border-[color:var(--border)]'
         }`}>
           <Clock className="w-3 h-3 inline mr-1 -mt-0.5" />
           {milestone.days === 0
@@ -206,7 +206,7 @@ function RouteCard({ route }: { route: ShippingRoute; key?: React.Key }) {
   const isOverland = route.seaDaysMin === 0;
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+    <div className="bg-[color:var(--surface)] rounded-2xl p-5 shadow-sm border border-[color:var(--border)] hover:border-[color:var(--border-strong)] transition-colors">
       <div className="flex items-start justify-between mb-3">
         <div>
           <h4 className="text-md font-bold text-[color:var(--text)] flex items-center gap-2">
@@ -226,18 +226,18 @@ function RouteCard({ route }: { route: ShippingRoute; key?: React.Key }) {
       {/* Summary stats */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         {!isOverland && (
-          <div className="bg-slate-50 rounded-lg px-3 py-2 text-xs">
+          <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2 text-xs">
             <span className="block font-bold text-slate-400 uppercase text-[10px]">Sea Transit</span>
-            <span className="font-semibold text-slate-700">{route.seaDaysMin}–{route.seaDaysMax} days</span>
+            <span className="font-semibold text-[color:var(--text-muted)]">{route.seaDaysMin}–{route.seaDaysMax} days</span>
           </div>
         )}
-        <div className="bg-slate-50 rounded-lg px-3 py-2 text-xs">
+        <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2 text-xs">
           <span className="block font-bold text-slate-400 uppercase text-[10px]">{isOverland ? 'Road Transit' : 'Inland'}</span>
-          <span className="font-semibold text-slate-700">{route.inlandDaysMin}–{route.inlandDaysMax} days</span>
+          <span className="font-semibold text-[color:var(--text-muted)]">{route.inlandDaysMin}–{route.inlandDaysMax} days</span>
         </div>
-        <div className="bg-slate-50 rounded-lg px-3 py-2 text-xs">
+        <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2 text-xs">
           <span className="block font-bold text-slate-400 uppercase text-[10px]">Border</span>
-          <span className="font-semibold text-slate-700">{route.zambiaBorder}</span>
+          <span className="font-semibold text-[color:var(--text-muted)]">{route.zambiaBorder}</span>
         </div>
       </div>
 
@@ -259,7 +259,7 @@ function RouteCard({ route }: { route: ShippingRoute; key?: React.Key }) {
               <div key={i} className="relative flex items-start gap-3 pb-3 last:pb-0">
                 <div className="absolute left-[-14px] top-1 w-3 h-3 rounded-full bg-[color:var(--primary-soft)] border-2 border-[color:var(--primary)] z-10" />
                 <div className="flex-1">
-                  <span className="text-xs font-semibold text-slate-700">{leg.label}</span>
+                  <span className="text-xs font-semibold text-[color:var(--text-muted)]">{leg.label}</span>
                   <span className="text-xs text-slate-400 ml-2">{leg.daysMin}–{leg.daysMax} days</span>
                 </div>
               </div>
@@ -267,7 +267,7 @@ function RouteCard({ route }: { route: ShippingRoute; key?: React.Key }) {
           </div>
 
           {/* Route notes */}
-          <div className="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 border border-slate-200 mt-2">
+          <div className="bg-[color:var(--surface-soft)] rounded-lg p-3 text-xs text-[color:var(--text-muted)] border border-[color:var(--border)] mt-2">
             <Info className="w-3 h-3 inline mr-1 text-[color:var(--primary)]" />
             {route.notes}
           </div>
@@ -282,7 +282,7 @@ function PortCard({ port, key }: { port: PortInfoType; key?: React.Key }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+    <div className="bg-[color:var(--surface)] rounded-2xl p-5 shadow-sm border border-[color:var(--border)] hover:border-[color:var(--border-strong)] transition-colors">
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between cursor-pointer text-left"
@@ -300,17 +300,17 @@ function PortCard({ port, key }: { port: PortInfoType; key?: React.Key }) {
       {expanded && (
         <div className="mt-4 space-y-3 animate-fadeIn">
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-slate-50 rounded-lg px-3 py-2">
+            <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2">
               <span className="block font-bold text-slate-400 uppercase text-[10px]">Avg. Dwell</span>
-              <span className="font-semibold text-slate-700">{port.avgDwellDays}</span>
+              <span className="font-semibold text-[color:var(--text-muted)]">{port.avgDwellDays}</span>
             </div>
-            <div className="bg-slate-50 rounded-lg px-3 py-2">
+            <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2">
               <span className="block font-bold text-slate-400 uppercase text-[10px]">To Lusaka</span>
-              <span className="font-semibold text-slate-700">{port.inlandDistance}</span>
+              <span className="font-semibold text-[color:var(--text-muted)]">{port.inlandDistance}</span>
             </div>
-            <div className="bg-slate-50 rounded-lg px-3 py-2 col-span-2">
+            <div className="bg-[color:var(--surface-soft)] rounded-lg px-3 py-2 col-span-2">
               <span className="block font-bold text-slate-400 uppercase text-[10px]">Border Post</span>
-              <span className="font-semibold text-slate-700">{port.connectedBorder}</span>
+              <span className="font-semibold text-[color:var(--text-muted)]">{port.connectedBorder}</span>
             </div>
           </div>
 
@@ -347,7 +347,7 @@ function PortCard({ port, key }: { port: PortInfoType; key?: React.Key }) {
 /** Freight forwarder card. */
 function ForwarderCard({ forwarder }: { forwarder: FreightForwarder; key?: React.Key }) {
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+    <div className="bg-[color:var(--surface)] rounded-xl p-4 shadow-sm border border-[color:var(--border)] hover:border-[color:var(--border-strong)] transition-colors">
       <div className="flex items-start justify-between mb-2">
         <div>
           <h5 className="text-sm font-bold text-[color:var(--text)]">{forwarder.company}</h5>
@@ -437,7 +437,7 @@ export default function ShippingSchedule() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fadeIn pb-12">
       {/* Header */}
-      <div className="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200">
+      <div className="bg-[color:var(--surface)] rounded-2xl p-6 sm:p-10 shadow-sm border border-[color:var(--border)]">
         <h2 className="text-3xl font-black font-display text-[color:var(--text)] tracking-tight mb-3">
           Shipping Schedule
         </h2>
@@ -468,7 +468,7 @@ export default function ShippingSchedule() {
       {activeSection === 'schedules' && (
         <div className="space-y-4 animate-fadeIn">
           {/* Filters */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-4 shadow-sm border border-[color:var(--border)]">
             <div className="flex flex-wrap gap-4">
               <div>
                 <span className="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Destination</span>
@@ -480,7 +480,7 @@ export default function ShippingSchedule() {
                       className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
                         destFilter === d
                           ? 'bg-[color:var(--primary)] text-white'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          : 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:bg-slate-200'
                       }`}
                     >
                       {d === 'All' ? 'All Ports' : `${portFlag(d)} ${d}`}
@@ -500,7 +500,7 @@ export default function ShippingSchedule() {
                         className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
                           originFilter === o
                             ? 'bg-[color:var(--primary)] text-white'
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            : 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:bg-slate-200'
                         }`}
                       >
                         {o === 'All' ? 'All Origins' : `${flags[o] || ''} ${o}`}
@@ -514,12 +514,12 @@ export default function ShippingSchedule() {
 
           {/* Schedule Cards */}
           {loading ? (
-            <div className="bg-white rounded-2xl p-12 shadow-sm border border-slate-200 flex flex-col items-center justify-center gap-3">
+            <div className="bg-[color:var(--surface)] rounded-2xl p-12 shadow-sm border border-[color:var(--border)] flex flex-col items-center justify-center gap-3">
               <Loader2 className="w-8 h-8 text-[color:var(--primary)] animate-spin" />
               <p className="text-sm text-[color:var(--text-muted)] font-semibold">Loading schedules…</p>
             </div>
           ) : filteredSchedules.length === 0 ? (
-            <div className="bg-white rounded-2xl p-10 shadow-sm border border-slate-200 text-center">
+            <div className="bg-[color:var(--surface)] rounded-2xl p-10 shadow-sm border border-[color:var(--border)] text-center">
               <Ship className="w-12 h-12 text-slate-300 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-[color:var(--text)] mb-2">No Upcoming Sailings</h3>
               <p className="text-sm text-[color:var(--text-muted)] max-w-md mx-auto">
@@ -537,7 +537,7 @@ export default function ShippingSchedule() {
           )}
 
           {/* Info note */}
-          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-xs text-slate-500 flex items-start gap-2">
+          <div className="bg-[color:var(--surface-soft)] rounded-xl p-4 border border-[color:var(--border)] text-xs text-slate-500 flex items-start gap-2">
             <Info className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
             <span>
               Schedules are sourced from carrier publications and updated monthly. Dates are estimates and may change due to weather, port congestion, or carrier adjustments.
@@ -550,7 +550,7 @@ export default function ShippingSchedule() {
       {/* ── Section: Route Map ───────────────────────────────────────────── */}
       {activeSection === 'routes' && (
         <div className="space-y-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)]">
             <h3 className="text-xl font-bold text-[color:var(--text)] mb-2 flex items-center gap-2">
               <Route className="w-5 h-5 text-[color:var(--primary)]" />
               Major Shipping Corridors to Zambia
@@ -567,7 +567,7 @@ export default function ShippingSchedule() {
           </div>
 
           {/* Shipping Lines Reference */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)]">
             <h3 className="text-lg font-bold text-[color:var(--text)] mb-4 flex items-center gap-2">
               <Anchor className="w-5 h-5 text-[color:var(--primary)]" />
               RoRo Shipping Lines
@@ -579,7 +579,7 @@ export default function ShippingSchedule() {
                   href={line.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-slate-50 rounded-xl p-3 border border-slate-200 hover:border-[color:var(--primary)] hover:bg-[color:var(--primary-soft)] transition-all group"
+                  className="bg-[color:var(--surface-soft)] rounded-xl p-3 border border-[color:var(--border)] hover:border-[color:var(--primary)] hover:bg-[color:var(--primary-soft)] transition-all group"
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-bold text-[color:var(--text)] group-hover:text-[color:var(--primary-hover)]">
@@ -598,7 +598,7 @@ export default function ShippingSchedule() {
       {/* ── Section: Ports ───────────────────────────────────────────────── */}
       {activeSection === 'ports' && (
         <div className="space-y-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)]">
             <h3 className="text-xl font-bold text-[color:var(--text)] mb-2 flex items-center gap-2">
               <Anchor className="w-5 h-5 text-[color:var(--primary)]" />
               Destination Ports
@@ -619,7 +619,7 @@ export default function ShippingSchedule() {
       {/* ── Section: Own Shipping Guide ──────────────────────────────────── */}
       {activeSection === 'guide' && (
         <div className="space-y-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)]">
             <h3 className="text-xl font-bold text-[color:var(--text)] mb-2 flex items-center gap-2">
               <Compass className="w-5 h-5 text-[color:var(--primary)]" />
               Arrange Your Own Shipping
@@ -640,7 +640,7 @@ export default function ShippingSchedule() {
       {/* ── Section: Agents & Forwarders Directory ───────────────────────── */}
       {activeSection === 'directory' && (
         <div className="space-y-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-[color:var(--surface)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)]">
             <h3 className="text-xl font-bold text-[color:var(--text)] mb-2 flex items-center gap-2">
               <Container className="w-5 h-5 text-[color:var(--primary)]" />
               Shipping Agents & Freight Forwarders
@@ -674,7 +674,7 @@ export default function ShippingSchedule() {
             );
           })}
 
-          <div className="bg-[color:var(--warn-soft)] rounded-xl p-4 border border-[color:#eccdbf] text-xs text-slate-700 flex items-start gap-2">
+          <div className="bg-[color:var(--warn-soft)] rounded-xl p-4 border border-[color:#eccdbf] text-xs text-[color:var(--text-muted)] flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
             <span>
               <strong>Disclaimer:</strong> This directory is provided for informational purposes only. Duty Boss does not endorse, verify, or guarantee the services of any listed agent.
@@ -693,7 +693,7 @@ function GuideSectionCard({ section, key }: { section: typeof OWN_SHIPPING_GUIDE
   const icon = GUIDE_ICONS[section.icon] || <Info className="w-5 h-5" />;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-slate-300 transition-colors overflow-hidden">
+    <div className="bg-[color:var(--surface)] rounded-2xl shadow-sm border border-[color:var(--border)] hover:border-[color:var(--border-strong)] transition-colors overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
         className="w-full px-5 py-4 flex items-center justify-between cursor-pointer text-left"
@@ -711,7 +711,7 @@ function GuideSectionCard({ section, key }: { section: typeof OWN_SHIPPING_GUIDE
         <div className="px-5 pb-5 animate-fadeIn">
           <ul className="space-y-3 pl-12">
             {section.content.map((item, i) => (
-              <li key={i} className="text-sm text-slate-600 leading-relaxed flex items-start gap-2">
+              <li key={i} className="text-sm text-[color:var(--text-muted)] leading-relaxed flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[color:var(--accent)] mt-0.5 flex-shrink-0" />
                 <span>{item}</span>
               </li>

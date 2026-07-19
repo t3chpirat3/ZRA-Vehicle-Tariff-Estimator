@@ -45,6 +45,7 @@ import {
   WatchlistItem
 } from '../types';
 import { getApiUrl } from '../utils/api';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -645,6 +646,26 @@ export default function PriceComparison({
 
   const hasAnyResults = listings.some((l) => landedCostZMW(l, settings) !== null);
 
+  // Data mapping for Recharts visualization
+  const chartData = React.useMemo(() => {
+    return listings.filter(l => landedCostZMW(l, settings) !== null).map((l, idx) => {
+      const vehCost = l.listingPrice ? Number(toZMW(Number(l.listingPrice), l.currency, settings)) : 0;
+      const freightCost = (Number(l.freightUSD) || 0) * settings.usdToZmw;
+      const inspCost = (Number(l.inspectionUSD) || 0) * settings.usdToZmw;
+      const dutyCost = l.dutyZMW || 0;
+      const inlandCost = 890; // RTSA est.
+
+      return {
+        id: l.id,
+        name: l.description ? (l.description.length > 15 ? l.description.slice(0, 15) + '...' : l.description) : `Listing ${idx + 1}`,
+        'Vehicle Cost': Math.round(vehCost),
+        'Logistics & Inspection': Math.round(freightCost + inspCost),
+        'ZRA Duties': Math.round(dutyCost),
+        'Local Reg (RTSA)': Math.round(inlandCost),
+      };
+    });
+  }, [listings, settings]);
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -688,7 +709,7 @@ export default function PriceComparison({
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute right-0 top-full mt-2 w-64 bg-white border border-[color:var(--border-strong)] shadow-xl rounded-xl p-2 z-50 max-h-64 overflow-y-auto"
+                  className="absolute right-0 top-full mt-2 w-64 bg-[color:var(--surface)] border border-[color:var(--border-strong)] shadow-xl rounded-xl p-2 z-50 max-h-64 overflow-y-auto"
                 >
                   <p className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase px-2 py-1 mb-1">Select from Watchlist</p>
                   {watchlist && watchlist.length > 0 ? (
@@ -729,7 +750,7 @@ export default function PriceComparison({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="bg-white border border-[color:var(--border)] rounded-2xl p-5 shadow-sm"
+            className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl p-5 shadow-sm"
           >
             <div className="flex items-center gap-2 mb-4">
               <Globe className="w-4 h-4 text-[color:var(--primary)]" />
@@ -763,7 +784,7 @@ export default function PriceComparison({
                       min="0"
                       value={settings[key]}
                       onChange={(e) => setSettings((s) => ({ ...s, [key]: parseFloat(e.target.value) || 0 }))}
-                      className="flex-1 px-2 py-2 text-xs font-bold text-[color:var(--text)] bg-white outline-none min-w-0"
+                      className="flex-1 px-2 py-2 text-xs font-bold text-[color:var(--text)] bg-[color:var(--surface)] outline-none min-w-0"
                     />
                   </div>
                 </div>
@@ -809,7 +830,7 @@ export default function PriceComparison({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.22 }}
-                className={`bg-white border rounded-2xl overflow-hidden shadow-sm transition-shadow hover:shadow-md ${
+                className={`bg-[color:var(--surface)] border rounded-2xl overflow-hidden shadow-sm transition-shadow hover:shadow-md ${
                   isBest
                     ? 'border-[color:var(--primary-border)] ring-1 ring-[color:var(--primary-border)]'
                     : 'border-[color:var(--border)]'
@@ -826,7 +847,7 @@ export default function PriceComparison({
                       Listing {idx + 1}
                     </span>
                     {isBest && (
-                      <span className="text-[9px] font-extrabold text-[color:var(--primary-hover)] bg-white border border-[color:var(--primary-border)] px-1.5 py-0.5 rounded-md uppercase tracking-wide">
+                      <span className="text-[9px] font-extrabold text-[color:var(--primary-hover)] bg-[color:var(--surface)] border border-[color:var(--primary-border)] px-1.5 py-0.5 rounded-md uppercase tracking-wide">
                         Best Value
                       </span>
                     )}
@@ -1114,7 +1135,7 @@ export default function PriceComparison({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="bg-white border border-[color:var(--border)] rounded-2xl overflow-hidden shadow-sm"
+            className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl overflow-hidden shadow-sm"
           >
             <div className="px-5 py-3.5 border-b border-[color:var(--border)] flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-2">
@@ -1186,13 +1207,68 @@ export default function PriceComparison({
         )}
       </AnimatePresence>
 
+      {/* ── Interactive Cost Visualization ── */}
+      <AnimatePresence>
+        {hasAnyResults && chartData.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl overflow-hidden shadow-sm p-5 mb-6"
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <BarChart3 className="w-5 h-5 text-[color:var(--primary)]" />
+              <h3 className="text-[15px] font-extrabold text-[color:var(--text)]">Cost Breakdown Visualization</h3>
+            </div>
+            
+            <div className="w-full h-[320px] text-xs font-semibold">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  layout="vertical"
+                  margin={{ top: 0, right: 20, left: 20, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
+                  <XAxis 
+                    type="number" 
+                    tickFormatter={(value) => `ZMW ${(value / 1000).toFixed(0)}k`}
+                    stroke="var(--text-muted)" 
+                  />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    width={120} 
+                    stroke="var(--text-muted)" 
+                  />
+                  <RechartsTooltip 
+                    formatter={(value: number) => [`ZMW ${value.toLocaleString()}`, undefined]}
+                    contentStyle={{ 
+                      backgroundColor: 'var(--surface)', 
+                      borderColor: 'var(--border)', 
+                      borderRadius: '12px',
+                      boxShadow: 'var(--shadow-sm)',
+                      color: 'var(--text)'
+                    }}
+                    itemStyle={{ fontWeight: 800 }}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: '16px' }} />
+                  <Bar dataKey="Vehicle Cost" stackId="a" fill="var(--text)" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="Logistics & Inspection" stackId="a" fill="var(--text-muted)" />
+                  <Bar dataKey="ZRA Duties" stackId="a" fill="var(--primary)" />
+                  <Bar dataKey="Local Reg (RTSA)" stackId="a" fill="var(--accent)" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Side-by-side Breakdown Table ── */}
       <AnimatePresence>
         {hasAnyResults && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white border border-[color:var(--border)] rounded-2xl overflow-hidden shadow-sm"
+            className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl overflow-hidden shadow-sm"
           >
             <button
               onClick={() => setTableOpen((o) => !o)}

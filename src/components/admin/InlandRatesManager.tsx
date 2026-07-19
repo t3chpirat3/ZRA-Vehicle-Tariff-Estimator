@@ -140,10 +140,10 @@ export default function InlandRatesManager() {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div className="bg-[color:var(--surface)] rounded-xl shadow-sm border border-[color:var(--border)] p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-bold text-slate-800">Inland Logistics & Border Fees</h2>
+          <h2 className="text-lg font-bold text-[color:var(--text)]">Inland Logistics & Border Fees</h2>
           <p className="text-sm text-slate-500">Manage transport costs from ports (Dar es Salaam, Durban) to Zambia.</p>
         </div>
         <button
@@ -160,7 +160,7 @@ export default function InlandRatesManager() {
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
+            <tr className="bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] text-xs uppercase tracking-wider">
               <th className="px-4 py-3 font-bold rounded-tl-lg">Route</th>
               <th className="px-4 py-3 font-bold">Transport</th>
               <th className="px-4 py-3 font-bold">Estimated Cost (USD)</th>
@@ -170,17 +170,17 @@ export default function InlandRatesManager() {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {routes.map((r) => (
-              <tr key={r.id} className="hover:bg-slate-50/50">
+              <tr key={r.id} className="hover:bg-[color:var(--surface-soft)]/50">
                 <td className="px-4 py-3">
-                  <div className="font-bold text-slate-800">{r.label}</div>
+                  <div className="font-bold text-[color:var(--text)]">{r.label}</div>
                   <div className="text-xs text-slate-500">{r.origin} → {r.destination}</div>
                 </td>
-                <td className="px-4 py-3 text-sm text-slate-700">{r.transportMode}</td>
+                <td className="px-4 py-3 text-sm text-[color:var(--text-muted)]">{r.transportMode}</td>
                 <td className="px-4 py-3">
-                  <div className="text-sm font-bold text-slate-800">${r.estimatedCostMin} - ${r.estimatedCostMax}</div>
+                  <div className="text-sm font-bold text-[color:var(--text)]">${r.estimatedCostMin} - ${r.estimatedCostMax}</div>
                   <div className="text-xs text-slate-500">{r.borderFees?.length || 0} extra fees</div>
                 </td>
-                <td className="px-4 py-3 text-sm text-slate-700">{r.transitDaysMin} - {r.transitDaysMax} days</td>
+                <td className="px-4 py-3 text-sm text-[color:var(--text-muted)]">{r.transitDaysMin} - {r.transitDaysMax} days</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button onClick={() => openForm(r)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors" title="Edit">
@@ -199,69 +199,69 @@ export default function InlandRatesManager() {
 
       {isFormOpen && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-fadeIn">
-            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="font-bold text-lg text-slate-800">
+          <div className="bg-[color:var(--surface)] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-fadeIn">
+            <div className="p-5 border-b border-[color:var(--border)] flex items-center justify-between">
+              <h3 className="font-bold text-lg text-[color:var(--text)]">
                 {editingRoute ? 'Edit Route' : 'Add New Route'}
               </h3>
-              <button onClick={closeForm} className="text-slate-400 hover:text-slate-600">
+              <button onClick={closeForm} className="text-slate-400 hover:text-[color:var(--text-muted)]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleFormSubmit} className="p-5 space-y-4 overflow-y-auto">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Route Label</label>
-                <input required type="text" value={formData.label || ''} onChange={e => setFormData({...formData, label: e.target.value})} placeholder="e.g. Dar es Salaam to Lusaka" className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Route Label</label>
+                <input required type="text" value={formData.label || ''} onChange={e => setFormData({...formData, label: e.target.value})} placeholder="e.g. Dar es Salaam to Lusaka" className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Origin Port/City</label>
-                  <input required type="text" value={formData.origin || ''} onChange={e => setFormData({...formData, origin: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Origin Port/City</label>
+                  <input required type="text" value={formData.origin || ''} onChange={e => setFormData({...formData, origin: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Destination</label>
-                  <input required type="text" value={formData.destination || ''} onChange={e => setFormData({...formData, destination: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Destination</label>
+                  <input required type="text" value={formData.destination || ''} onChange={e => setFormData({...formData, destination: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Mode</label>
-                  <select required value={formData.transportMode || ''} onChange={e => setFormData({...formData, transportMode: e.target.value as any})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Mode</label>
+                  <select required value={formData.transportMode || ''} onChange={e => setFormData({...formData, transportMode: e.target.value as any})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-[color:var(--surface)]">
                     <option value="Drive">Drive</option>
                     <option value="Carrier">Carrier</option>
                     <option value="RoRo + Drive">RoRo + Drive</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Cost Min (USD)</label>
-                  <input required type="number" value={formData.estimatedCostMin || ''} onChange={e => setFormData({...formData, estimatedCostMin: Number(e.target.value)})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Cost Min (USD)</label>
+                  <input required type="number" value={formData.estimatedCostMin || ''} onChange={e => setFormData({...formData, estimatedCostMin: Number(e.target.value)})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Cost Max (USD)</label>
-                  <input required type="number" value={formData.estimatedCostMax || ''} onChange={e => setFormData({...formData, estimatedCostMax: Number(e.target.value)})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Cost Max (USD)</label>
+                  <input required type="number" value={formData.estimatedCostMax || ''} onChange={e => setFormData({...formData, estimatedCostMax: Number(e.target.value)})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Description / Notes</label>
-                <textarea required rows={2} value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Description / Notes</label>
+                <textarea required rows={2} value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Border Fees (JSON Array)</label>
-                <textarea required rows={5} value={borderFeesStr} onChange={e => setBorderFeesStr(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs bg-slate-50" />
+                <label className="block text-xs font-bold text-[color:var(--text-muted)] uppercase mb-1">Border Fees (JSON Array)</label>
+                <textarea required rows={5} value={borderFeesStr} onChange={e => setBorderFeesStr(e.target.value)} className="w-full px-3 py-2 border border-[color:var(--border-strong)] rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-xs bg-[color:var(--surface-soft)]" />
               </div>
 
               <label className="flex items-center gap-3 cursor-pointer mt-2">
                 <input type="checkbox" checked={formData.unregisteredAllowed || false} onChange={e => setFormData({...formData, unregisteredAllowed: e.target.checked})} className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" />
-                <span className="text-sm font-medium text-slate-700">Unregistered Driving Allowed (e.g. SADC region)</span>
+                <span className="text-sm font-medium text-[color:var(--text-muted)]">Unregistered Driving Allowed (e.g. SADC region)</span>
               </label>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-slate-200 mt-6">
-                <button type="button" onClick={closeForm} className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-100 rounded-lg transition-colors">Cancel</button>
+              <div className="pt-4 flex justify-end gap-3 border-t border-[color:var(--border)] mt-6">
+                <button type="button" onClick={closeForm} className="px-4 py-2 text-[color:var(--text-muted)] font-medium hover:bg-[color:var(--surface-soft)] rounded-lg transition-colors">Cancel</button>
                 <button type="submit" disabled={saving} className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2">
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save Route

@@ -100,7 +100,7 @@ const VehicleRender = ({ cat, type }: { cat: string; type: string }) => {
 
   // Fallback to stylized SVG placeholder in case the image fails to load or isn't generated yet.
   return (
-    <div className="w-48 sm:w-56 h-auto drop-shadow-sm mb-1 relative aspect-[4/3] flex items-center justify-center bg-slate-50/50 rounded-xl overflow-hidden">
+    <div className="w-48 sm:w-56 h-auto drop-shadow-sm mb-1 relative aspect-[4/3] flex items-center justify-center bg-[color:var(--surface-soft)]/50 rounded-xl overflow-hidden">
       <img
         src={imagePath}
         alt={`Generic 3D render of ${type || cat}`}
@@ -130,8 +130,8 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
     .slice(0, 2); // Show top 2 nearest
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 mt-6">
-      <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+    <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm p-4 mt-6">
+      <h4 className="text-[10px] font-bold text-[color:var(--text)] uppercase tracking-wider mb-4 flex items-center gap-1.5">
         <Navigation className="w-3.5 h-3.5 text-[color:var(--primary)]" />
         Import Timeline
       </h4>
@@ -154,9 +154,9 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
             <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-[color:var(--primary)] text-white shadow shrink-0 z-10 md:mb-3">
               <CheckCircle2 className="w-3.5 h-3.5" />
             </div>
-            <div className="flex-1 w-full p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <h5 className="font-bold text-xs text-slate-800 mb-1">1. Procurement</h5>
-              <p className="text-[10px] text-slate-500">Estimate saved. Complete the purchase from {state.origin || 'the exporter'}.</p>
+            <div className="flex-1 w-full p-3 rounded-xl bg-[color:var(--surface-soft)] border border-[color:var(--border)]">
+              <h5 className="font-bold text-xs text-[color:var(--text)] mb-1">1. Procurement</h5>
+              <p className="text-[10px] text-[color:var(--text-muted)]">Estimate saved. Complete the purchase from {state.origin || 'the exporter'}.</p>
             </div>
           </div>
         </div>
@@ -168,15 +168,15 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
             <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-blue-500 text-white shadow shrink-0 z-10 md:mb-3">
               <Ship className="w-3.5 h-3.5" />
             </div>
-            <div className="flex-1 w-full p-3 rounded-xl bg-blue-50/50 border border-blue-100">
-              <h5 className="font-bold text-xs text-slate-800 mb-2">2. Book Shipping</h5>
+            <div className="flex-1 w-full p-3 rounded-xl bg-[color:var(--primary-soft)] border border-[color:var(--primary-border)]">
+              <h5 className="font-bold text-xs text-[color:var(--text)] mb-2">2. Book Shipping</h5>
               {upcomingSchedules.length > 0 ? (
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-600 mb-2 hidden md:block">Upcoming sailings from {origin}:</p>
+                  <p className="text-[10px] text-[color:var(--text-muted)] mb-2 hidden md:block">Upcoming sailings from {origin}:</p>
                   {upcomingSchedules.map(s => (
-                    <div key={s.id} className="bg-white p-2 rounded border border-blue-100 text-[10px]">
-                      <div className="font-bold text-slate-800">{s.carrier} - {s.vessel_name}</div>
-                      <div className="text-slate-500 flex justify-between mt-1">
+                    <div key={s.id} className="bg-[color:var(--surface)] p-2 rounded border border-[color:var(--primary-border)] text-[10px]">
+                      <div className="font-bold text-[color:var(--text)]">{s.carrier} - {s.vessel_name}</div>
+                      <div className="text-[color:var(--text-muted)] flex justify-between mt-1 font-medium">
                         <span>Dep: {new Date(s.etd).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
                         <span>Arr: {new Date(s.eta).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
                       </div>
@@ -184,7 +184,7 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
                   ))}
                 </div>
               ) : (
-                <p className="text-[10px] text-slate-500">Coordinate with your shipping agent to find the next available RoRo vessel.</p>
+                <p className="text-[10px] text-[color:var(--text-muted)] font-medium">Coordinate with your shipping agent to find the next available RoRo vessel.</p>
               )}
             </div>
           </div>
@@ -193,12 +193,12 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
         {/* Step 3: Clearance */}
         <div className="flex-1 flex flex-col relative group">
           <div className="flex items-center gap-3 md:flex-col md:items-start md:gap-0">
-            <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-slate-300 text-slate-700 shadow shrink-0 z-10 md:mb-3">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-slate-300 text-[color:var(--text-muted)] shadow shrink-0 z-10 md:mb-3">
               <MapPin className="w-3.5 h-3.5" />
             </div>
-            <div className="flex-1 w-full p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <h5 className="font-bold text-xs text-slate-800 mb-1">3. Clearance & Transit</h5>
-              <p className="text-[10px] text-slate-500">Engage a clearing agent at the destination port to handle customs and inland transit to Zambia.</p>
+            <div className="flex-1 w-full p-3 rounded-xl bg-[color:var(--surface-soft)] border border-[color:var(--border)]">
+              <h5 className="font-bold text-xs text-[color:var(--text)] mb-1">3. Clearance & Transit</h5>
+              <p className="text-[10px] text-[color:var(--text-muted)]">Engage a clearing agent at the destination port to handle customs and inland transit to Zambia.</p>
             </div>
           </div>
         </div>
@@ -720,7 +720,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Are you importing a performance car?'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Are you importing a performance car?'}</h3>
               <p className="text-xs text-slate-500 font-medium px-4">{'Most vehicles do not fall into this category, so you can safely skip this step.'}</p>
             </div>
 
@@ -733,21 +733,21 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   setCurrentStepIndex((prev) => Math.min(prev + 1, activeSteps.length - 1));
                 }, 180);
               }}
-              className="w-full p-3.5 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 hover:border-black rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm outline-none cursor-pointer group"
+              className="w-full p-3.5 bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-soft)] border-2 border-[color:var(--border)] hover:border-black rounded-2xl flex flex-col items-center justify-center transition-all shadow-sm outline-none cursor-pointer group"
             >
-              <span className="font-extrabold text-slate-700 group-hover:text-black text-sm transition-colors">No, this is a standard vehicle</span>
-              <span className="text-[10px] text-slate-500 group-hover:text-black font-semibold mt-0.5 transition-colors">Skip this step and continue</span>
+              <span className="font-extrabold text-[color:var(--text-muted)] group-hover:text-[color:var(--text)] text-sm transition-colors">No, this is a standard vehicle</span>
+              <span className="text-[10px] text-slate-500 group-hover:text-[color:var(--text)] font-semibold mt-0.5 transition-colors">Skip this step and continue</span>
             </button>
 
             <div className="flex items-center gap-3 py-1">
-              <div className="flex-1 h-px bg-slate-100"></div>
+              <div className="flex-1 h-px bg-[color:var(--surface-soft)]"></div>
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Or enter the details</span>
-              <div className="flex-1 h-px bg-slate-100"></div>
+              <div className="flex-1 h-px bg-[color:var(--surface-soft)]"></div>
             </div>
 
             {/* Demoted Inputs */}
-            <div className={`p-4 rounded-2xl border transition-all ${triggered ? 'bg-slate-100 border-black' : 'bg-white border-slate-200 shadow-sm'}`}>
-              <div className="mb-3 text-xs text-slate-600 leading-relaxed">
+            <div className={`p-4 rounded-2xl border transition-all ${triggered ? 'bg-[color:var(--surface-soft)] border-black' : 'bg-[color:var(--surface)] border-[color:var(--border)] shadow-sm'}`}>
+              <div className="mb-3 text-xs text-[color:var(--text-muted)] leading-relaxed">
                 <p className="font-extrabold text-[10px] uppercase tracking-wider text-slate-400 mb-1">{'2020 Amendment Rule'}</p>
                 <p>Cars with <strong>≥ 3,800cc</strong> <em>and</em> <strong>≥ 450hp</strong> are taxed ad valorem.</p>
               </div>
@@ -765,10 +765,10 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                       value={state.hpCC}
                       onChange={(e) => setState((prev) => ({ ...prev, hpCC: e.target.value }))}
                       className={`w-full border rounded-xl px-3 py-2.5 text-xs font-mono font-bold outline-none transition-all ${
-                        state.hpCC ? (ccMet ? 'border-black bg-slate-100 text-black ring-1 ring-black' : 'border-slate-300 bg-white text-slate-800') : 'border-slate-200 bg-slate-50 text-slate-800'
+                        state.hpCC ? (ccMet ? 'border-black bg-[color:var(--surface-soft)] text-[color:var(--text)] ring-1 ring-black' : 'border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--text)]') : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] text-[color:var(--text)]'
                       }`}
                     />
-                    {state.hpCC && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${ccMet ? 'text-black' : 'text-slate-400'}`}>{ccMet ? '✓ ≥3800' : '< 3800'}</span>}
+                    {state.hpCC && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${ccMet ? 'text-[color:var(--text)]' : 'text-slate-400'}`}>{ccMet ? '✓ ≥3800' : '< 3800'}</span>}
                   </div>
                 </div>
                 <div>
@@ -783,10 +783,10 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                       value={state.hpHP}
                       onChange={(e) => setState((prev) => ({ ...prev, hpHP: e.target.value }))}
                       className={`w-full border rounded-xl px-3 py-2.5 text-xs font-mono font-bold outline-none transition-all ${
-                        state.hpHP ? (hpMet ? 'border-black bg-slate-100 text-black ring-1 ring-black' : 'border-slate-300 bg-white text-slate-800') : 'border-slate-200 bg-slate-50 text-slate-800'
+                        state.hpHP ? (hpMet ? 'border-black bg-[color:var(--surface-soft)] text-[color:var(--text)] ring-1 ring-black' : 'border-[color:var(--border-strong)] bg-[color:var(--surface)] text-[color:var(--text)]') : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] text-[color:var(--text)]'
                       }`}
                     />
-                    {state.hpHP && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${hpMet ? 'text-black' : 'text-slate-400'}`}>{hpMet ? '✓ ≥450' : '< 450'}</span>}
+                    {state.hpHP && <span className={`absolute right-2.5 top-2.5 text-[9px] font-black ${hpMet ? 'text-[color:var(--text)]' : 'text-slate-400'}`}>{hpMet ? '✓ ≥450' : '< 450'}</span>}
                   </div>
                 </div>
               </div>
@@ -795,7 +795,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 <div className="p-2.5 bg-[color:var(--primary-soft)] border border-[color:var(--primary-border)] rounded-lg text-xs text-[color:var(--primary-hover)] font-semibold flex items-start gap-2 animate-in fade-in slide-in-from-top-2">
                   <div>
                     <p className="font-extrabold text-[11px] uppercase tracking-wide">High-Performance Detected</p>
-                    <p className="text-[10px] mt-0.5 text-slate-600 font-medium">Select "Continue" to proceed with an ad valorem assessment.</p>
+                    <p className="text-[10px] mt-0.5 text-[color:var(--text-muted)] font-medium">Select "Continue" to proceed with an ad valorem assessment.</p>
                   </div>
                 </div>
               )}
@@ -808,7 +808,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'How old is the vehicle?'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'How old is the vehicle?'}</h3>
               <p className="text-xs text-slate-500 font-medium">{"Tariff schedules depend heavily on the vehicle's age."}</p>
             </div>
             <div className="grid grid-cols-3 gap-3 py-2">
@@ -824,7 +824,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   className={`flex flex-col items-center justify-center p-3.5 border rounded-2xl transition-all cursor-pointer ${
                     state.age === opt.id
                       ? 'bw-active'
-                      : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-705'
+                      : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-slate-705'
                   }`}
                 >
                   <span className="text-lg md:text-xl font-black block">{opt.label}</span>
@@ -863,8 +863,8 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     }}
                     className={`flex flex-col items-center justify-center gap-3 p-4 border-2 rounded-2xl transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-black ${
                       state.origin === o.id
-                        ? 'border-black bg-slate-50'
-                        : 'border-slate-200 bg-white hover:border-black hover:bg-slate-50'
+                        ? 'border-black bg-[color:var(--surface-soft)]'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface)] hover:border-black hover:bg-[color:var(--surface-soft)]'
                     }`}
                   >
                     {o.flag ? (
@@ -872,7 +872,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     ) : (
                       <span className="text-3xl">{o.icon}</span>
                     )}
-                    <span className="font-extrabold text-sm text-slate-800 text-center">{o.label}</span>
+                    <span className="font-extrabold text-sm text-[color:var(--text)] text-center">{o.label}</span>
                   </button>
                 ))}
               </div>
@@ -900,7 +900,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
             <SpecResolver onSpecsResolved={handleSpecsResolved} />
 
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'What category of vehicle?'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'What category of vehicle?'}</h3>
               <p className="text-xs text-slate-500 font-medium font-sans">{'Choose the classification that matches the ZRA schedules.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
@@ -920,7 +920,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`flex items-center gap-3.5 p-4 border rounded-2xl text-left transition-all cursor-pointer ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-800'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text)]'
                     }`}
                   >
                     <Icon className={`w-8 h-8 flex-shrink-0 ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-500'}`} />
@@ -942,7 +942,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select vehicle body style'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Select vehicle body style'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'The body style determines which ZRA rate table is used.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
@@ -956,7 +956,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`p-3.5 border rounded-2xl font-bold font-sans text-xs transition-all cursor-pointer text-center flex items-center justify-center ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                     }`}
                   >
                     {opt.l}
@@ -971,7 +971,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select engine power source'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Select engine power source'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'Zambia offers significant duty rebates for greener vehicles.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
@@ -992,12 +992,12 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                       isSelected
                         ? 'bw-active'
                         : isGreen
-                        ? 'border-slate-300 bg-slate-50 hover:bg-slate-100 text-black'
-                        : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
+                        ? 'border-[color:var(--border-strong)] bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text)]'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                     }`}
                   >
                     <span className={`text-sm font-black w-7 h-7 rounded flex items-center justify-center flex-shrink-0 ${
-                      isSelected ? 'bg-[color:var(--primary)] text-white' : 'bg-slate-100 text-slate-500'
+                      isSelected ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--surface-soft)] text-slate-500'
                     }`}>{opt.b}</span>
                     <div className="min-w-0">
                       <p className="font-bold text-xs leading-none">{opt.l}</p>
@@ -1016,7 +1016,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State bus specifications'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'State bus specifications'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'Buses are assessed according to seating capacity and engine class.'}</p>
             </div>
             <div className="space-y-3.5 py-1">
@@ -1037,10 +1037,10 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                         className={`p-2.5 border rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
                           isSel
                             ? 'bw-active'
-                            : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
+                            : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                         }`}
                       >
-                        <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded bg-slate-100 text-slate-700">{opt.code}</span>
+                        <span className="text-[9.5px] font-black px-1.5 py-0.5 rounded bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]">{opt.code}</span>
                         {opt.label}
                       </button>
                     );
@@ -1056,7 +1056,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     id="wizard-bus-seats-input_s"
                     value={state.seats}
                     onChange={(e) => setState((prev) => ({ ...prev, seats: e.target.value }))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 outline-none text-xs font-medium cursor-pointer appearance-none"
+                    className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl px-4 py-3 text-[color:var(--text)] outline-none text-xs font-medium cursor-pointer appearance-none"
                   >
                     <option value="">Choose seating range</option>
                     <option value="10">Not exceeding 14 seats (Minibus)</option>
@@ -1078,7 +1078,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-sm mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State CIF pricing & rate'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'State CIF pricing & rate'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'Vehicles under 2 years old and electric imports are assessed ad valorem on the Kwacha value.'}</p>
             </div>
             
@@ -1095,7 +1095,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     placeholder="e.g. 8500"
                     value={state.cifUSD || ''}
                     onChange={(e) => setState((prev) => ({ ...prev, cifUSD: parseFloat(e.target.value) || 0 }))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-7 pr-3 py-2.5 text-xs font-mono font-bold text-slate-800 outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white transition-all shadow-inner"
+                    className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl pl-7 pr-3 py-2.5 text-xs font-mono font-bold text-[color:var(--text)] outline-none focus:ring-1 focus:ring-slate-900 focus:bg-[color:var(--surface)] transition-all shadow-inner"
                   />
                 </div>
               </div>
@@ -1110,7 +1110,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   placeholder="e.g. 27.50"
                   value={state.fx || ''}
                   onChange={(e) => setState((prev) => ({ ...prev, fx: parseFloat(e.target.value) || 0 }))}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-slate-800 outline-none focus:ring-1 focus:ring-slate-900 focus:bg-white transition-all shadow-inner"
+                  className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-[color:var(--text)] outline-none focus:ring-1 focus:ring-slate-900 focus:bg-[color:var(--surface)] transition-all shadow-inner"
                 />
                 {isOffline && (
                   <p className="mt-1.5 text-[9px] font-bold text-amber-600 flex items-center gap-1">
@@ -1121,12 +1121,12 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
             </div>
 
             {kwachaVal > 0 ? (
-              <div className="p-3 bg-slate-100 border border-slate-300 rounded-xl text-center">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-black block">CIF Value in Kwacha (ZMW)</span>
-                <span className="text-sm font-black font-mono text-black mt-0.5 block">{zmwFormat(kwachaVal)}</span>
+              <div className="p-3 bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl text-center">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[color:var(--text)] block">CIF Value in Kwacha (ZMW)</span>
+                <span className="text-sm font-black font-mono text-[color:var(--text)] mt-0.5 block">{zmwFormat(kwachaVal)}</span>
               </div>
             ) : (
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+              <div className="p-3 bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl text-center text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
                 Enter both values to see the converted total
               </div>
             )}
@@ -1137,7 +1137,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State engine displacement (cc)'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'State engine displacement (cc)'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'This is needed to apply the fixed Carbon Surtax under the CIF method.'}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 py-1">
@@ -1151,7 +1151,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`flex flex-col items-center justify-center p-3 border rounded-2xl transition-all text-center cursor-pointer ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                     }`}
                   >
                     <span className="text-xs font-extrabold font-mono block">{opt.l}</span>
@@ -1169,7 +1169,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select vehicle engine capacity band'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Select vehicle engine capacity band'}</h3>
               <p className="text-xs text-slate-500 font-medium">{"Tariffs depend heavily on the engine's cylinder capacity (cc)."}</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 py-1">
@@ -1183,7 +1183,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`flex flex-col items-center justify-center p-3 border rounded-2xl text-center transition-all cursor-pointer ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100 text-slate-700'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                     }`}
                   >
                     <span className="text-xs font-extrabold font-mono text-center leading-none">{opt.l}</span>
@@ -1204,7 +1204,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-lg mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'State gross vehicle weight (gvw)'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'State gross vehicle weight (gvw)'}</h3>
               <p className="text-xs text-slate-500 font-medium">{'ZRA goods-vehicle schedules assess duty by weight range.'}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 py-1 max-w-md mx-auto w-full">
@@ -1218,7 +1218,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`p-3 border rounded-2xl text-left transition-all text-xs font-bold font-sans cursor-pointer flex items-center justify-center text-center ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)]'
                     }`}
                   >
                     {opt.l}
@@ -1233,7 +1233,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-xl mx-auto space-y-3">
             <div className="text-center">
-              <h3 className="font-extrabold text-slate-900 text-base md:text-lg">{'Select motorcycle ZRA valuation range'}</h3>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Select motorcycle ZRA valuation range'}</h3>
               <p className="text-xs text-slate-500 font-medium font-sans">{'Fixed duties are based on the depreciated value (VDP) of the motorcycle.'}</p>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 py-1">
@@ -1247,7 +1247,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     className={`p-3 border rounded-2xl font-bold font-mono text-center text-xs transition-all cursor-pointer ${
                       isSelected
                         ? 'bw-active'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300 hover:bg-slate-100'
+                        : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)]'
                     }`}
                   >
                     {opt.l}
@@ -1272,7 +1272,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="h-full flex flex-col justify-between min-h-0 select-none">
             {/* Dynamic Results Sub-tabs on Mobile (Zero Scrolling Constraint) */}
-            <div className="flex bg-slate-100 hover:bg-slate-200/60 transition-colors p-1 rounded-xl mb-3 border border-slate-200/50 lg:hidden flex-shrink-0">
+            <div className="flex bg-[color:var(--surface-soft)] hover:bg-slate-200/60 transition-colors p-1 rounded-xl mb-3 border border-[color:var(--border)]/50 lg:hidden flex-shrink-0">
               <button
                 type="button"
                 onClick={() => setMobileResultsTab('breakdown')}
@@ -1301,16 +1301,16 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 mobileResultsTab === 'breakdown' ? 'flex' : 'hidden lg:flex'
               }`}>
                 {/* Big Total Payable Banner */}
-                <div className="bg-white p-4 lg:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-4 overflow-hidden relative group">
+                <div className="bg-[color:var(--surface)] p-4 lg:p-5 rounded-2xl border border-[color:var(--border)] shadow-sm flex flex-col gap-4 overflow-hidden relative group">
                   {/* Subtle Background Radial Gradient */}
                   <div className="absolute inset-x-0 -bottom-24 -top-24 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-100 via-white to-white opacity-60 pointer-events-none transition-all group-hover:opacity-100"></div>
                   
                   <div className="flex items-start justify-between gap-3 relative z-10 w-full mb-1">
                     <div className="text-left">
                       <p className="text-slate-500 text-[10px] uppercase tracking-widest font-bold">{'Total Duty Payable (ZMW)'}</p>
-                      <p id="total-duty-value_res" className="text-3xl md:text-5xl font-black text-black font-mono mt-1 tracking-tighter drop-shadow-sm">{zmwFormat(result.total)}</p>
+                      <p id="total-duty-value_res" className="text-3xl md:text-5xl font-black text-[color:var(--text)] font-mono mt-1 tracking-tighter drop-shadow-sm">{zmwFormat(result.total)}</p>
                     </div>
-                    <div className="bg-slate-100 px-2.5 py-1.5 rounded-lg border border-slate-300 text-[9px] uppercase tracking-wide font-extrabold text-black flex-shrink-0 font-mono">
+                    <div className="bg-[color:var(--surface-soft)] px-2.5 py-1.5 rounded-lg border border-[color:var(--border-strong)] text-[9px] uppercase tracking-wide font-extrabold text-[color:var(--text)] flex-shrink-0 font-mono">
                       {result.mode === 'cif' ? 'Ad Valorem Basis' : 'Specific Rate Lookup'}
                     </div>
                   </div>
@@ -1319,7 +1319,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   {result.mode === 'cif' && result.rates && (
                     <div className="w-full relative z-10 animate-fadeIn">
                       <p className="text-[10px] text-slate-500 font-bold mb-1.5 uppercase tracking-wide">Component Breakdown</p>
-                      <div className="w-full h-3 rounded-full flex overflow-hidden shadow-inner bg-slate-100 border border-slate-200/60">
+                      <div className="w-full h-3 rounded-full flex overflow-hidden shadow-inner bg-[color:var(--surface-soft)] border border-[color:var(--border)]/60">
                         {/* Fake logic to estimate relative widths based on ZRA typical shares */}
                         {/* Real rates: Customs = CIF*cd = e.g., 25%. Excise = (CIF+CD)*ed = e.g., 30%. VAT = (CIF+CD+ED)*16%. */}
                         <div className="bw-ink h-full" title="Customs Duty" style={{ width: '30%', borderRight: '2px solid #fff' }}></div>
@@ -1337,10 +1337,10 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 </div>
 
                 {/* Table Breakdown Container */}
-                <div className="bg-white border border-slate-200 rounded-xl shadow-inner p-1 overflow-hidden">
+                <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-xl shadow-inner p-1 overflow-hidden">
                   <table className="w-full text-[10px] md:text-xs text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-50 text-slate-500 font-bold text-[8.5px] uppercase tracking-wider border-b border-slate-150">
+                      <tr className="bg-[color:var(--surface-soft)] text-slate-500 font-bold text-[8.5px] uppercase tracking-wider border-b border-slate-150">
                         <th className="px-3 py-2.5">Tax Element</th>
                         <th className="px-3 py-2.5">Rate</th>
                         <th className="px-3 py-2.5 text-right">Tax Charge (ZMW)</th>
@@ -1349,58 +1349,58 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     <tbody className="text-slate-705 font-medium divide-y divide-slate-100">
                       {result.mode === 'cif' ? (
                         <>
-                          <tr className="hover:bg-slate-50/50 bg-slate-50/50 border-b border-slate-100">
-                            <td className="px-3 py-2.5 font-bold text-slate-800">CIF Value Base</td>
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50 bg-[color:var(--surface-soft)]/50 border-b border-slate-100">
+                            <td className="px-3 py-2.5 font-bold text-[color:var(--text)]">CIF Value Base</td>
                             <td className="px-3 py-2.5 font-mono text-[9px] text-slate-400">Valuation Base</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.cifZMW ? result.cifZMW.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.cifZMW ? result.cifZMW.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                           </tr>
-                          <tr className="hover:bg-slate-50/50">
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50">
                             <td className="px-3 py-2.5">Customs Duty (CD)</td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">{(result.rates?.cd || 0) * 100}%</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.cd ? result.cd.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.cd ? result.cd.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                           </tr>
-                          <tr className="hover:bg-slate-50/50">
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50">
                             <td className="px-3 py-2.5">Excise Duty (ED)</td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">{(result.rates?.ed || 0) * 100}%</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.ed ? result.ed.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.ed ? result.ed.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                           </tr>
-                          <tr className="hover:bg-slate-50/50">
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50">
                             <td className="px-3 py-2.5">Value Added Tax (VAT)</td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">16%</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.vat ? result.vat.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.vat ? result.vat.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</td>
                           </tr>
                         </>
                       ) : result.mode === 'specific' && result.cd !== undefined && result.ed !== undefined ? (
                         // Hybrid Third Schedule — flat CD + ED amounts
                         <>
-                          <tr className="hover:bg-slate-50/50">
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50">
                             <td className="px-3 py-2.5">
                               Customs Duty (CD)
-                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-slate-200 text-black uppercase tracking-wide">3rd Sched</span>
+                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-slate-200 text-[color:var(--text)] uppercase tracking-wide">3rd Sched</span>
                             </td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">Flat Rate</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.cd.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.cd.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                           </tr>
-                          <tr className="hover:bg-slate-50/50">
+                          <tr className="hover:bg-[color:var(--surface-soft)]/50">
                             <td className="px-3 py-2.5">
                               Excise Duty (ED)
-                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-slate-200 text-black uppercase tracking-wide">3rd Sched</span>
+                              <span className="ml-1.5 text-[8px] font-extrabold px-1 py-0.5 rounded bg-slate-200 text-[color:var(--text)] uppercase tracking-wide">3rd Sched</span>
                             </td>
                             <td className="px-3 py-2.5 font-mono text-slate-400">Flat Rate</td>
-                            <td className="px-3 py-2.5 text-right font-mono font-bold text-slate-900">{result.ed.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td className="px-3 py-2.5 text-right font-mono font-bold text-[color:var(--text)]">{result.ed.toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                           </tr>
                         </>
                       ) : (
                         // ICE composite scheduled lookup
-                        <tr className="hover:bg-slate-50/50">
+                        <tr className="hover:bg-[color:var(--surface-soft)]/50">
                           <td className="px-3 py-3">Composite Specific Base Duty</td>
                           <td className="px-3 py-3 text-slate-405 font-bold">Scheduled Lookup</td>
-                          <td className="px-3 py-3 text-right font-mono font-black text-slate-900">{(result.base || 0).toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                          <td className="px-3 py-3 text-right font-mono font-black text-[color:var(--text)]">{(result.base || 0).toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         </tr>
                       )}
                       
                       {result.carbon > 0 && (
-                        <tr className="hover:bg-slate-50/50 text-black font-bold">
+                        <tr className="hover:bg-[color:var(--surface-soft)]/50 text-[color:var(--text)] font-bold">
                           <td className="px-3 py-2.5 font-bold">ZRA Carbon Surtax Levy</td>
                           <td className="px-3 py-2.5 font-mono text-slate-400 font-normal">{result.cband}cc Band</td>
                           <td className="px-3 py-2.5 text-right font-mono font-bold">{(result.carbon || 0).toLocaleString('en-ZM', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -1412,24 +1412,24 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
 
                 {/* Authority and HS Code Footer */}
                 {(result.hsCode || result.authority) && (
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-1.5 mt-2">
+                  <div className="bg-[color:var(--surface-soft)] border border-[color:var(--border)] rounded-xl p-3 flex flex-col gap-1.5 mt-2">
                     {result.hsCode && (
                       <div className="flex justify-between items-center text-[9px]">
                         <span className="font-bold text-slate-500 uppercase tracking-wider">HS Code Classification</span>
-                        <span className="font-mono font-medium text-slate-700">{result.hsCode}</span>
+                        <span className="font-mono font-medium text-[color:var(--text-muted)]">{result.hsCode}</span>
                       </div>
                     )}
                     {result.authority && (
                       <div className="flex justify-between items-center text-[9px]">
                         <span className="font-bold text-slate-500 uppercase tracking-wider">Valuation Authority</span>
-                        <span className="font-medium text-slate-700">{result.authority}</span>
+                        <span className="font-medium text-[color:var(--text-muted)]">{result.authority}</span>
                       </div>
                     )}
                   </div>
                 )}
 
                 {/* Inclusion help */}
-                <div className="flex-shrink-0 bg-slate-50 p-3 rounded-xl border border-slate-200 mt-2">
+                <div className="flex-shrink-0 bg-[color:var(--surface-soft)] p-3 rounded-xl border border-[color:var(--border)] mt-2">
                   <div className="text-[9.5px] leading-relaxed text-slate-500 font-medium font-sans">
                     <strong>Included charges:</strong> {result.note}
                   </div>
@@ -1441,7 +1441,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 mobileResultsTab === 'resources' ? 'flex' : 'hidden lg:flex'
               }`}>
                 {/* Visual Anchor Card (Sleek minimalist side-profile) - Moved to top */}
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex items-center justify-center relative overflow-hidden group">
+                <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm p-5 flex items-center justify-center relative overflow-hidden group">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-100 via-white to-white opacity-80 pointer-events-none group-hover:opacity-100 transition-opacity duration-700"></div>
                   <div className="relative z-10 flex flex-col items-center justify-center w-full">
                     <VehicleRender cat={state.cat} type={state.type} />
@@ -1449,51 +1449,51 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   </div>
                 </div>
                 {/* ZRA Surtax Table Reference */}
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
-                  <h4 className="text-[10px] font-bold text-slate-800 uppercase tracking-wider mb-1.5">{'ZRA Carbon Tariff Table'}</h4>
-                  <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
+                <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm p-4">
+                  <h4 className="text-[10px] font-bold text-[color:var(--text)] uppercase tracking-wider mb-1.5">{'ZRA Carbon Tariff Table'}</h4>
+                  <div className="border border-[color:var(--border)] rounded-lg overflow-hidden bg-[color:var(--surface)]">
                     <table className="w-full text-left text-[9.5px]">
                       <thead>
-                        <tr className="bg-slate-100/70 border-b border-slate-200 text-slate-400 uppercase text-[8px] font-black">
+                        <tr className="bg-[color:var(--surface-soft)]/70 border-b border-[color:var(--border)] text-slate-400 uppercase text-[8px] font-black">
                           <th className="px-2.5 py-1">Cylinder (cc)</th>
                           <th className="text-right px-2.5 py-1">Fee (ZMW)</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 text-slate-600 font-medium">
+                      <tbody className="divide-y divide-slate-100 text-[color:var(--text-muted)] font-medium">
                         <tr>
                           <td className="px-2.5 py-1">0 – 1,500cc</td>
-                          <td className="text-right px-2.5 py-1 font-mono font-bold text-slate-800">{zmwFormat(CARBON_RATES['0-1500'])}</td>
+                          <td className="text-right px-2.5 py-1 font-mono font-bold text-[color:var(--text)]">{zmwFormat(CARBON_RATES['0-1500'])}</td>
                         </tr>
                         <tr>
                           <td className="px-2.5 py-1">1,501 – 2,000cc</td>
-                          <td className="text-right px-2.5 py-1 font-mono font-bold text-slate-800">{zmwFormat(CARBON_RATES['1501-2000'])}</td>
+                          <td className="text-right px-2.5 py-1 font-mono font-bold text-[color:var(--text)]">{zmwFormat(CARBON_RATES['1501-2000'])}</td>
                         </tr>
                         <tr>
                           <td className="px-2.5 py-1">2,001 – 3,000cc</td>
-                          <td className="text-right px-2.5 py-1 font-mono font-bold text-slate-800">{zmwFormat(CARBON_RATES['2001-3000'])}</td>
+                          <td className="text-right px-2.5 py-1 font-mono font-bold text-[color:var(--text)]">{zmwFormat(CARBON_RATES['2001-3000'])}</td>
                         </tr>
                         <tr>
                           <td className="px-2.5 py-1">3,001cc +</td>
-                          <td className="text-right px-2.5 py-1 font-mono font-bold text-slate-800">{zmwFormat(CARBON_RATES['3001+'])}</td>
+                          <td className="text-right px-2.5 py-1 font-mono font-bold text-[color:var(--text)]">{zmwFormat(CARBON_RATES['3001+'])}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
 
                   {/* Resource directory board */}
-                  <div className="mt-3 text-[9.5px] text-slate-650 space-y-1 bg-white border border-slate-150 p-2 rounded-xl">
+                  <div className="mt-3 text-[9.5px] text-slate-650 space-y-1 bg-[color:var(--surface)] border border-slate-150 p-2 rounded-xl">
                     <p className="font-bold text-[9px] uppercase text-slate-500 tracking-wider">{'ZRA Contact Details'}</p>
                     <div className="flex items-center gap-1.5">
                       <span className="font-bold block w-10 text-slate-400">CALL:</span>
-                      <span className="font-bold bg-slate-100 text-black border border-slate-300 px-1 rounded font-mono">4111 / +260 211 381111</span>
+                      <span className="font-bold bg-[color:var(--surface-soft)] text-[color:var(--text)] border border-[color:var(--border-strong)] px-1 rounded font-mono">4111 / +260 211 381111</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="font-bold block w-10 text-slate-400">EMAIL:</span>
-                      <a href="mailto:advice@zra.org.zm" className="underline hover:text-black font-bold">advice@zra.org.zm</a>
+                      <a href="mailto:advice@zra.org.zm" className="underline hover:text-[color:var(--text)] font-bold">advice@zra.org.zm</a>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <span className="font-bold block w-10 text-slate-400">WEB:</span>
-                      <a href="https://www.zra.org.zm" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-bold inline-flex items-center gap-0.5">
+                      <a href="https://www.zra.org.zm" target="_blank" rel="noopener noreferrer" className="underline hover:text-[color:var(--text)] font-bold inline-flex items-center gap-0.5">
                         www.zra.org.zm <ExternalLink className="w-2.5 h-2.5" />
                       </a>
                     </div>
@@ -1501,8 +1501,8 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 </div>
 
                 {/* Warning disclaimers */}
-                <div className="bg-slate-100 border border-slate-300 rounded-xl p-2.5 text-[9px] text-black flex items-start gap-2 flex-shrink-0 font-semibold leading-relaxed">
-                  <AlertTriangle className="w-4 h-4 text-black flex-shrink-0 mt-0.5" />
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] sm:text-xs text-amber-800 flex items-start gap-2 flex-shrink-0 font-semibold leading-relaxed dark:bg-[color:var(--warn-soft)] dark:border-[color:var(--warn-soft)] dark:text-[color:var(--warn)]">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-[color:var(--warn)] flex-shrink-0 mt-0.5" />
                   <div>
                     <strong>Independent platform:</strong> This application is not affiliated with or endorsed by the Zambia Revenue Authority (ZRA). All figures are estimates only. Always confirm the final amounts with a licensed clearing agent.
                   </div>
@@ -1536,12 +1536,12 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
     >
       <div
         id="wizard-frame-container"
-        className="w-full max-w-4xl flex flex-col bg-white border border-slate-200 rounded-2xl shadow-sm transition-all focus-within:border-slate-350 overflow-hidden"
+        className="w-full max-w-4xl flex flex-col bg-[color:var(--surface)] border border-[color:var(--border)] rounded-2xl shadow-sm transition-all focus-within:border-slate-350 overflow-hidden"
       >
         {/* WIZARD HEADER BAR */}
-        <div className="p-4 bg-white border-b border-slate-200 flex-shrink-0 flex items-center justify-between">
+        <div className="p-4 bg-[color:var(--surface)] border-b border-[color:var(--border)] flex-shrink-0 flex items-center justify-between">
           <div className="min-w-0">
-            <h2 className="font-extrabold text-xs sm:text-sm tracking-tight flex items-center gap-1.5 uppercase text-slate-800">
+            <h2 className="font-extrabold text-xs sm:text-sm tracking-tight flex items-center gap-1.5 uppercase text-[color:var(--text)]">
               <span className="w-2 h-2 rounded bg-black animate-pulse"></span>
               {'ZRA Tariff Lookup Assistant'}
             </h2>
@@ -1552,7 +1552,7 @@ Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &
             id="wizard-global-reset-btn"
             type="button"
             onClick={handleResetWizard}
-            className="text-[9.5px] uppercase tracking-wider font-extrabold text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 px-2 py-1.5 rounded-lg border border-slate-200 transition-all outline-none flex items-center gap-1.5 cursor-pointer flex-shrink-0 shadow-sm"
+            className="text-[9.5px] uppercase tracking-wider font-extrabold text-slate-500 hover:text-[color:var(--text)] bg-[color:var(--surface-soft)] hover:bg-[color:var(--surface-soft)] px-2 py-1.5 rounded-lg border border-[color:var(--border)] transition-all outline-none flex items-center gap-1.5 cursor-pointer flex-shrink-0 shadow-sm"
           >
             <RotateCcw className="w-3 h-3" />
             Start Over
@@ -1560,7 +1560,7 @@ Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &
         </div>
 
         {/* WIZARD STEPPERS PROGRESS BAR INDICATOR (SLENDER SEGMENTED SLIDER) */}
-        <div className="bg-slate-100 px-4 py-1.5 border-b border-slate-200 flex-shrink-0 flex gap-1 z-20">
+        <div className="bg-[color:var(--surface-soft)] px-4 py-1.5 border-b border-[color:var(--border)] flex-shrink-0 flex gap-1 z-20">
           {activeSteps.map((st, idx) => {
             const isCompleted = idx < currentStepIndex;
             const isActive = idx === currentStepIndex;
@@ -1619,7 +1619,7 @@ Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &
         )}
 
         {/* ACTIVE WIZARD STEP BODY CANVAS */}
-        <div className="flex-grow p-4 md:p-6 bg-white relative min-h-[460px]">
+        <div className="flex-grow p-4 md:p-6 bg-[color:var(--surface)] relative min-h-[460px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep.id}
@@ -1635,7 +1635,7 @@ Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &
         </div>
 
         {/* WIZARD RIBBON CONTROL NAVIGATION (BOTTOM ROW) */}
-        <div className="p-3.5 bg-slate-50 border-t border-slate-150 flex items-center justify-between flex-shrink-0 select-none">
+        <div className="p-3.5 bg-[color:var(--surface-soft)] border-t border-slate-150 flex items-center justify-between flex-shrink-0 select-none">
           <button
             id="wizard-nav-prev-btn"
             type="button"
@@ -1648,10 +1648,10 @@ Step {currentStepIndex + 1} of {activeSteps.length} &bull; {currentStep.title} &
           </button>
 
           {/* Quick status progress bubbles */}
-          <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+          <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-bold text-slate-400 bg-[color:var(--surface-soft)] px-3 py-1.5 rounded-full border border-[color:var(--border)]">
             {currentStepIndex === activeSteps.length - 1 ? (
-              <span className="text-black font-extrabold flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-black" />
+              <span className="text-[color:var(--text)] font-extrabold flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[color:var(--text)]" />
                 Done — estimate ready
               </span>
             ) : (

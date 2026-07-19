@@ -69,7 +69,7 @@ export default function FaqSection() {
               <div 
                 key={index} 
                 className={`border rounded-2xl overflow-hidden transition-colors ${
-                  isOpen ? 'bg-white border-[color:var(--primary-border)] shadow-sm' : 'bg-[color:var(--surface-soft)] border-[color:var(--border)] hover:border-[color:var(--border-strong)]'
+                  isOpen ? 'bg-[color:var(--surface)] border-[color:var(--primary-border)] shadow-sm' : 'bg-[color:var(--surface-soft)] border-[color:var(--border)] hover:border-[color:var(--border-strong)]'
                 }`}
               >
                 <button
