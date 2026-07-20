@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState, useEffect } from 'react';
 import { Save, Loader2, Plus, Pencil, Trash2, X } from 'lucide-react';
 import { getApiUrl } from '../../utils/api';
@@ -113,7 +114,7 @@ export default function InlandRatesManager() {
     try {
       parsedFees = JSON.parse(borderFeesStr);
     } catch (err) {
-      alert("Invalid JSON format in Border Fees. Please fix before saving.");
+      toast.error("Invalid JSON format in Border Fees. Please fix before saving.");
       return;
     }
 

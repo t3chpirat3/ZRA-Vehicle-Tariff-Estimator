@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import React, { useState, useEffect } from 'react';
 import {
   Lock, Plus, Pencil, Trash2, Sparkles, Loader2, Ship, LogOut, Save, Check, X, AlertCircle
@@ -131,7 +132,7 @@ export default function AdminPanel() {
       console.error(err);
       // Don't set error message if it's just a 401 redirecting to login
       if (err.message !== 'Unauthorized') {
-        alert('Failed to load schedules: ' + err.message);
+        toast.error('Failed to load schedules: ' + err.message);
       }
     } finally {
       setLoadingSchedules(false);
@@ -182,7 +183,7 @@ export default function AdminPanel() {
       if (!res.ok) throw new Error('Failed to delete');
       await fetchSchedules();
     } catch (err: any) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -195,7 +196,7 @@ export default function AdminPanel() {
       if (!res.ok) throw new Error('Failed to update status');
       setSchedules(schedules.map(s => s.id === id ? { ...s, status: newStatus } : s));
     } catch (err: any) {
-      alert('Error updating status: ' + err.message);
+      toast.error('Error updating status: ' + err.message);
     }
   };
 
@@ -262,7 +263,7 @@ export default function AdminPanel() {
       setParsedResults(parsedResults.filter((_, i) => i !== index));
       await fetchSchedules();
     } catch (err: any) {
-      alert('Error saving parsed schedule: ' + err.message);
+      toast.error('Error saving parsed schedule: ' + err.message);
     }
   };
 
@@ -280,7 +281,7 @@ export default function AdminPanel() {
       setParsedResults([]);
       await fetchSchedules();
     } catch (err: any) {
-      alert('Error saving schedules: ' + err.message);
+      toast.error('Error saving schedules: ' + err.message);
     }
   };
 

@@ -12,28 +12,28 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import {
-  Plus,
-  Trash2,
-  Globe,
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  BarChart3, 
+  Settings2, 
+  Plus, 
+  Trash2, 
+  RefreshCw, 
+  Info,
   ChevronDown,
   ChevronUp,
-  Settings2,
-  TrendingUp,
-  Award,
-  AlertTriangle,
-  RefreshCw,
-  CheckCircle2,
-  Info,
-  BarChart3,
   ArrowUpDown,
+  Download,
+  AlertTriangle,
   Lightbulb,
   ShieldAlert,
   Sparkles,
   Bookmark,
-  Download
+  Download,
+  Save,
+  FolderOpen
 } from 'lucide-react';
+import { toast } from 'sonner';
 import {
   calculateDuty,
   zmwFormat,
@@ -453,6 +453,52 @@ export default function PriceComparison({
   const [tableOpen, setTableOpen] = useState(false);
   const [sortBy, setSortBy] = useState<'score' | 'cost' | 'mileage'>('score');
   const [showImportMenu, setShowImportMenu] = useState(false);
+  const [showSavedMenu, setShowSavedMenu] = useState(false);
+  const [savedComparisons, setSavedComparisons] = useState<SavedComparison[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(SAVED_COMPARISONS_KEY);
+      if (stored) {
+        setSavedComparisons(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error('Failed to parse saved comparisons', e);
+    }
+  }, []);
+
+  const handleSaveComparison = () => {
+    const name = window.prompt('Enter a name for this comparison:');
+    if (!name) return;
+    
+    const newSaved: SavedComparison = {
+      id: Date.now().toString(),
+      name,
+      savedAt: new Date().toISOString(),
+      listings,
+    };
+    
+    const updated = [newSaved, ...savedComparisons];
+    setSavedComparisons(updated);
+    localStorage.setItem(SAVED_COMPARISONS_KEY, JSON.stringify(updated));
+    toast.success('Comparison saved successfully!');
+  };
+
+  const loadComparison = (comp: SavedComparison) => {
+    setListings(comp.listings);
+    setShowSavedMenu(false);
+    toast.success(`Loaded "${comp.name}"`);
+  };
+
+  const deleteSavedComparison = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm('Delete this saved comparison?')) {
+      const updated = savedComparisons.filter(c => c.id !== id);
+      setSavedComparisons(updated);
+      localStorage.setItem(SAVED_COMPARISONS_KEY, JSON.stringify(updated));
+      toast.success('Comparison deleted');
+    }
+  };
 
   useEffect(() => {
     if (importedListing) {
@@ -725,6 +771,51 @@ export default function PriceComparison({
                     ))
                   ) : (
                     <div className="px-2 py-3 text-xs text-center text-[color:var(--text-muted)]">Watchlist is empty</div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="relative">
+            <button
+              onClick={() => setShowSavedMenu((o) => !o)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors ${showSavedMenu ? 'bw-active' : 'btn-secondary'}`}
+            >
+              <FolderOpen className="w-3.5 h-3.5" />
+              Saved
+            </button>
+            <AnimatePresence>
+              {showSavedMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  className="absolute right-0 top-full mt-2 w-72 bg-[color:var(--surface)] border border-[color:var(--border-strong)] shadow-xl rounded-xl p-2 z-50 max-h-64 overflow-y-auto"
+                >
+                  <p className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase px-2 py-1 mb-1">Load Comparison</p>
+                  {savedComparisons && savedComparisons.length > 0 ? (
+                    savedComparisons.map(comp => (
+                      <div key={comp.id} className="group w-full flex items-center justify-between px-2 py-2 text-xs text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] rounded-lg">
+                        <button
+                          onClick={() => loadComparison(comp)}
+                          className="flex flex-col gap-0.5 flex-grow text-left"
+                        >
+                          <span className="font-bold truncate">{comp.name}</span>
+                          <span className="text-[10px] text-[color:var(--text-muted)] truncate">
+                            {new Date(comp.savedAt).toLocaleDateString()} • {comp.listings.length} vehicles
+                          </span>
+                        </button>
+                        <button
+                          onClick={(e) => deleteSavedComparison(comp.id, e)}
+                          className="p-1.5 text-slate-400 hover:bg-rose-100 hover:text-rose-600 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="px-2 py-3 text-xs text-center text-[color:var(--text-muted)]">No saved comparisons</div>
                   )}
                 </motion.div>
               )}
@@ -1391,12 +1482,53 @@ export default function PriceComparison({
       </AnimatePresence>
 
       {/* ── Disclaimer ── */}
-      <div className="flex items-start gap-2 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-[10px] text-amber-800 font-medium">
+      <div className="flex items-start gap-2 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-[10px] text-amber-800 font-medium pb-24">
         <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-600" />
         <p>
           <strong>Estimates only.</strong> Freight, inspection, and duty figures are indicative. ZRA duty is auto-estimated from resolved vehicle specs — verify with the <strong>Calculate Duty</strong> tab. RTSA naturalization (ZMW 890) and exchange rates require manual updates.
         </p>
       </div>
+
+      {/* ── Sticky Action Bar ── */}
+      <AnimatePresence>
+        {listings.length >= 2 && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-50 pointer-events-none"
+          >
+            <div className="bg-[color:var(--surface)]/80 backdrop-blur-md border border-[color:var(--border-strong)] rounded-2xl shadow-xl p-3 flex items-center justify-center gap-3 pointer-events-auto">
+              <button
+                onClick={() => handleAddListing()}
+                className="flex items-center gap-2 px-6 py-3 bg-[color:var(--primary)] text-white text-sm font-extrabold rounded-xl hover:bg-[color:var(--primary-hover)] transition-colors active:scale-95 shadow-md shadow-[color:var(--primary)]/30"
+              >
+                <Plus className="w-4 h-4" />
+                Add Another Vehicle
+              </button>
+              <button
+                onClick={handleSaveComparison}
+                className="flex items-center gap-2 px-4 py-3 bg-[color:var(--surface-soft)] text-[color:var(--text)] text-sm font-bold rounded-xl hover:bg-[color:var(--surface)] border border-[color:var(--border)] transition-colors active:scale-95"
+              >
+                <Save className="w-4 h-4" />
+                Save Comparison
+              </button>
+              <button
+                onClick={() => {
+                  if (confirm('Clear all vehicles and start over?')) {
+                    setListings([newListing('japan'), newListing('southafrica')]);
+                    toast.success('Cleared all comparisons');
+                  }
+                }}
+                className="flex items-center gap-2 px-4 py-3 bg-[color:var(--surface-soft)] text-[color:var(--text)] text-sm font-bold rounded-xl hover:bg-rose-50 hover:text-rose-600 border border-[color:var(--border)] transition-colors active:scale-95"
+              >
+                <Trash2 className="w-4 h-4" />
+                Clear All
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

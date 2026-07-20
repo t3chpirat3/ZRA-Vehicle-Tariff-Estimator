@@ -266,7 +266,7 @@ export default function ClearingAgents() {
                 {featuredAgents.map((agent) => (
                   <div
                     key={agent.company}
-                    className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-sm transition-all duration-150"
+                    className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:scale-[1.01] hover:-translate-y-1"
                   >
                     <div>
                       <div className="flex justify-between items-start gap-2 mb-1.5">
@@ -313,7 +313,7 @@ export default function ClearingAgents() {
               {visibleAgents.map((agent) => (
                 <div
                   key={agent.tpin}
-                  className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-xl p-3 flex flex-col justify-between hover:shadow-sm hover:border-[color:var(--primary-border)] transition-all duration-150"
+                  className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-xl p-3 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:scale-[1.01] hover:-translate-y-1 hover:border-[color:var(--primary-border)]"
                   style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 196px' }}
                 >
                   <div>

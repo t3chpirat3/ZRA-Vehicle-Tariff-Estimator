@@ -260,14 +260,14 @@
 }
 
 .wl-listing-card {
-  display: flex;
-  flex-direction: column;
   background-color: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   height: 100%;
@@ -698,3 +698,5 @@
   font-size: 0.75rem;
   color: var(--text);
 }
+  
+.wl-listing-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); } 

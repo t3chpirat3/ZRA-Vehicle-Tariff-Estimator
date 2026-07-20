@@ -31,6 +31,7 @@ import {
   WEIGHT_OPTIONS_MAP,
 } from '../types';
 import { getApiUrl } from '../utils/api';
+import { WatchlistSkeleton } from './Skeleton';
 import './Watchlist.css';
 
 interface WatchlistProps {
@@ -190,6 +191,8 @@ export default function Watchlist({
       }
 
       onUpdateWatchlist([newItem, ...watchlist]);
+      toast.success('Vehicle added to watchlist!');
+      
       setUrl('');
       setNotes('');
       setListingPrice('');
@@ -203,6 +206,7 @@ export default function Watchlist({
   const handleRemove = (id: string | number) => {
     if (confirm('Remove this vehicle from your watchlist?')) {
       onUpdateWatchlist(watchlist.filter((item) => item.id !== id));
+      toast.success('Vehicle removed from watchlist');
     }
   };
 
@@ -461,6 +465,7 @@ export default function Watchlist({
         </div>
       ) : (
         <div className="wl-grid">
+          {isLoading && <WatchlistSkeleton />}
           {watchlist.map((item) => (
             <div key={item.id} className={`wl-listing-card ${item.hasChangedStatus ? 'wl-changed' : ''}`}>
               <div className="wl-card-image-wrap" onClick={() => setModalItem(item)}>

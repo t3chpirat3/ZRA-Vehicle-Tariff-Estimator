@@ -19,6 +19,7 @@ import FaqSection from './components/FaqSection';
 import { WatchlistItem } from './types';
 import { Shield, Menu, X, WifiOff, Moon, Sun } from 'lucide-react';
 import { useNetworkStatus } from './hooks/useNetworkStatus';
+import { Toaster } from 'sonner';
 
 const WATCHLIST_LOCAL_KEY = 'zra_vehicle_watchlist_v1';
 
@@ -238,6 +239,9 @@ export default function App() {
 
   return (
     <div className="min-h-[100dvh] font-sans flex flex-col text-[color:var(--text)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+      {/* Toast Notifications */}
+      <Toaster position="bottom-right" richColors theme={theme} />
+
       {/* Reactive cursor-tracking blob */}
       <CursorBlob />
 
