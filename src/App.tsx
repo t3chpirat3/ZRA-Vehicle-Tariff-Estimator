@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Calculator from './components/Calculator';
 import VehicleDiscovery from './components/VehicleDiscovery';
 import Watchlist from './components/Watchlist';
@@ -522,6 +523,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <SpeedInsights />
     </div>
   );
 }
