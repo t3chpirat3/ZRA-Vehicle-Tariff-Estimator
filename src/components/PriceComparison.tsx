@@ -524,6 +524,10 @@ export default function PriceComparison({
       newL.year = importedListing.year || '';
       newL.mileageKm = Number(importedListing.mileage?.toString().replace(/[^0-9]/g, '') || '');
       newL.dutyZMW = importedListing.duty ?? null;
+      if (newL.currency === 'ZMW') {
+        newL.freightUSD = 0;
+        newL.inspectionUSD = 0;
+      }
       
       setListings(prev => {
         const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
@@ -555,6 +559,10 @@ export default function PriceComparison({
     newL.year = item.year || '';
     newL.mileageKm = Number(item.mileage?.toString().replace(/[^0-9]/g, '') || '');
     newL.dutyZMW = item.duty ?? null;
+    if (newL.currency === 'ZMW') {
+      newL.freightUSD = 0;
+      newL.inspectionUSD = 0;
+    }
     setListings(prev => {
       const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
       if (emptyIndex !== -1) {
@@ -1070,7 +1078,13 @@ export default function PriceComparison({
                       <select
                         value={l.currency}
                         onChange={(e) => {
-                          updateListing(l.id, { currency: e.target.value as ListingCurrency });
+                          const newCurrency = e.target.value as ListingCurrency;
+                          const patch: Partial<Listing> = { currency: newCurrency };
+                          if (newCurrency === 'ZMW') {
+                            patch.freightUSD = 0;
+                            patch.inspectionUSD = 0;
+                          }
+                          updateListing(l.id, patch);
                           setTimeout(() => recomputeDuty(l.id), 50);
                         }}
                         className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] cursor-pointer"
@@ -1156,11 +1170,12 @@ export default function PriceComparison({
                         min="0"
                         value={l.freightUSD}
                         placeholder="0"
+                        disabled={l.currency === 'ZMW'}
                         onChange={(e) => {
                           updateListing(l.id, { freightUSD: e.target.value === '' ? '' : parseFloat(e.target.value) });
                           setTimeout(() => recomputeDuty(l.id), 50);
                         }}
-                        className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
+                        className={`w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400 ${l.currency === 'ZMW' ? 'opacity-50 cursor-not-allowed' : ''}`}
                       />
                     </div>
                     <div>
@@ -1170,10 +1185,13 @@ export default function PriceComparison({
                         min="0"
                         value={l.inspectionUSD}
                         placeholder="0"
+                        disabled={l.currency === 'ZMW'}
                         onChange={(e) => updateListing(l.id, { inspectionUSD: e.target.value === '' ? '' : parseFloat(e.target.value) })}
-                        className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
+                        className={`w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400 ${l.currency === 'ZMW' ? 'opacity-50 cursor-not-allowed' : ''}`}
                       />
-                      <p className="text-[9px] text-[color:var(--text-muted)] mt-0.5">{meta.inspectionNote}</p>
+                      <p className="text-[9px] text-[color:var(--text-muted)] mt-0.5">
+                        {l.currency === 'ZMW' ? 'Included in DreamCars Border Price.' : meta.inspectionNote}
+                      </p>
                     </div>
                   </div>
 
