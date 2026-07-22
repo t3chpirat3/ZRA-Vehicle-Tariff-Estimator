@@ -187,6 +187,7 @@ const CURRENCY_SYMBOLS: Record<ListingCurrency, string> = {
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function newListing(origin: OriginCountry = 'japan'): Listing {
+  if (!COUNTRY_META[origin]) origin = 'other';
   const meta = COUNTRY_META[origin];
   return {
     id: `l-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -1509,7 +1510,7 @@ export default function PriceComparison({
           >
             <div className="bg-[color:var(--surface)]/80 backdrop-blur-md border border-[color:var(--border-strong)] rounded-2xl shadow-xl p-3 flex items-center justify-center gap-3 pointer-events-auto">
               <button
-                onClick={() => handleAddListing()}
+                onClick={addListing}
                 className="flex items-center gap-2 px-6 py-3 bg-[color:var(--primary)] text-white text-sm font-extrabold rounded-xl hover:bg-[color:var(--primary-hover)] transition-colors active:scale-95 shadow-md shadow-[color:var(--primary)]/30"
               >
                 <Plus className="w-4 h-4" />
