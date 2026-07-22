@@ -31,7 +31,10 @@ import {
   Bookmark,
   Award,
   Save,
-  FolderOpen
+  FolderOpen,
+  Globe,
+  CheckCircle2,
+  TrendingUp
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
