@@ -29,7 +29,7 @@ import {
   ShieldAlert,
   Sparkles,
   Bookmark,
-  Download,
+  Award,
   Save,
   FolderOpen
 } from 'lucide-react';
@@ -88,6 +88,15 @@ interface AIInsight {
   verdict: string;
   tips: string[];
   flags: string[];
+}
+
+const SAVED_COMPARISONS_KEY = 'zra_saved_comparisons_v1';
+
+interface SavedComparison {
+  id: string;
+  name: string;
+  savedAt: string;
+  listings: Listing[];
 }
 
 // ─── Country defaults ───────────────────────────────────────────────────────

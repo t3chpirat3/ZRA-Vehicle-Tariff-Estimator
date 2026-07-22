@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import {
   Bookmark,
   Plus,
@@ -621,6 +622,81 @@ export default function Watchlist({
                         <option value="3000">2501 - 3000 cc</option>
                         <option value="3500">3001+ cc</option>
                       </select>
+                    </div>
+                  )}
+
+                  {inlineStates[item.id].age && inlineStates[item.id].cat === 'goods-vehicle' && (
+                    <div className="wl-inline-calc-grid" style={{ marginTop: '0.75rem' }}>
+                       <div>
+                        <select
+                          value={inlineStates[item.id].type}
+                          onChange={(e) => updateInlineState(item.id, { type: e.target.value as GoodsVehicleType, fuel: '', weight: '' })}
+                          className="wl-inline-select"
+                        >
+                          <option value="">Body Type</option>
+                          <option value="single-cab">Single Cab</option>
+                          <option value="double-cab">Double Cab</option>
+                          <option value="panel-van">Panel Van</option>
+                          <option value="truck">Truck</option>
+                        </select>
+                      </div>
+                      <div>
+                        <select
+                          value={inlineStates[item.id].fuel}
+                          onChange={(e) => updateInlineState(item.id, { fuel: e.target.value as FuelType, weight: '' })}
+                          className="wl-inline-select"
+                        >
+                          <option value="">Fuel Type</option>
+                          <option value="petrol">Petrol</option>
+                          <option value="diesel">Diesel</option>
+                          <option value="hybrid">Hybrid</option>
+                          <option value="electric">Electric</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {inlineStates[item.id].type && inlineStates[item.id].fuel && inlineStates[item.id].cat === 'goods-vehicle' && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                      <select
+                        value={inlineStates[item.id].weight}
+                        onChange={(e) => updateInlineState(item.id, { weight: e.target.value })}
+                        className="wl-inline-select"
+                      >
+                        <option value="">Weight Bracket</option>
+                        {WEIGHT_OPTIONS_MAP[inlineStates[item.id].type as GoodsVehicleType]?.map(opt => (
+                          <option key={opt.v} value={opt.v}>{opt.l}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {inlineStates[item.id].age && inlineStates[item.id].cat === 'bus' && (
+                    <div className="wl-inline-calc-grid" style={{ marginTop: '0.75rem' }}>
+                       <div>
+                        <select
+                          value={inlineStates[item.id].busFuel}
+                          onChange={(e) => updateInlineState(item.id, { busFuel: e.target.value as BusFuelType, seats: '' })}
+                          className="wl-inline-select"
+                        >
+                          <option value="">Bus Fuel Type</option>
+                          <option value="diesel">Diesel</option>
+                          <option value="other-diesel">Other Diesel</option>
+                        </select>
+                      </div>
+                      <div>
+                        <select
+                          value={inlineStates[item.id].seats}
+                          onChange={(e) => updateInlineState(item.id, { seats: e.target.value })}
+                          className="wl-inline-select"
+                        >
+                          <option value="">Seating Capacity</option>
+                          <option value="10">14 seats or less</option>
+                          <option value="20">15 to 32 seats</option>
+                          <option value="38">33 to 44 seats</option>
+                          <option value="50">45+ seats</option>
+                        </select>
+                      </div>
                     </div>
                   )}
 
