@@ -523,6 +523,7 @@ export default function PriceComparison({
       newL.currency = importedListing.currency || 'USD';
       newL.year = importedListing.year || '';
       newL.mileageKm = Number(importedListing.mileage?.toString().replace(/[^0-9]/g, '') || '');
+      newL.dutyZMW = importedListing.duty ?? null;
       
       setListings(prev => {
         const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
@@ -553,6 +554,7 @@ export default function PriceComparison({
     newL.currency = item.currency || 'USD';
     newL.year = item.year || '';
     newL.mileageKm = Number(item.mileage?.toString().replace(/[^0-9]/g, '') || '');
+    newL.dutyZMW = item.duty ?? null;
     setListings(prev => {
       const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
       if (emptyIndex !== -1) {
@@ -1190,7 +1192,7 @@ export default function PriceComparison({
                             l.specStatus === 'loading' ? 'ZRA Duty (resolving…)' :
                             l.specStatus === 'error'   ? 'ZRA Duty (unresolved)' :
                             l.resolvedSpecs            ? `ZRA Duty (${l.resolvedSpecs.bodyType} · ${l.resolvedSpecs.engineCC}cc)` :
-                                                         'ZRA Duty (enter description)',
+                                                         'ZRA Duty (Type full car details above to auto-calculate)',
                           value: l.dutyZMW,
                           dim: !l.dutyZMW,
                         },
