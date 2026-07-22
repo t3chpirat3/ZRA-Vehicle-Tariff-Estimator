@@ -622,6 +622,15 @@ function ResultsView({
                 <p className="text-sm font-extrabold text-[color:var(--text)]">{s.name}</p>
                 <p className="text-xs text-[color:var(--text-muted)] mt-1 leading-relaxed">{s.reason}</p>
                 <div className="flex flex-wrap gap-1.5 mt-2.5">
+                  <a
+                    href={`https://dreamcars.directory/?s=${encodeURIComponent(s.name)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-hover)] transition-colors shadow-sm"
+                  >
+                    Search on DreamCars
+                    <span className="text-[9px] opacity-75">↗</span>
+                  </a>
                   {keywordMarketplaceLinks(s.name).map((l) => (
                     <a
                       key={l.name}
@@ -749,12 +758,21 @@ function ResultCard({
 
       {/* Where to buy listings */}
       <div className="mt-3 pt-3 border-t border-[color:var(--border)]">
+        <a
+          href={`https://dreamcars.directory/?s=${encodeURIComponent(`${v.make} ${v.model}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-1.5 w-full bg-[color:var(--primary)] text-white font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-[color:var(--primary-hover)] transition-all mb-3 shadow-sm"
+        >
+          Search on DreamCars
+          <span className="text-[10px] opacity-75">↗</span>
+        </a>
         <button
           type="button"
           onClick={() => setShowSources((s) => !s)}
-          className="text-xs font-extrabold text-[color:var(--primary-hover)] hover:underline cursor-pointer flex items-center gap-1"
+          className="text-[11px] font-extrabold text-[color:var(--primary-hover)] hover:underline cursor-pointer flex items-center gap-1"
         >
-          {showSources ? 'Hide listings' : `Find a ${v.make} ${v.model} to buy`}
+          {showSources ? 'Hide other import listings' : `Find other import listings`}
           <span className="text-[10px]">{showSources ? '▴' : '▾'}</span>
         </button>
         {showSources && <ListingLinks links={links} preferredRegion={preferredRegion} />}

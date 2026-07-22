@@ -49,14 +49,6 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
   const keyword = encodeURIComponent(`${v.make} ${v.model}`);
   const links: MarketplaceLink[] = [];
 
-  // DreamCars Directory (Local Zambian portal)
-  // Always surface this as a premium local option, attached to whatever region they are searching.
-  links.push({
-    name: 'DreamCars Directory',
-    region: preferredRegion && preferredRegion !== 'Any' ? preferredRegion as MarketRegion : 'Japan',
-    url: `https://dreamcars.directory/?s=${keyword}`,
-  });
-
   // South Africa
   if (v.saName && (preferredRegion === 'South Africa' || preferredRegion === 'Any' || !preferredRegion)) {
     links.push(
@@ -162,11 +154,6 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
 export function keywordMarketplaceLinks(query: string, preferredRegion?: MarketRegion | 'Any'): MarketplaceLink[] {
   const keyword = encodeURIComponent(query);
   const links: MarketplaceLink[] = [
-    {
-      name: 'DreamCars Directory',
-      region: preferredRegion && preferredRegion !== 'Any' ? preferredRegion as MarketRegion : 'Japan',
-      url: `https://dreamcars.directory/?s=${keyword}`,
-    },
     {
       name: 'BE FORWARD',
       region: 'Japan',
