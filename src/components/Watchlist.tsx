@@ -478,7 +478,7 @@ export default function Watchlist({
             <div key={item.id} className={`wl-listing-card ${item.hasChangedStatus ? 'wl-changed' : ''}`}>
               <div className="wl-card-image-wrap" onClick={() => setModalItem(item)}>
                 {item.image ? (
-                  <img src={item.image} alt={item.title || item.desc} className="wl-card-image" />
+                  <img src={item.image} alt={item.title || item.desc} className="wl-card-image" referrerPolicy="no-referrer" />
                 ) : (
                   <div className="wl-card-image" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e2e8f0' }}>
                     <Search className="w-8 h-8 text-slate-400" />
@@ -753,7 +753,7 @@ export default function Watchlist({
           <div className="wl-modal-content" onClick={e => e.stopPropagation()}>
             <div className="wl-modal-header-img">
               {modalItem.image ? (
-                <img src={modalItem.image} alt="Vehicle" className="wl-modal-img" />
+                <img src={modalItem.image} alt="Vehicle" className="wl-modal-img" referrerPolicy="no-referrer" />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#e2e8f0' }}>
                   <Search className="w-12 h-12 text-slate-400" />
