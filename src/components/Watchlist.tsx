@@ -60,7 +60,7 @@ export default function Watchlist({
   const [formOpen, setFormOpen] = useState(true);
   const [url, setUrl] = useState('');
   const [notes, setNotes] = useState('');
-  const [listingCurrency, setListingCurrency] = useState<'USD' | 'ZAR'>('USD');
+  const [listingCurrency, setListingCurrency] = useState<'USD' | 'ZAR' | 'ZMW'>('USD');
   const [listingPrice, setListingPrice] = useState<number | ''>('');
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState('');
@@ -407,12 +407,19 @@ export default function Watchlist({
                   >
                     ZAR
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setListingCurrency('ZMW')}
+                    style={{ flex: 1, padding: '0.5rem', border: `1px solid ${listingCurrency === 'ZMW' ? '#0f172a' : '#cbd5e1'}`, borderRadius: '0.5rem', backgroundColor: listingCurrency === 'ZMW' ? '#f8fafc' : 'white', fontWeight: listingCurrency === 'ZMW' ? 700 : 500 }}
+                  >
+                    ZMW
+                  </button>
                 </div>
               </div>
               <div className="wl-input-group">
                 <label className="flex items-center justify-between wl-label">
                   <span>Manual Listing Price (Optional)</span>
-                  {listingPrice !== '' && listingPrice > 0 && (
+                  {listingPrice !== '' && listingPrice > 0 && listingCurrency !== 'ZMW' && (
                     <span className="text-[10px] text-emerald-600 font-bold lowercase">
                       ≈ {zmwFormat(Number(listingPrice) * (listingCurrency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
                     </span>
@@ -493,7 +500,7 @@ export default function Watchlist({
                     {item.price && (
                       <>
                         <span>{item.price}</span>
-                        {item.currency && item.fob && item.fob > 0 && (
+                        {item.currency && item.currency !== 'ZMW' && item.fob && item.fob > 0 && (
                           <span className="text-[10px] text-emerald-600 font-bold opacity-80" style={{ fontSize: '11px', marginTop: '-2px' }}>
                             ≈ {zmwFormat(item.fob * (item.currency === 'USD' ? rates.usdToZmw : rates.zarToZmw))}
                           </span>

@@ -166,7 +166,7 @@ export default async function handler(req, res) {
           
           if (ogImageMatch && ogImageMatch[1]) {
             extractedImageUrl = ogImageMatch[1];
-            if (extractedImageUrl.startsWith("/")) {
+            if (!extractedImageUrl.startsWith("http")) {
               try { extractedImageUrl = new URL(extractedImageUrl, url).href; } catch(e) {}
             }
           }
@@ -267,6 +267,10 @@ You must output in JSON format matching this schema:
     let finalImage = extractedImageUrl;
     if (!finalImage && parsed.image) finalImage = parsed.image;
     if (!finalImage) finalImage = getFallbackCarImage(parsed.make || "", parsed.model || "");
+
+    if (finalImage && !finalImage.startsWith("http")) {
+      try { finalImage = new URL(finalImage, url).href; } catch(e) {}
+    }
 
     return res.status(200).json({
       title: parsed.title || "Unknown Vehicle",

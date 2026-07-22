@@ -914,16 +914,26 @@ function DirectoryView({
                     {isOpen(mk.make) && (
                       <div className="px-4 pb-3.5 pt-1 flex flex-wrap gap-1.5 animate-fadeIn">
                         {mk.models.map((model) => (
-                          <a
-                            key={model}
-                            href={linkFor(mk.make, model)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[11.5px] font-semibold px-2.5 py-1.5 rounded-lg bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] text-[color:var(--text)] hover:border-[color:var(--primary)] hover:text-[color:var(--primary-hover)] hover:bg-[color:var(--primary-soft)] transition-colors"
-                          >
-                            {model}
-                            <span className="text-[9px] text-[color:var(--text-muted)]">↗</span>
-                          </a>
+                          <div key={model} className="inline-flex items-center gap-1 rounded-lg border border-[color:var(--border-strong)] bg-[color:var(--surface-soft)] transition-colors overflow-hidden">
+                            <a
+                              href={linkFor(mk.make, model)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2.5 py-1.5 text-[11.5px] font-semibold text-[color:var(--text)] hover:bg-[color:var(--primary-soft)] hover:text-[color:var(--primary-hover)] transition-colors"
+                            >
+                              {model} <span className="text-[9px] text-[color:var(--text-muted)]">↗</span>
+                            </a>
+                            <div className="w-px h-4 bg-[color:var(--border-strong)]"></div>
+                            <a
+                              href={`https://dreamcars.directory/?s=${encodeURIComponent(`${mk.make} ${model}`)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-2 py-1.5 text-[10px] font-bold text-[color:var(--text-muted)] hover:bg-[color:var(--primary-soft)] hover:text-[color:var(--primary-hover)] transition-colors"
+                              title={`Search ${mk.make} ${model} on DreamCars Directory`}
+                            >
+                              DreamCars ↗
+                            </a>
+                          </div>
                         ))}
                       </div>
                     )}

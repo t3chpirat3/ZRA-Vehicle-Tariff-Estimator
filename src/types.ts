@@ -65,7 +65,7 @@ export interface WatchlistHistory {
 export interface WatchlistItem {
   id: string | number;
   desc?: string;
-  currency?: 'USD' | 'ZAR';
+  currency?: 'USD' | 'ZAR' | 'ZMW';
   price: number | string;
   fob?: number;
   source?: string;
