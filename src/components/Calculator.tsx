@@ -813,9 +813,9 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
             </div>
             <div className="grid grid-cols-3 gap-3 py-2">
               {[
-                { id: '0-2', label: 'New (<2y)', desc: 'Ad Valorem CIF rates' },
-                { id: '2-5', label: '2 – 5 Years', desc: 'Specific lookup rates' },
-                { id: '5+', label: '5+ Years', desc: 'Aged specific lookup' },
+                { id: '0-2', label: 'New (<2y)', desc: 'Ad Valorem CIF rates', years: `${new Date().getFullYear() - 2} - ${new Date().getFullYear()}` },
+                { id: '2-5', label: '2 – 5 Years', desc: 'Specific lookup rates', years: `${new Date().getFullYear() - 5} - ${new Date().getFullYear() - 3}` },
+                { id: '5+', label: '5+ Years', desc: 'Aged specific lookup', years: `${new Date().getFullYear() - 6} & older` },
               ].map((opt) => (
                 <button
                   key={opt.id}
@@ -828,6 +828,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   }`}
                 >
                   <span className="text-lg md:text-xl font-black block">{opt.label}</span>
+                  <span className="text-[11px] font-extrabold text-[color:var(--primary)] mt-0.5">{opt.years}</span>
                   <span className="text-[9.5px] font-semibold text-slate-450 mt-1 uppercase tracking-widest leading-none">
                     {opt.id === '0-2' ? 'Invoice basis' : 'Fixed Duty'}
                   </span>
