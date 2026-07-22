@@ -166,6 +166,12 @@ export default async function handler(req, res) {
           
           if (ogImageMatch && ogImageMatch[1]) {
             extractedImageUrl = ogImageMatch[1];
+            
+            // Fix for DreamCars returning their staging URL in og:image
+            if (extractedImageUrl.includes("dev.dreamcars.directory")) {
+              extractedImageUrl = extractedImageUrl.replace("dev.dreamcars.directory", "dreamcars.directory");
+            }
+            
             if (!extractedImageUrl.startsWith("http")) {
               try { extractedImageUrl = new URL(extractedImageUrl, url).href; } catch(e) {}
             }
