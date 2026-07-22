@@ -20,7 +20,7 @@
 
 import { VehicleModel } from '../data/vehiclesData';
 
-export type MarketRegion = 'Japan' | 'South Africa' | 'Singapore' | 'UK' | 'UAE' | 'Thailand' | 'Korea';
+export type MarketRegion = 'Japan' | 'South Africa' | 'Singapore' | 'UAE' | 'Korea';
 
 export interface MarketplaceLink {
   name: string;
@@ -83,31 +83,14 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
           name: 'TC-V (Trade Car View)',
           region: 'Japan',
           url: `https://www.tc-v.com/used_car/${slug(v.make)}/${slug(v.model)}/`,
-        },
-        {
-          name: 'Enhance Auto',
-          region: 'Japan',
-          url: `https://www.enhance-auto.jp/stock?keyword=${keyword}`,
         }
       );
     }
 
     // Handle other preferred regions
-    const extraRegions: MarketRegion[] = ['Singapore', 'UK', 'UAE', 'Thailand', 'Korea'];
+    const extraRegions: MarketRegion[] = ['Singapore', 'UAE', 'Korea'];
     for (const r of extraRegions) {
       if (preferredRegion === r || preferredRegion === 'Any' || !preferredRegion) {
-        // Multi-market inventory platforms
-        let countryParam: string = r;
-        if (r === 'UAE') countryParam = 'United Arab Emirates';
-        if (r === 'Korea') countryParam = 'South Korea';
-        
-        links.push({
-          name: `BE FORWARD (${r})`,
-          region: r as MarketRegion,
-          url: `https://www.beforward.jp/stocklist/country_of_inventory=${encodeURIComponent(countryParam)}/keyword=${keyword}/`,
-        });
-
-        // Add region specific aggregators/platforms
         if (r === 'Singapore') {
           links.push({
             name: 'SGCarmart',
@@ -115,25 +98,11 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
             url: `https://www.sgcarmart.com/used_cars/listing.php?MOD=${keyword}`,
           });
         }
-        if (r === 'UK') {
-          links.push({
-            name: 'AutoTrader UK',
-            region: r as MarketRegion,
-            url: `https://www.autotrader.co.uk/car-search?make=${encodeURIComponent(v.make)}&model=${encodeURIComponent(v.model)}`,
-          });
-        }
         if (r === 'UAE') {
           links.push({
             name: 'Dubizzle UAE',
             region: r as MarketRegion,
             url: `https://uae.dubizzle.com/motors/used-cars/?keywords=${keyword}`,
-          });
-        }
-        if (r === 'Thailand') {
-          links.push({
-            name: 'Thailand-Vehicles',
-            region: r as MarketRegion,
-            url: `https://thailand-vehicles.com/?s=${keyword}`,
           });
         }
         if (r === 'Korea') {
