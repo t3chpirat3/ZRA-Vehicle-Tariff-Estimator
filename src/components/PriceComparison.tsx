@@ -524,7 +524,19 @@ export default function PriceComparison({
       newL.year = importedListing.year || '';
       newL.mileageKm = Number(importedListing.mileage?.toString().replace(/[^0-9]/g, '') || '');
       
-      setListings(prev => [...prev, newL]);
+      setListings(prev => {
+        const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
+        if (emptyIndex !== -1) {
+          const next = [...prev];
+          next[emptyIndex] = newL;
+          return next;
+        }
+        if (prev.length >= 6) {
+          toast.error('Maximum of 6 comparisons allowed.');
+          return prev;
+        }
+        return [...prev, newL];
+      });
       
       if (clearImportedListing) {
         clearImportedListing();
@@ -541,8 +553,19 @@ export default function PriceComparison({
     newL.currency = item.currency || 'USD';
     newL.year = item.year || '';
     newL.mileageKm = Number(item.mileage?.toString().replace(/[^0-9]/g, '') || '');
-    
-    setListings(prev => [...prev, newL]);
+    setListings(prev => {
+      const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
+      if (emptyIndex !== -1) {
+        const next = [...prev];
+        next[emptyIndex] = newL;
+        return next;
+      }
+      if (prev.length >= 6) {
+        toast.error('Maximum of 6 comparisons allowed.');
+        return prev;
+      }
+      return [...prev, newL];
+    });
     setShowImportMenu(false);
   };
 
