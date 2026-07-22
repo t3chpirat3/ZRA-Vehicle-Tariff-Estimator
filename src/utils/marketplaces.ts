@@ -102,7 +102,7 @@ export function marketplaceLinks(v: VehicleModel, preferredRegion?: MarketRegion
           links.push({
             name: 'Dubizzle UAE',
             region: r as MarketRegion,
-            url: `https://uae.dubizzle.com/motors/used-cars/?keywords=${keyword}`,
+            url: `https://uae.dubizzle.com/motors/used-cars/?keywords=${keyword}%20RHD`,
           });
         }
         if (r === 'Korea') {
