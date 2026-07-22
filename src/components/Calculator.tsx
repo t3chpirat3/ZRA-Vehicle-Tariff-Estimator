@@ -257,6 +257,8 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
 
   // Dynamic Tax Rates
   const [taxRates, setTaxRates] = useState<any>(null);
+  const [ratesInfo, setRatesInfo] = useState<{ usd: number; zar: number; timestamp: number } | null>(null);
+  const [cifCurrency, setCifCurrency] = useState<'USD' | 'ZAR'>('USD');
 
   // ─── Fetch Live Exchange Rates & Schedules ─────────────────────────────────────
   useEffect(() => {
@@ -266,6 +268,11 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         if (!res.ok) return;
         const data = await res.json();
         if (data.rates && data.rates.usdToZmw) {
+          setRatesInfo({
+            usd: data.rates.usdToZmw,
+            zar: data.rates.zarToZmw,
+            timestamp: data.timestamp
+          });
           setState((prev) => {
             // Only overwrite if it's currently 0 (initial state)
             if (prev.fx === 0) {
@@ -1085,9 +1092,25 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
             
             <div className="grid grid-cols-2 gap-3 py-1">
               <div>
-                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">CIF Invoice Value (USD)</label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-[10px] font-bold text-slate-500 uppercase block">CIF Invoice Value</label>
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => { setCifCurrency('USD'); setState(s => ({ ...s, fx: ratesInfo?.usd || s.fx })) }}
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${cifCurrency === 'USD' ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--surface-soft)] border border-[color:var(--border)] text-[color:var(--text-muted)] hover:bg-[color:var(--border)]'}`}
+                    >
+                      USD
+                    </button>
+                    <button 
+                      onClick={() => { setCifCurrency('ZAR'); setState(s => ({ ...s, fx: ratesInfo?.zar || s.fx })) }}
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${cifCurrency === 'ZAR' ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--surface-soft)] border border-[color:var(--border)] text-[color:var(--text-muted)] hover:bg-[color:var(--border)]'}`}
+                    >
+                      ZAR
+                    </button>
+                  </div>
+                </div>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold text-xs">$</span>
+                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold text-xs">{cifCurrency === 'USD' ? '$' : 'R'}</span>
                   <input
                     id="wizard-cif-usd-input_s"
                     type="number"
@@ -1101,7 +1124,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                 </div>
               </div>
               <div>
-                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">USD &rarr; ZMW Rate</label>
+                <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">{cifCurrency} &rarr; ZMW Rate</label>
                 <input
                   id="wizard-fx-rate-input_s"
                   type="number"
@@ -1113,6 +1136,11 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   onChange={(e) => setState((prev) => ({ ...prev, fx: parseFloat(e.target.value) || 0 }))}
                   className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-[color:var(--text)] outline-none focus:ring-1 focus:ring-slate-900 focus:bg-[color:var(--surface)] transition-all shadow-inner"
                 />
+                {!isOffline && ratesInfo && (
+                  <p className="mt-1.5 text-[9px] font-bold text-emerald-600 flex items-center gap-1 leading-tight">
+                    <CheckCircle2 className="w-3 h-3 flex-shrink-0" /> Fetched on {new Date(ratesInfo.timestamp).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
+                  </p>
+                )}
                 {isOffline && (
                   <p className="mt-1.5 text-[9px] font-bold text-amber-600 flex items-center gap-1">
                     <WifiOff className="w-3 h-3" /> Offline: Enter FX manually
