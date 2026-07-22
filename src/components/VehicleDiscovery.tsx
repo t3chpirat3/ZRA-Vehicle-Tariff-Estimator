@@ -758,30 +758,21 @@ function ResultCard({
 
       {/* Where to buy listings */}
       <div className="mt-3 pt-3 border-t border-[color:var(--border)]">
-        <a
-          href={`https://dreamcars.directory/cars?q=${encodeURIComponent(`${v.make} ${v.model}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 w-full bg-[color:var(--primary)] text-white font-bold text-xs px-4 py-2.5 rounded-xl hover:bg-[color:var(--primary-hover)] transition-all mb-3 shadow-sm"
-        >
-          Search on DreamCars
-          <span className="text-[10px] opacity-75">↗</span>
-        </a>
         <button
           type="button"
           onClick={() => setShowSources((s) => !s)}
-          className="text-[11px] font-extrabold text-[color:var(--primary-hover)] hover:underline cursor-pointer flex items-center gap-1"
+          className="text-xs font-extrabold text-[color:var(--primary-hover)] hover:underline cursor-pointer flex items-center gap-1"
         >
-          {showSources ? 'Hide other import listings' : `Find other import listings`}
+          {showSources ? 'Hide listings' : `Find a ${v.make} ${v.model} to buy`}
           <span className="text-[10px]">{showSources ? '▴' : '▾'}</span>
         </button>
-        {showSources && <ListingLinks links={links} preferredRegion={preferredRegion} />}
+        {showSources && <ListingLinks links={links} preferredRegion={preferredRegion} make={v.make} model={v.model} />}
       </div>
     </div>
   );
 }
 
-function ListingLinks({ links, preferredRegion }: { links: MarketplaceLink[]; preferredRegion?: MarketRegion | 'Any' }) {
+function ListingLinks({ links, preferredRegion, make, model }: { links: MarketplaceLink[]; preferredRegion?: MarketRegion | 'Any'; make: string; model: string; }) {
   const allRegions = Array.from(new Set(links.map((l) => l.region)));
   
   // Sort regions: preferred first, then Japan, South Africa, and alphabetical for others
@@ -797,6 +788,22 @@ function ListingLinks({ links, preferredRegion }: { links: MarketplaceLink[]; pr
 
   return (
     <div className="mt-3 space-y-2.5 animate-fadeIn">
+      <div>
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[color:var(--text-muted)] mb-1.5">
+          Search Local & Import (Zambia)
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          <a
+            href={`https://dreamcars.directory/cars?q=${encodeURIComponent(`${make} ${model}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg bg-[color:var(--primary)] text-white hover:bg-[color:var(--primary-hover)] transition-colors shadow-sm"
+          >
+            DreamCars Directory
+            <span className="text-[9px] opacity-75">↗</span>
+          </a>
+        </div>
+      </div>
       {regions.map((region) => {
         const group = links.filter((l) => l.region === region);
         if (group.length === 0) return null;
