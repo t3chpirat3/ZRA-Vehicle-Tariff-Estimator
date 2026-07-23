@@ -68,6 +68,7 @@ export default function Watchlist({
   // Inline calculator state
   const [openInlineCalcs, setOpenInlineCalcs] = useState<Record<string | number, boolean>>({});
   const [inlineStates, setInlineStates] = useState<Record<string | number, CalculatorState>>({});
+  const [inlineCifCurrencies, setInlineCifCurrencies] = useState<Record<string | number, 'USD' | 'ZAR' | 'ZMW'>>({});
 
   // Modal State
   const [modalItem, setModalItem] = useState<WatchlistItem | null>(null);
@@ -707,6 +708,53 @@ export default function Watchlist({
                     </div>
                   )}
 
+                  {isCIFMode(inlineStates[item.id] as any) && (
+                    <div style={{ marginTop: '1rem' }}>
+                      <p style={{ fontSize: '0.65rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '0.5rem' }}>CIF Invoice Value & FX</p>
+                      <div className="wl-inline-calc-grid">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                          <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.25rem' }}>
+                            {['USD', 'ZAR', 'ZMW'].map(c => (
+                              <button
+                                key={c}
+                                type="button"
+                                onClick={() => {
+                                  setInlineCifCurrencies(prev => ({ ...prev, [item.id]: c as any }));
+                                  if (c === 'ZMW') updateInlineState(item.id, { fx: 1 });
+                                  else if (c === 'USD') updateInlineState(item.id, { fx: rates.usdToZmw });
+                                  else updateInlineState(item.id, { fx: rates.zarToZmw });
+                                }}
+                                style={{ flex: 1, padding: '0.25rem', fontSize: '0.65rem', fontWeight: 700, borderRadius: '0.25rem', border: `1px solid ${inlineCifCurrencies[item.id] === c || (!inlineCifCurrencies[item.id] && c === 'USD') ? '#0f172a' : '#cbd5e1'}`, backgroundColor: inlineCifCurrencies[item.id] === c || (!inlineCifCurrencies[item.id] && c === 'USD') ? '#f8fafc' : 'white' }}
+                              >
+                                {c}
+                              </button>
+                            ))}
+                          </div>
+                          <input
+                            type="number"
+                            placeholder="CIF Value"
+                            value={inlineStates[item.id].cifUSD || ''}
+                            onChange={(e) => updateInlineState(item.id, { cifUSD: parseFloat(e.target.value) || 0 })}
+                            className="wl-inline-select"
+                          />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', justifyContent: 'flex-end' }}>
+                          <label style={{ fontSize: '0.65rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>FX Rate</label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            placeholder="FX Rate"
+                            value={inlineStates[item.id].fx || ''}
+                            disabled={(inlineCifCurrencies[item.id] || 'USD') === 'ZMW'}
+                            onChange={(e) => updateInlineState(item.id, { fx: parseFloat(e.target.value) || 0 })}
+                            className="wl-inline-select"
+                            style={{ opacity: (inlineCifCurrencies[item.id] || 'USD') === 'ZMW' ? 0.5 : 1 }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {(() => {
                     const res = calculateDuty(inlineStates[item.id]);
                     if (res && res.mode === 'specific') {
@@ -733,8 +781,40 @@ export default function Watchlist({
                       );
                     } else if (res && res.mode === 'cif') {
                        return (
-                         <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '0.5rem', fontSize: '0.75rem' }}>
-                           CIF evaluation required. Please use the main Calculator tab for precise CIF calculations.
+                         <div style={{ marginTop: '1rem' }}>
+                            <div className="wl-duty-matrix">
+                               <div className="wl-duty-box">
+                                 <p className="wl-duty-label">Customs</p>
+                                 <p className="wl-duty-value">{zmwFormat(res.cd)}</p>
+                               </div>
+                               <div className="wl-duty-box">
+                                 <p className="wl-duty-label">Excise</p>
+                                 <p className="wl-duty-value">{zmwFormat(res.ed)}</p>
+                               </div>
+                               <div className="wl-duty-box">
+                                 <p className="wl-duty-label">VAT</p>
+                                 <p className="wl-duty-value">{zmwFormat(res.vat)}</p>
+                               </div>
+                               {res.carbon > 0 && (
+                                 <div className="wl-duty-box">
+                                   <p className="wl-duty-label">Carbon Tax</p>
+                                   <p className="wl-duty-value">{zmwFormat(res.carbon)}</p>
+                                 </div>
+                               )}
+                            </div>
+                            <button 
+                              onClick={() => saveInlineDuty(item.id, res.total, inlineStates[item.id].cifUSD, inlineStates[item.id])} 
+                              className="wl-btn-primary" 
+                              style={{ width: '100%', marginTop: '0.5rem' }}
+                            >
+                              Save {zmwFormat(res.total)} to Watchlist
+                            </button>
+                         </div>
+                       );
+                    } else if (isCIFMode(inlineStates[item.id] as any)) {
+                       return (
+                         <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: '#f8fafc', color: '#64748b', borderRadius: '0.5rem', fontSize: '0.75rem', textAlign: 'center', border: '1px dashed #cbd5e1' }}>
+                           Enter the CIF Invoice Value and FX Rate above to calculate duty.
                          </div>
                        );
                     }

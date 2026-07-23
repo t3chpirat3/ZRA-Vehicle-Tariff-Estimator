@@ -258,7 +258,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
   // Dynamic Tax Rates
   const [taxRates, setTaxRates] = useState<any>(null);
   const [ratesInfo, setRatesInfo] = useState<{ usd: number; zar: number; timestamp: number } | null>(null);
-  const [cifCurrency, setCifCurrency] = useState<'USD' | 'ZAR'>('USD');
+  const [cifCurrency, setCifCurrency] = useState<'USD' | 'ZAR' | 'ZMW'>('USD');
 
   // ─── Fetch Live Exchange Rates & Schedules ─────────────────────────────────────
   useEffect(() => {
@@ -1107,10 +1107,16 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     >
                       ZAR
                     </button>
+                    <button 
+                      onClick={() => { setCifCurrency('ZMW'); setState(s => ({ ...s, fx: 1 })) }}
+                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded transition-colors ${cifCurrency === 'ZMW' ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--surface-soft)] border border-[color:var(--border)] text-[color:var(--text-muted)] hover:bg-[color:var(--border)]'}`}
+                    >
+                      ZMW
+                    </button>
                   </div>
                 </div>
                 <div className="relative">
-                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold text-xs">{cifCurrency === 'USD' ? '$' : 'R'}</span>
+                  <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold text-xs">{cifCurrency === 'USD' ? '$' : cifCurrency === 'ZAR' ? 'R' : 'K'}</span>
                   <input
                     id="wizard-cif-usd-input_s"
                     type="number"
@@ -1133,8 +1139,9 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                   step="0.01"
                   placeholder="e.g. 27.50"
                   value={state.fx || ''}
+                  disabled={cifCurrency === 'ZMW'}
                   onChange={(e) => setState((prev) => ({ ...prev, fx: parseFloat(e.target.value) || 0 }))}
-                  className="w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-[color:var(--text)] outline-none focus:ring-1 focus:ring-slate-900 focus:bg-[color:var(--surface)] transition-all shadow-inner"
+                  className={`w-full bg-[color:var(--surface-soft)] border border-[color:var(--border-strong)] rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-[color:var(--text)] outline-none focus:ring-1 focus:ring-slate-900 focus:bg-[color:var(--surface)] transition-all shadow-inner ${cifCurrency === 'ZMW' ? 'opacity-50 cursor-not-allowed' : ''}`}
                 />
                 {!isOffline && ratesInfo && (
                   <p className="mt-1.5 text-[9px] font-bold text-emerald-600 flex items-center gap-1 leading-tight">

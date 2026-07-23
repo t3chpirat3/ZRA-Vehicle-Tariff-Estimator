@@ -461,6 +461,11 @@ export default function PriceComparison({
   clearImportedListing
 }: PriceComparisonProps = {}) {
   const [listings, setListings] = useState<Listing[]>([newListing('japan'), newListing('southafrica')]);
+  const listingsRef = useRef<Listing[]>(listings);
+  useEffect(() => {
+    listingsRef.current = listings;
+  }, [listings]);
+
   const [settings, setSettings] = useState<ComparisonSettings>(DEFAULT_SETTINGS);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tableOpen, setTableOpen] = useState(false);
@@ -671,7 +676,7 @@ export default function PriceComparison({
   // Recompute duty from already-resolved specs (when price/freight/insp changes)
   const recomputeDuty = useCallback(
     (id: string, patchedListings?: Listing[]) => {
-      const source = patchedListings ?? listings;
+      const source = patchedListings ?? listingsRef.current;
       const l = source.find((ll) => ll.id === id);
       if (!l || !l.resolvedSpecs || l.listingPrice === '') return;
       const priceUSD   = toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw;
@@ -694,8 +699,9 @@ export default function PriceComparison({
         updateListing(id, { specStatus: 'loading', resolvedSpecs: null, dutyZMW: null });
         try {
           const specs = await silentResolveSpecs(desc.trim());
-          // Compute duty headlessly
-          const l = listings.find((ll) => ll.id === id);
+          // Compute duty headlessly using freshest state
+          const currentListings = listingsRef.current;
+          const l = currentListings.find((ll) => ll.id === id);
           let dutyZMW: number | null = null;
           if (l && l.listingPrice !== '') {
             const priceUSD   = toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw;
@@ -896,7 +902,7 @@ export default function PriceComparison({
                 {settings.lastUpdated && (
                   <span className="flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">
                     <CheckCircle2 className="w-3 h-3" />
-                    Live (updated {Math.round((Date.now() - settings.lastUpdated) / 3600000)}h ago)
+                    Fetched on {new Date(settings.lastUpdated).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })}
                   </span>
                 )}
                 <span className="text-[10px] text-[color:var(--text-muted)] font-medium">All rates: 1 unit → ZMW</span>
@@ -1085,7 +1091,8 @@ export default function PriceComparison({
                             patch.inspectionUSD = 0;
                           }
                           updateListing(l.id, patch);
-                          setTimeout(() => recomputeDuty(l.id), 50);
+                          const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
+                          recomputeDuty(l.id, nextListings);
                         }}
                         className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] cursor-pointer"
                       >
@@ -1113,8 +1120,10 @@ export default function PriceComparison({
                         value={l.listingPrice}
                         placeholder="0"
                         onChange={(e) => {
-                          updateListing(l.id, { listingPrice: e.target.value === '' ? '' : parseFloat(e.target.value) });
-                          setTimeout(() => recomputeDuty(l.id), 50);
+                          const patch = { listingPrice: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          updateListing(l.id, patch);
+                          const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
+                          recomputeDuty(l.id, nextListings);
                         }}
                         className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
                       />
@@ -1172,8 +1181,10 @@ export default function PriceComparison({
                         placeholder="0"
                         disabled={l.currency === 'ZMW'}
                         onChange={(e) => {
-                          updateListing(l.id, { freightUSD: e.target.value === '' ? '' : parseFloat(e.target.value) });
-                          setTimeout(() => recomputeDuty(l.id), 50);
+                          const patch = { freightUSD: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          updateListing(l.id, patch);
+                          const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
+                          recomputeDuty(l.id, nextListings);
                         }}
                         className={`w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400 ${l.currency === 'ZMW' ? 'opacity-50 cursor-not-allowed' : ''}`}
                       />
@@ -1186,7 +1197,12 @@ export default function PriceComparison({
                         value={l.inspectionUSD}
                         placeholder="0"
                         disabled={l.currency === 'ZMW'}
-                        onChange={(e) => updateListing(l.id, { inspectionUSD: e.target.value === '' ? '' : parseFloat(e.target.value) })}
+                        onChange={(e) => {
+                          const patch = { inspectionUSD: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          updateListing(l.id, patch);
+                          const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
+                          recomputeDuty(l.id, nextListings);
+                        }}
                         className={`w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400 ${l.currency === 'ZMW' ? 'opacity-50 cursor-not-allowed' : ''}`}
                       />
                       <p className="text-[9px] text-[color:var(--text-muted)] mt-0.5">
