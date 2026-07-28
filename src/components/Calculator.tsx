@@ -137,10 +137,10 @@ const ImportTimeline = ({ state, schedules }: { state: CalculatorState, schedule
       </h4>
       
       {state.origin === 'Thailand' && (
-        <div className="mb-4 bg-amber-50 border border-amber-200 rounded-xl p-3 flex gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
-          <p className="text-[10px] text-amber-800 leading-relaxed font-medium">
-            <strong>Inspection Caution:</strong> JEVIC inspection centers are not available in Thailand. You will likely pay a 15% penalty fee on arrival.
+        <div className="mb-4 bg-blue-50 border border-blue-200 rounded-xl p-3 flex gap-2">
+          <Info className="w-4 h-4 text-blue-600 flex-shrink-0" />
+          <p className="text-[10px] text-blue-800 leading-relaxed font-medium">
+            <strong>Inspection Info:</strong> Autoterminal Japan (ATJ) provides vehicle pre-shipment, biosecurity, and sanitization inspections through authorized partners in Thailand.
           </p>
         </div>
       )}
@@ -894,15 +894,15 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
               </div>
             </div>
             {state.origin === 'Thailand' && (
-              <div className="w-full md:w-64 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col gap-3 flex-shrink-0 self-start animate-fadeIn">
+              <div className="w-full md:w-64 bg-blue-50 border border-blue-200 rounded-2xl p-4 flex flex-col gap-3 flex-shrink-0 self-start animate-fadeIn">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0">
-                    <AlertTriangle className="w-4 h-4" />
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                    <Info className="w-4 h-4" />
                   </div>
-                  <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wide">Inspection Caution</h4>
+                  <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wide">Inspection Info</h4>
                 </div>
-                <p className="text-xs text-amber-800 leading-relaxed font-medium">
-                  Zambia requires JEVIC inspection for vehicle imports. Thailand does not currently have approved JEVIC inspection centers. You will likely face a <strong>15% penalty fee</strong> (on CIF value) upon arrival at the Zambian border.
+                <p className="text-xs text-blue-800 leading-relaxed font-medium">
+                  Autoterminal Japan (ATJ) provides vehicle pre-shipment, biosecurity, and sanitization inspections through authorized partners in Thailand (e.g., Vtec Modify & Set Up).
                 </p>
               </div>
             )}

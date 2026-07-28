@@ -93,11 +93,11 @@ export default function ImportGuide() {
                 <div className="bg-[color:var(--surface-soft)] rounded-xl p-5 border border-[color:var(--border)] flex-1 hover:border-[color:var(--border-strong)] transition-colors">
                   <h4 className="text-md font-bold text-[color:var(--text)] mb-2">{'1. Pre-Shipment Roadworthiness Inspection (RWI)'}</h4>
                   <p className="text-[color:var(--text-muted)] text-sm leading-relaxed mb-3">
-                    If sourcing from Japan, UK, UAE, Singapore, or South Africa, you <strong>must</strong> use an appointed agent (like JEVIC, ATJ, or EAA) to inspect the car before it ships. Expect to pay a baseline fee of ~$140 (or $200 for the UK).
+                    If sourcing from Japan, UK, UAE, Singapore, Thailand, or South Africa, you <strong>must</strong> use an appointed agent (like JEVIC, ATJ, or EAA) to inspect the car before it ships. Expect to pay a baseline fee of ~$140 (or $200 for the UK).
                   </p>
                   <div className="bg-[color:var(--surface)] border border-[color:var(--border-strong)] rounded-lg p-3 text-xs text-[color:var(--text-muted)]">
-                    <span className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3"/> Warning for Thailand & South Korea:</span> 
-                    These countries have no appointed agents. The car will ship uninspected, and you'll automatically pay a "destination penalty" at the Zambian border (ZMW 2,500 - ZMW 3,500). Treat this as a fixed arrival cost.
+                    <span className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3"/> Warning for South Korea:</span> 
+                    South Korea has no appointed agents. The car will ship uninspected, and you'll automatically pay a "destination penalty" at the Zambian border (ZMW 2,500 - ZMW 3,500). Treat this as a fixed arrival cost.
                   </div>
                 </div>
               </div>

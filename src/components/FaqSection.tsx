@@ -12,7 +12,7 @@ const FAQS = [
   },
   {
     question: "Do I need a pre-shipment inspection (JEVIC/ATJ)?",
-    answer: "Yes. Under Zambian Standard ZS 560, all used vehicles imported from Japan, UK, UAE, Singapore, or South Africa must undergo a mandatory Roadworthiness Inspection (RWI) which includes biosecurity screening. Fees are typically $140 ($200 for the UK). If you deliberately skip this inspection in an accredited country (like Japan), you will face a massive punitive fine equal to 15% of the vehicle's entire CIF value. For unlisted countries (like Thailand or South Korea), the penalty is a fixed statutory fee ranging from ZMW 2,500 to ZMW 3,500."
+    answer: "Yes. Under Zambian Standard ZS 560, all used vehicles imported from Japan, UK, UAE, Singapore, Thailand, or South Africa must undergo a mandatory Roadworthiness Inspection (RWI) which includes biosecurity screening. Fees are typically $140 ($200 for the UK). If you deliberately skip this inspection in an accredited country, you will face a massive punitive fine equal to 15% of the vehicle's entire CIF value. For unlisted countries (like South Korea), the penalty is a fixed statutory fee ranging from ZMW 2,500 to ZMW 3,500."
   },
   {
     question: "Can I import a Left-Hand Drive (LHD) vehicle?",
