@@ -543,14 +543,20 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
     }
   }, [activeSteps.length, currentStepIndex]);
 
-  // SpecResolver: jump to results step after AI pre-fill resolves activeSteps
+  // SpecResolver: jump to results step after AI pre-fill resolves activeSteps,
+  // OR jump to the first invalid step (e.g. CIF valuation or weight) if something is missing.
   useEffect(() => {
     if (pendingJumpToResults) {
-      const resultsIdx = activeSteps.findIndex((s) => s.id === 'results');
-      if (resultsIdx !== -1) {
-        setCurrentStepIndex(resultsIdx);
-        setPendingJumpToResults(false);
+      const firstInvalidIdx = activeSteps.findIndex((s) => !s.isValid && s.id !== 'results');
+      if (firstInvalidIdx !== -1) {
+        setCurrentStepIndex(firstInvalidIdx);
+      } else {
+        const resultsIdx = activeSteps.findIndex((s) => s.id === 'results');
+        if (resultsIdx !== -1) {
+          setCurrentStepIndex(resultsIdx);
+        }
       }
+      setPendingJumpToResults(false);
     }
   }, [pendingJumpToResults, activeSteps.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -594,8 +600,10 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
     else if (specs.bodyType === 'bus') { cat = 'bus'; type = ''; }
     else if (specs.bodyType === 'motorcycle') { cat = 'motorcycle'; type = ''; }
 
-    setState({
+    setState((prev) => ({
       ...INITIAL_STATE,
+      origin: prev.origin,
+      fx: prev.fx,
       cat: cat as CalculatorState['cat'],
       type,
       fuel: specs.fuelType,
@@ -603,7 +611,7 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
       engine: engineBand,
       hpCC: '',
       hpHP: '',
-    });
+    }));
     setPendingJumpToResults(true);
   };
 
