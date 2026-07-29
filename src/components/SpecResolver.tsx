@@ -67,7 +67,7 @@ const confidenceStyle: Record<ResolvedSpecs['confidence'], string> = {
 
 const confidenceLabel: Record<ResolvedSpecs['confidence'], string> = {
   high:   'High confidence',
-  medium: 'Best guess',
+  medium: 'Good confidence',
   low:    'Low confidence — verify',
 };
 
@@ -76,9 +76,9 @@ const bodyTypeLabel: Record<string, string> = {
   hatchback:  'Hatchback',
   station:    'Station Wagon',
   suv:        'SUV / 4×4',
-  truck:      'Truck / Pickup',
-  motorcycle: 'Motorcycle',
-  bus:        'Bus',
+  truck:      'Pickup / Truck',
+  motorcycle: 'Motorcycle / Scooter',
+  bus:        'Bus / Minibus',
 };
 
 const ageBracketLabel: Record<string, string> = {
@@ -156,7 +156,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
           className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-[color:var(--primary-soft)] border border-[color:var(--primary-border)] hover:bg-[color:var(--surface)] rounded-2xl text-left transition-all cursor-pointer outline-none"
         >
           <div className="min-w-0">
-            <p className="text-xs font-extrabold text-[color:var(--primary-hover)] leading-none">Not sure of the specs?</p>
+            <p className="text-xs font-extrabold text-[color:var(--primary-hover)] leading-none">Not sure of specs or vehicle class?</p>
             <p className="text-[10px] text-[color:var(--text-muted)] font-medium mt-0.5 truncate">
               Describe the car — e.g. <span className="font-bold text-[color:var(--text)]">"Vitz 1KR"</span> or <span className="font-bold text-[color:var(--text)]">"Allion 1NZ"</span>
             </p>
@@ -169,7 +169,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
 
           {/* Header */}
           <div className="px-4 py-3 flex items-center justify-between bg-[color:var(--surface-soft)] border-b border-[color:var(--border)]">
-            <p className="text-xs font-extrabold text-[color:var(--text)] tracking-widest uppercase">Spec Resolver</p>
+            <p className="text-xs font-extrabold text-[color:var(--text)] tracking-widest uppercase">Vehicle Lookup</p>
             <button
               type="button"
               onClick={handleCollapse}
@@ -185,7 +185,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
               <div className="mb-3 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2">
                 <WifiOff className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-700">
-                  <strong>Offline:</strong> Spec resolution requires an active internet connection. Please reconnect to use the Spec Resolver.
+                  <strong>Offline:</strong> You're offline. An internet connection is needed to look up vehicle specs.
                 </p>
               </div>
             )}
@@ -232,7 +232,7 @@ export default function SpecResolver({ onSpecsResolved }: SpecResolverProps) {
             {status === 'loading' && (
               <div className="text-center py-6">
                 <p className="text-xs font-extrabold text-[color:var(--text-muted)]">Resolving vehicle specs…</p>
-                <p className="text-[10px] text-slate-400 font-medium mt-1">Checking engine codes, body type, and production years</p>
+                <p className="text-[10px] text-slate-400 font-medium mt-1">Looking up engine, body type, and production years…</p>
               </div>
             )}
 

@@ -257,53 +257,109 @@ export default function ClearingAgents() {
           
           {/* FEATURED AGENTS SECTION */}
           {featuredAgents.length > 0 && searchTerm === '' && selectedLocation === 'All' && selectedLicense === 'All' && (
-            <div className="mb-8">
-              <h3 className="font-bold text-[color:var(--text)] mb-3 flex items-center gap-2">
-                <span className="text-[color:var(--primary)] text-sm">★</span>
-                Featured Agencies
-              </h3>
+            <div className="mb-6">
+              {/* Section header */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-400 text-base">★</span>
+                  <h3 className="font-extrabold text-sm text-[color:var(--text)] tracking-tight">Featured Agents</h3>
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                  Recommended by Duty Boss
+                </span>
+              </div>
+
+              {/* Featured cards grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {featuredAgents.map((agent) => (
                   <div
                     key={agent.company}
-                    className="bg-blue-50/50 border border-blue-200 rounded-xl p-3 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:scale-[1.01] hover:-translate-y-1"
+                    className="relative bg-gradient-to-br from-amber-50/80 to-orange-50/40 border border-amber-200 rounded-xl p-3.5 flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:shadow-amber-100 hover:scale-[1.01] hover:-translate-y-0.5 hover:border-amber-300"
                   >
+                    {/* Featured pill badge */}
+                    <span className="absolute top-3 right-3 text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-400 text-white leading-tight">
+                      ★ Featured
+                    </span>
+
                     <div>
-                      <div className="flex justify-between items-start gap-2 mb-1.5">
-                        <h4 className="font-extrabold text-[11px] md:text-[12px] text-blue-900 leading-snug uppercase min-w-0 flex-grow font-display">
-                          {agent.company}
-                        </h4>
-                        <span className="bg-blue-100 text-blue-800 border border-blue-200 text-[9px] font-bold px-1.5 py-0.5 rounded-md text-center max-w-[100px] truncate leading-tight flex-shrink-0">
-                          {agent.licenseType}
+                      {/* Company name */}
+                      <h4 className="font-extrabold text-[12px] text-[color:var(--text)] leading-snug uppercase min-w-0 pr-14 font-display mb-1">
+                        {agent.company}
+                      </h4>
+
+                      {/* Location + TPIN row */}
+                      <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium mb-2.5 pb-2.5 border-b border-amber-100">
+                        <MapPin className="w-3 h-3 text-amber-400" />
+                        <span className="font-semibold">{agent.location}</span>
+                        <span className="text-amber-200">|</span>
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${
+                          agent.licenseType === 'FULL LICENCE'
+                            ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                            : agent.licenseType.includes('RIT')
+                            ? 'bg-blue-100 text-blue-700 border-blue-200'
+                            : 'bg-slate-100 text-slate-600 border-slate-200'
+                        }`}>
+                          {agent.licenseType === 'FULL LICENCE' ? 'Full Licence' : agent.licenseType.includes('RIT') ? 'RIT' : 'Final Clearance'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[10px] text-blue-700 font-medium mb-3 pb-2 border-b border-blue-100">
-                        <MapPin className="w-3 h-3 text-blue-400" />
-                        {agent.location}
-                        <span className="text-blue-300">|</span>
-                        TPIN: <span className="font-bold font-mono">{agent.tpin || 'N/A'}</span>
-                      </div>
+
+                      {/* Contact details */}
                       <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-[color:var(--text-muted)]">
-                          <Phone className="w-3 h-3 text-blue-500" />
-                          <span className="font-mono font-medium truncate flex-grow">
-                            {agent.phone}
-                          </span>
+                        <div className="flex items-center gap-2 text-[10px] text-[color:var(--text-muted)]">
+                          <Phone className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                          <span className="font-mono font-semibold truncate flex-grow">{agent.phone}</span>
                         </div>
                         {agent.email && agent.email.trim() && (
-                          <div className="flex items-center gap-2 text-[10px] md:text-[11px] text-[color:var(--text-muted)]">
-                            <Mail className="w-3 h-3 text-blue-500" />
+                          <div className="flex items-center gap-2 text-[10px] text-[color:var(--text-muted)]">
+                            <Mail className="w-3 h-3 text-amber-400 flex-shrink-0" />
                             <span className="truncate flex-grow">{agent.email}</span>
                           </div>
                         )}
-                        <div className="flex items-start gap-2 text-[10px] text-slate-500 mt-0.5">
-                          <Building className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                          <span className="truncate">{agent.address || 'Zambia'}</span>
-                        </div>
+                        {agent.tpin && (
+                          <div className="flex items-center gap-2 text-[10px] text-slate-400">
+                            <Building className="w-3 h-3 flex-shrink-0" />
+                            <span className="font-mono">TPIN: {agent.tpin}</span>
+                          </div>
+                        )}
                       </div>
+                    </div>
+
+                    {/* CTA buttons */}
+                    <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-amber-100">
+                      <button
+                        type="button"
+                        onClick={() => handleCopyText(agent.phone, 'phone', agent.tpin)}
+                        className="flex items-center justify-center gap-1.5 bg-white hover:bg-amber-50 text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-amber-200 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98]"
+                      >
+                        <Phone className="w-3 h-3 text-amber-400" />
+                        {copiedId === `phone-${agent.tpin}` ? (
+                          <span className="text-emerald-600 font-bold">Copied!</span>
+                        ) : (
+                          <span className="truncate">{agent.phone}</span>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyText(agent.email, 'email', agent.tpin)}
+                        className="flex items-center justify-center gap-1.5 bg-white hover:bg-amber-50 text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-amber-200 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer transition-all active:scale-[0.98] min-w-0"
+                      >
+                        <Mail className="w-3 h-3 text-amber-400" />
+                        {copiedId === `email-${agent.tpin}` ? (
+                          <span className="text-emerald-600 font-bold">Copied!</span>
+                        ) : (
+                          <span className="truncate">{agent.email || 'No email'}</span>
+                        )}
+                      </button>
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Divider */}
+              <div className="flex items-center gap-3 mt-6 mb-2">
+                <div className="flex-1 h-px bg-[color:var(--border)]" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">All Registered Agents</span>
+                <div className="flex-1 h-px bg-[color:var(--border)]" />
               </div>
             </div>
           )}

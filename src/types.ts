@@ -448,7 +448,7 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
         base: d,
         carbon,
         total: d + carbon,
-        note: 'Includes CD, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax. Carbon Surtax added separately.',
+        note: 'This total includes Customs Duty, VAT, Motor Vehicle Fee, ASYCUDA processing fee, and Motor Vehicle Surtax. Carbon Surtax is shown separately.',
         authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
         hsCode: '8711 (Motorcycles)'
       };
@@ -468,7 +468,7 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
         base: v,
         carbon: 0,
         total: v,
-        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.',
+        note: 'This total includes Customs Duty, Excise Duty, VAT, Motor Vehicle Fee, ASYCUDA processing fee, and Motor Vehicle Surtax.',
         authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
         hsCode: '8702 (Motor vehicles for the transport of ten or more persons)'
       };
@@ -499,8 +499,8 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
           carbon,
           cband: cb,
           total: cd + ed + carbon,
-          note: `Hybrid — Appendix III Third Schedule (2025 C&E Amendment Act). CD: ZMW ${cd.toFixed(2)} | ED: ZMW ${ed.toFixed(2)}. Carbon Surtax added separately.` +
-            (isProvisional ? ' Note: Hatchback/Station rates are provisional (sedan proxy) — update when gazette is published.' : ''),
+          note: `Hybrid vehicle — Third Schedule (2025 Customs & Excise Amendment Act). Customs Duty: ZMW ${cd.toFixed(2)} | Excise Duty: ZMW ${ed.toFixed(2)}. Carbon Surtax is shown separately.` +
+            (isProvisional ? ' Note: Rates for this body type are provisional and may be revised.' : ''),
           authority: 'Zambia Revenue Authority (ZRA) Customs and Excise (Amendment) Act, 2025 - Third Schedule (Appendix III)',
           hsCode: '8703 (Motor cars and other motor vehicles principally designed for the transport of persons)'
         };
@@ -521,7 +521,7 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
           carbon,
           cband: cb,
           total: base + carbon,
-          note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2. Carbon Surtax added separately.',
+          note: 'This total includes Customs Duty, Excise Duty, VAT, Motor Vehicle Fee, ASYCUDA processing fee, and Motor Vehicle Surtax. Carbon Surtax is shown separately.',
           authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
           hsCode: '8703 (Passenger Vehicles)'
         };
@@ -543,7 +543,7 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
         carbon: 0,
         cband: '',
         total: v,
-        note: 'Includes CD, ED, VAT, Motor Vehicle Fee, ASYCUDA Fee, and Motor Vehicle Surtax 2.',
+        note: 'This total includes Customs Duty, Excise Duty, VAT, Motor Vehicle Fee, ASYCUDA processing fee, and Motor Vehicle Surtax.',
         authority: 'Zambia Revenue Authority (ZRA) Specific Duty Rates 2025',
         hsCode: '8704 (Motor vehicles for the transport of goods)'
       };
@@ -555,25 +555,25 @@ export function calculateDuty(state: CalculatorState, overrides?: TaxRatesOverri
 
 export const WEIGHT_OPTIONS_MAP: Record<GoodsVehicleType, { v: string; l: string }[]> = {
   'single-cab': [
-    { v: '1.2', l: 'Exceeding 1t, not exceeding 1.5t' },
-    { v: '2', l: 'Above 1.5t, not exceeding 3t' },
-    { v: '4', l: 'Exceeding 3t, not exceeding 5t' },
+    { v: '1.2', l: '1t – 1.5t' },
+    { v: '2', l: '1.5t – 3t' },
+    { v: '4', l: '3t – 5t' },
   ],
   'double-cab': [
-    { v: '2.5', l: 'Not exceeding 3 tonnes' },
-    { v: '4', l: 'Exceeding 3t, not exceeding 5t' },
+    { v: '2.5', l: 'Up to 3t' },
+    { v: '4', l: '3t – 5t' },
   ],
   'panel-van': [
-    { v: '0.8', l: 'Not exceeding 1 tonne' },
-    { v: '1.2', l: 'Exceeding 1t, not exceeding 1.5t' },
-    { v: '2', l: 'Above 1.5t, not exceeding 3t' },
-    { v: '4', l: 'Exceeding 3t, not exceeding 5t' },
+    { v: '0.8', l: 'Under 1t' },
+    { v: '1.2', l: '1t – 1.5t' },
+    { v: '2', l: '1.5t – 3t' },
+    { v: '4', l: '3t – 5t' },
   ],
   truck: [
-    { v: '1.5', l: 'Up to 2 tonnes' },
-    { v: '3', l: 'Above 2t, not exceeding 5t' },
-    { v: '7', l: 'Above 5t, not exceeding 10t' },
-    { v: '15', l: 'Above 10t, not exceeding 20t' },
-    { v: '25', l: 'Exceeding 20 tonnes' },
+    { v: '1.5', l: 'Up to 2t' },
+    { v: '3', l: '2t – 5t' },
+    { v: '7', l: '5t – 10t' },
+    { v: '15', l: '10t – 20t' },
+    { v: '25', l: 'Over 20t' },
   ],
 };

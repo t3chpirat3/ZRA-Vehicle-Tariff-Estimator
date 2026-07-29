@@ -268,7 +268,7 @@ export default function App() {
       {/* Sticky Legal Disclaimer Banner */}
         <div className="bg-slate-900 text-amber-400 text-[10px] sm:text-xs font-bold text-center px-4 py-2 flex items-center justify-center gap-2 border-b border-slate-800 shadow-sm relative z-50">
           <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 flex-shrink-0" />
-          <span>Duty Boss is an independent tool built to help Zambians estimate vehicle import costs. We are not affiliated with the Zambia Revenue Authority (ZRA).</span>
+          <span>Independent tool — not affiliated with ZRA. All figures are estimates only.</span>
         </div>
 
         {/* App Header Bar — sticky so navigation stays in reach during the single page scroll */}

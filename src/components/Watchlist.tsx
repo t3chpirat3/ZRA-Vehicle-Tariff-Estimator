@@ -578,9 +578,9 @@ export default function Watchlist({
                         className="wl-inline-select"
                       >
                         <option value="">Select Category</option>
-                        <option value="motor-car">Motor Car</option>
-                        <option value="goods-vehicle">Goods Vehicle</option>
-                        <option value="bus">Bus</option>
+                        <option value="motor-car">Car / SUV</option>
+                        <option value="goods-vehicle">Pickup / Truck</option>
+                        <option value="bus">Bus / Minibus</option>
                       </select>
                     </div>
                   </div>
