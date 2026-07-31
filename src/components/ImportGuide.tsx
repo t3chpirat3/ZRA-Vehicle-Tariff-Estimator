@@ -82,6 +82,14 @@ export default function ImportGuide() {
                       <span><strong>LHD Ban:</strong> Zambian law strictly prohibits importing Left-Hand Drive (LHD) vehicles for general use. LHD-to-RHD conversions (often from Dubai) risk being rejected during inspection if deemed substandard.</span>
                     </li>
                   </ul>
+                  <div className="bg-[color:var(--surface)] border border-[color:var(--border)] rounded-lg p-3 flex items-start gap-2.5">
+                    <span className="text-base flex-shrink-0 mt-0.5">💡</span>
+                    <p className="text-xs text-[color:var(--text-muted)] leading-relaxed">
+                      <strong className="text-[color:var(--text)]">Not sure where to start?</strong> A Lusaka-based import broker like{' '}
+                      <a href="https://dreamcars.directory" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] font-semibold hover:underline">Dream Cars Directory</a>{' '}
+                      can source from any of these markets on your behalf — you simply tell them what you want and they handle everything from procurement to doorstep delivery.
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -99,6 +107,9 @@ export default function ImportGuide() {
                     <span className="font-bold flex items-center gap-1"><AlertTriangle className="w-3 h-3"/> Warning for South Korea:</span> 
                     South Korea has no appointed agents. The car will ship uninspected, and you'll automatically pay a "destination penalty" at the Zambian border (ZMW 2,500 - ZMW 3,500). Treat this as a fixed arrival cost.
                   </div>
+                  <p className="text-[11px] text-[color:var(--text-muted)] mt-2.5 italic">
+                    Full-service brokers like <a href="https://dreamcars.directory" target="_blank" rel="noopener noreferrer" className="text-[color:var(--primary-hover)] font-semibold not-italic hover:underline">Dream Cars Directory</a> coordinate JEVIC/EAA inspections internally — eliminating this step for the buyer entirely.
+                  </p>
                 </div>
               </div>
 

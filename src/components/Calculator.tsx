@@ -212,7 +212,7 @@ const NextSteps = ({ onReset, onSave, onNavigate }: { onReset: () => void, onSav
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-5 mt-4">
       <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4 text-center md:text-left">What would you like to do next?</h4>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
         <button onClick={onReset} className="flex flex-col items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl p-3 transition-colors text-center border border-slate-700 h-24">
           <RotateCcw className="w-6 h-6 text-slate-300" />
           <span className="text-[11px] font-bold leading-tight">New<br/>Calculation</span>
@@ -233,6 +233,16 @@ const NextSteps = ({ onReset, onSave, onNavigate }: { onReset: () => void, onSav
           <Ship className="w-6 h-6 text-purple-400" />
           <span className="text-[11px] font-bold leading-tight">Plan<br/>Logistics</span>
         </button>
+        <a
+          href="https://dreamcars.directory"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-emerald-900/60 to-teal-900/40 hover:from-emerald-900/80 hover:to-teal-900/60 text-white rounded-xl p-3 transition-all text-center border border-emerald-700/50 hover:border-emerald-500/70 h-24 hover:shadow-lg hover:shadow-emerald-900/30"
+        >
+          <span className="text-lg leading-none">🚗</span>
+          <span className="text-[11px] font-bold leading-tight text-emerald-300">Skip the<br/>Hassle</span>
+          <span className="text-[9px] text-emerald-400/70 font-semibold leading-none">DreamCars</span>
+        </a>
       </div>
     </div>
   );

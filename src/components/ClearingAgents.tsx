@@ -14,6 +14,8 @@ import {
   Check,
   Building,
   Info,
+  ExternalLink,
+  Star,
 } from 'lucide-react';
 
 interface Agent {
@@ -255,6 +257,74 @@ export default function ClearingAgents() {
         {/* CONTAINER AREA FOR THE DATA — flows with the single page scroll */}
         <div className="p-4 bg-[color:var(--surface-soft)] space-y-3">
           
+          {/* DREAM CARS PLATFORM PARTNER BANNER — always shown on unfiltered view */}
+          {searchTerm === '' && selectedLocation === 'All' && selectedLicense === 'All' && (
+            <div className="mb-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-teal-500 fill-teal-500" />
+                  <h3 className="font-extrabold text-sm text-[color:var(--text)] tracking-tight">Platform Partner</h3>
+                </div>
+                <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-teal-100 text-teal-700 border border-teal-200">
+                  Full-Service Import Broker
+                </span>
+              </div>
+
+              <div className="relative bg-gradient-to-br from-teal-50/90 via-emerald-50/60 to-cyan-50/40 border border-teal-200 rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:shadow-teal-100 hover:scale-[1.005] hover:border-teal-300">
+                <span className="absolute top-3 right-3 text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-teal-500 text-white leading-tight">
+                  ★ Partner
+                </span>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-teal-100 border border-teal-200 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xl leading-none">🚗</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-extrabold text-[13px] text-[color:var(--text)] leading-snug uppercase font-display mb-0.5 pr-16">
+                      Dream Cars Directory
+                    </h4>
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-medium mb-2">
+                      <MapPin className="w-3 h-3 text-teal-400" />
+                      <span className="font-semibold">Lusaka (Goldman House, Great East Rd)</span>
+                      <span className="text-teal-200">|</span>
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded border bg-emerald-100 text-emerald-700 border-emerald-200">
+                        Full Import Brokerage
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[color:var(--text-muted)] leading-relaxed mb-3">
+                      Not just a clearing agent — Dream Cars handles the entire pipeline. Source from Japan, Singapore, UK, UAE, or South Africa, or hand them a listing link and they'll take it from there. Includes ZRA clearing, doorstep delivery, and border-drop options at Nakonde, Chirundu, or Kazungula.
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <a
+                        href="tel:+260977000000"
+                        className="flex items-center justify-center gap-1.5 bg-white hover:bg-teal-50 text-[color:var(--text-muted)] hover:text-[color:var(--text)] border border-teal-200 py-1.5 rounded-lg text-[10px] font-bold transition-all"
+                      >
+                        <Phone className="w-3 h-3 text-teal-400" />
+                        <span>Contact</span>
+                      </a>
+                      <a
+                        href="https://dreamcars.directory"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 bg-teal-500 hover:bg-teal-600 text-white border border-teal-500 py-1.5 rounded-lg text-[10px] font-bold transition-all"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>dreamcars.directory</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider into featured/regular agents */}
+              <div className="flex items-center gap-3 mt-5 mb-1">
+                <div className="flex-1 h-px bg-[color:var(--border)]" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Registered Clearing Agents</span>
+                <div className="flex-1 h-px bg-[color:var(--border)]" />
+              </div>
+            </div>
+          )}
+
           {/* FEATURED AGENTS SECTION */}
           {featuredAgents.length > 0 && searchTerm === '' && selectedLocation === 'All' && selectedLicense === 'All' && (
             <div className="mb-6">
