@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# TWA / Bubblewrap - ignore Gradle build artifacts but keep important files
+twa/.gradle/
+twa/build/
+twa/app/build/
+twa/app-release-unsigned-aligned.apk

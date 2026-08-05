@@ -73,6 +73,10 @@ export default defineConfig(() => {
           theme_color: '#0f172a',
           background_color: '#ffffff',
           display: 'standalone',
+          id: '/',
+          start_url: '/',
+          scope: '/',
+          lang: 'en',
           icons: [
             {
               src: 'pwa-192x192.png',

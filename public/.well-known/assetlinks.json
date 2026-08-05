@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.dutyboss.twa",
+    "sha256_cert_fingerprints": [
+      "DD:6B:71:0C:0A:40:73:FE:FF:A9:2C:E4:41:C8:78:5C:ED:D8:34:C6:58:BE:8F:9B:D4:CF:C3:2C:9C:84:6B:77"
+    ]
+  }
+}]
