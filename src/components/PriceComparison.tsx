@@ -48,6 +48,7 @@ import {
   WatchlistItem
 } from '../types';
 import { getApiUrl } from '../utils/api';
+import posthog from '../posthog';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -499,6 +500,10 @@ export default function PriceComparison({
     const updated = [newSaved, ...savedComparisons];
     setSavedComparisons(updated);
     localStorage.setItem(SAVED_COMPARISONS_KEY, JSON.stringify(updated));
+    posthog.capture('comparison_saved', {
+      listing_count: listings.length,
+      completed_listing_count: listings.filter((listing) => landedCostZMW(listing, settings) !== null).length,
+    });
     toast.success('Comparison saved successfully!');
   };
 

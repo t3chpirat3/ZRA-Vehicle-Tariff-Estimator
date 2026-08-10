@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getApiUrl } from '../utils/api';
+import posthog from '../posthog';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Calculator as CalcIcon,
@@ -576,6 +577,14 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
   // General navigation helpers
   const handleNextStep = () => {
     if (currentStepIndex < activeSteps.length - 1 && isCurrentStepValid) {
+      if (currentStepIndex === activeSteps.length - 2 && result) {
+        posthog.capture('duty_estimate_viewed', {
+          calculation_mode: result.mode,
+          vehicle_category: state.cat,
+          vehicle_origin: state.origin || 'unspecified',
+          fuel_type: state.fuel || 'unspecified',
+        });
+      }
       setCurrentStepIndex((prev) => prev + 1);
     }
   };

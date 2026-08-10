@@ -12,6 +12,7 @@ import {
   type VesselStatus
 } from '../data/shippingData';
 import { getApiUrl } from '../utils/api';
+import posthog from '../posthog';
 import MarketDirectoriesManager from './MarketDirectoriesManager';
 import FxOverrideManager from './admin/FxOverrideManager';
 import TaxRatesManager from './admin/TaxRatesManager';
@@ -85,6 +86,7 @@ export default function AdminPanel() {
       const data = await res.json();
       if (data.token) {
         localStorage.setItem('duty_boss_admin_token', data.token);
+        posthog.capture('admin_login_succeeded');
         setIsAuthenticated(true);
       }
     } catch (err: any) {
