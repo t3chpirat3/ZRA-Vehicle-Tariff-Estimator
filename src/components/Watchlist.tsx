@@ -32,6 +32,7 @@ import {
   WEIGHT_OPTIONS_MAP,
 } from '../types';
 import { getApiUrl } from '../utils/api';
+import posthog from '../posthog';
 import { WatchlistSkeleton } from './Skeleton';
 import './Watchlist.css';
 
@@ -193,6 +194,11 @@ export default function Watchlist({
       }
 
       onUpdateWatchlist([newItem, ...watchlist]);
+      posthog.capture('watchlist_item_added', {
+        entry_type: url.trim() ? 'listing_url' : 'manual',
+        currency: listingCurrency,
+        has_duty_estimate: Boolean(lastCalcState),
+      });
       toast.success('Vehicle added to watchlist!');
       
       setUrl('');

@@ -28,6 +28,7 @@ import { SA_MARKET_DIRECTORY, carsZaUrl } from '../data/saMarketDirectory';
 import { JDM_DIRECTORY, beforwardUrl } from '../data/jdmDirectory';
 import { SINGAPORE_DIRECTORY, UK_DIRECTORY, UAE_DIRECTORY, THAILAND_DIRECTORY, KOREA_DIRECTORY } from '../data/marketDirectories';
 import { getApiUrl } from '../utils/api';
+import posthog from '../posthog';
 
 /** Both market directories share this shape, so one view can render either. */
 interface DirectoryData {
@@ -199,6 +200,13 @@ export default function VehicleDiscovery() {
       preferredRegion: prefRegion,
     };
     const rec = recommend(profile);
+    posthog.capture('vehicle_recommendations_generated', {
+      preferred_region: prefRegion,
+      primary_use: primaryUse,
+      terrain,
+      fuel_preference: fuelPref,
+      top_pick_count: rec.topPicks.length,
+    });
     setResults(rec);
     setAi(null);
     setStep(7); // results view
