@@ -123,6 +123,9 @@ export default function Watchlist({
 
         const data = await res.json();
 
+        const fallbackQuery = `${data.make !== 'Unknown' ? data.make : ''} ${data.model !== 'Vehicle' ? data.model : ''} ${data.title !== 'Unknown Vehicle' ? data.title : ''} car exterior`.trim();
+        const fallbackImage = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(fallbackQuery || 'car exterior')}&w=600&h=400&c=7&rs=1&p=0`;
+
         newItem = {
           id: Date.now().toString(),
           url: url.trim(),
@@ -139,7 +142,7 @@ export default function Watchlist({
           location: data.location || 'N/A',
           description: data.description || 'Specifications extracted from listing.',
           status: data.status === 'unavailable' ? 'unavailable' : 'available',
-          image: data.image || '',
+          image: data.image || fallbackImage,
           history: [
             {
               timestamp: new Date().toISOString(),
@@ -159,6 +162,11 @@ export default function Watchlist({
       } else {
         // No URL provided, create a manual entry
         const titleText = notes.trim().split('\n')[0] || 'Manual Entry';
+        
+        // Generate a fallback stock image based on the title text
+        const searchQuery = `${titleText} car exterior`.trim();
+        const fallbackImage = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(searchQuery)}&w=600&h=400&c=7&rs=1&p=0`;
+
         newItem = {
           id: Date.now().toString(),
           url: '',
@@ -175,7 +183,7 @@ export default function Watchlist({
           location: 'N/A',
           description: notes.trim(),
           status: 'available',
-          image: '',
+          image: fallbackImage,
           history: [
             {
               timestamp: new Date().toISOString(),
