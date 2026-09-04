@@ -654,7 +654,7 @@ export default function AdminPanel() {
               className="btn-primary bg-indigo-600 hover:bg-indigo-700 px-6 py-2.5 text-sm flex items-center gap-2 disabled:opacity-50"
             >
               {isParsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-              Parse with DeepSeek
+              Parse with AI
             </button>
           </div>
 

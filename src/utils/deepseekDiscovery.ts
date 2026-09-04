@@ -4,10 +4,10 @@
  */
 
 /**
- * deepseekDiscovery.ts
+ * geminiDiscovery.ts  (previously deepseekDiscovery.ts)
  * Optional AI enrichment on top of the deterministic discovery engine.
  *
- * Given the user's profile and the locally-ranked shortlist, DeepSeek writes a
+ * Given the user's profile and the locally-ranked shortlist, Gemini writes a
  * short, friendly rationale per pick and proposes a couple of lesser-known
  * alternatives the buyer may never have heard of.
  *

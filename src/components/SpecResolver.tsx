@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 /**
  * SpecResolver.tsx
- * Vehicle spec resolver using the DeepSeek API.
+ * Vehicle spec resolver powered by the Google Gemini API.
  * Designed as an optional in-calculator helper — not a separate tab.
  * Users can type Zambian street names like "Vitz 1KR" or "Allion 1NZ"
  * and get back structured specs that pre-fill the duty calculator.
@@ -31,10 +31,10 @@ interface SpecResolverProps {
   onSpecsResolved: (specs: ResolvedSpecs) => void;
 }
 
-// ─── DeepSeek API ─────────────────────────────────────────────────────────────
+// ─── Gemini API (via Backend Proxy) ───────────────────────────────────────────
 
-// The frontend now calls our secure Vercel Serverless Function instead of the DeepSeek API directly.
-// This ensures our API key is not exposed to the client.
+// The frontend calls our secure backend function instead of the AI API directly.
+// This ensures our API key is never exposed to the client.
 const LOCAL_API_URL = getApiUrl('/api/resolve-spec');
 
 async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {

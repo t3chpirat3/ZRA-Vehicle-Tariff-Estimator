@@ -9,7 +9,9 @@ const kv = new Redis({
 const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
                        (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
 
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+import { GoogleGenAI } from '@google/genai';
+
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const SYSTEM_PROMPT = `You are an expert automotive spec resolver for the Zambian used car import market.
 Users will describe a vehicle using local Zambian slang, Japanese Domestic Market names, engine codes, or common nicknames.
@@ -160,47 +162,29 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Query must be between 1 and 100 characters' });
   }
 
-  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.error('Server configuration error: Missing API Key');
+    console.error('Server configuration error: Missing GEMINI_API_KEY');
     return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const ai = new GoogleGenAI({ apiKey });
 
-    const response = await fetch(DEEPSEEK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: `<vehicle_query>${trimmedQuery}</vehicle_query>` },
-        ],
-        response_format: { type: 'json_object' },
+    const response = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: `<vehicle_query>${trimmedQuery}</vehicle_query>`,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        responseMimeType: 'application/json',
         temperature: 0.1,
-        max_tokens: 512,
-      }),
-      signal: controller.signal,
+        maxOutputTokens: 512,
+      },
     });
 
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      const err = await response.text();
-      console.error(`DeepSeek API Error [${response.status}]:`, err);
-      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
-    }
-
-    const data = await response.json();
-    const raw = data.choices?.[0]?.message?.content;
+    const raw = response.text;
     if (!raw) {
-      console.error('Empty response from resolver');
+      console.error('Empty response from Gemini resolver');
       return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
@@ -245,11 +229,7 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    if (error.name === 'AbortError') {
-      console.error(`[Timeout] DeepSeek API request timed out after 10s for IP: ${ip}`);
-      return res.status(504).json({ error: 'Service timed out. Please try again later.' });
-    }
-    console.error(`[FatalError] DeepSeek API Error:`, error);
+    console.error(`[FatalError] Gemini API Error in resolve-spec:`, error);
     return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 }

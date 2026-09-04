@@ -9,7 +9,9 @@ const kv = new Redis({
 const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
                        (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
 
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+import { GoogleGenAI } from '@google/genai';
+
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const ratelimit = kvConfigured 
   ? new Ratelimit({
@@ -118,7 +120,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Valid URL is required' });
   }
 
-  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'Missing API Key configuration.' });
   }
@@ -236,32 +238,20 @@ You must output in JSON format matching this schema:
 }`;
     }
 
-    const aiResponse = await fetch(DEEPSEEK_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: 'You are a helpful assistant. You must always output valid JSON.' },
-          { role: 'user', content: prompt },
-        ],
-        response_format: { type: 'json_object' },
-        temperature: 0.1,
-      }),
-      signal: controller.signal,
-    });
-    
     clearTimeout(timeoutId);
 
-    if (!aiResponse.ok) {
-      throw new Error(`DeepSeek error: ${aiResponse.status}`);
-    }
+    const ai = new GoogleGenAI({ apiKey });
+    const aiResult = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: prompt,
+      config: {
+        systemInstruction: 'You are a helpful assistant. You must always output valid JSON.',
+        responseMimeType: 'application/json',
+        temperature: 0.1,
+      },
+    });
 
-    const data = await aiResponse.json();
-    const parsed = JSON.parse(data.choices[0].message.content);
+    const parsed = JSON.parse(aiResult.text);
 
     if (checkOnly) {
       return res.status(200).json({

@@ -76,7 +76,7 @@ export default function PrivacyPolicy({ onClose }: PrivacyPolicyProps) {
                 <strong>Upstash / Vercel KV:</strong> Temporarily processes and evaluates IP addresses to enforce API rate limits, protecting the platform from automated bots and denial-of-service attacks.
               </li>
               <li>
-                <strong>DeepSeek API:</strong> Processes the free-text queries you enter into the Spec Resolver. This data is processed strictly to identify vehicle specifications and return tariff-relevant data.
+              <strong>Google Gemini API:</strong> Processes the free-text queries you enter into the Spec Resolver and comparison features. This data is processed strictly to identify vehicle specifications and return tariff-relevant data. No personally identifiable information is sent.
               </li>
             </ul>
           </section>

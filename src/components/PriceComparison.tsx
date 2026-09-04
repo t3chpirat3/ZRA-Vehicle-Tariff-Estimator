@@ -65,6 +65,12 @@ interface SilentSpecs {
   confidence: 'high' | 'medium' | 'low';
 }
 
+interface AssessedResult {
+  totalScore: number;
+  components: { cost: number | null; mileage: number; trim: number; };
+  assessedAt: number;
+}
+
 interface Listing {
   id: string;
   description: string;
@@ -79,6 +85,17 @@ interface Listing {
   resolvedSpecs: SilentSpecs | null;
   specStatus: 'idle' | 'loading' | 'resolved' | 'error';
   dutyZMW: number | null;
+  assessment: AssessedResult | null;
+}
+
+type ComparisonMode = 'assess' | 'compare';
+
+interface ComparisonDelta {
+  listingId: string;
+  rank: number;
+  costDeltaZMW: number | null;
+  strongestComponent: 'cost' | 'mileage' | 'trim' | null;
+  weakestComponent: 'cost' | 'mileage' | 'trim' | null;
 }
 
 interface ComparisonSettings {
@@ -264,8 +281,8 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number): Calcula
   };
 }
 
-function computeScores(listings: Listing[], s: ComparisonSettings): Record<string, number | null> {
-  const result: Record<string, number | null> = {};
+export function computeAbsoluteScore(l: Listing, s: ComparisonSettings): AssessedResult | null {
+  const cost = landedCostZMW(l, s);
   
   const getTrimScore = (trim: number) => {
     if (trim === 1) return 40;
@@ -288,17 +305,47 @@ function computeScores(listings: Listing[], s: ComparisonSettings): Record<strin
     return Math.max(0, Math.min(100, 100 - (age / 15) * 100));
   };
 
-  listings.forEach((l) => {
-    if ((landedCostZMW(l, s) ?? Infinity) === Infinity) { result[l.id] = null; return; }
-    
-    const trimScore = getTrimScore(l.trimTier);
-    const mileScore = getMileScore(l.mileageKm);
-    const ageScore = getAgeScore(l.year);
+  if (cost === null) return null;
 
-    result[l.id] = Math.round(mileScore * 0.40 + ageScore * 0.35 + trimScore * 0.25);
-  });
+  const trimScore = getTrimScore(l.trimTier);
+  const mileScore = getMileScore(l.mileageKm);
+  const ageScore = getAgeScore(l.year);
+
+  return {
+    totalScore: Math.round(mileScore * 0.40 + ageScore * 0.35 + trimScore * 0.25),
+    components: {
+      cost,
+      mileage: mileScore,
+      trim: trimScore
+    },
+    assessedAt: Date.now()
+  };
+}
+
+export function computeComparisonDeltas(listings: Listing[]): ComparisonDelta[] {
+  const assessed = listings.filter(l => l.assessment !== null);
+  if (assessed.length === 0) return [];
   
-  return result;
+  const cheapestLanded = Math.min(...assessed.map(l => l.assessment.components.cost ?? Infinity));
+
+  const ranked = [...assessed].sort((a, b) => b.assessment.totalScore - a.assessment.totalScore);
+
+  return ranked.map((l, idx) => {
+    const comps = l.assessment.components;
+    
+    // We determine strongest/weakest absolute components excluding cost (since cost is just raw price)
+    const entries = Object.entries(comps).filter(([k, v]) => v !== null && k !== 'cost');
+    const strongest = entries.length ? entries.reduce((a, b) => (a[1] > b[1] ? a : b))[0] : null;
+    const weakest   = entries.length ? entries.reduce((a, b) => (a[1] < b[1] ? a : b))[0] : null;
+
+    return {
+      listingId: l.id,
+      rank: idx + 1,
+      costDeltaZMW: comps.cost !== null && cheapestLanded !== Infinity ? comps.cost - cheapestLanded : null,
+      strongestComponent: strongest as ComparisonDelta['strongestComponent'],
+      weakestComponent: weakest as ComparisonDelta['weakestComponent'],
+    };
+  });
 }
 
 // ─── Silent API calls ────────────────────────────────────────────────────────
@@ -479,6 +526,11 @@ export default function PriceComparison({
   }, [listings]);
 
   const [settings, setSettings] = useState<ComparisonSettings>(DEFAULT_SETTINGS);
+  useEffect(() => {
+    settingsRef.current = settings;
+    setAssessListings(prev => applyAssessments(prev, settings));
+    setCompareListings(prev => applyAssessments(prev, settings));
+  }, [settings, applyAssessments]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tableOpen, setTableOpen] = useState(false);
   const [sortBy, setSortBy] = useState<'score' | 'cost' | 'mileage'>('score');
@@ -569,6 +621,25 @@ export default function PriceComparison({
       }
     }
   }, [importedListing, clearImportedListing]);
+
+  
+  const handleImportFromAssessment = (item: Listing) => {
+    const copy = { ...item, id: `l-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` };
+    setCompareListings(prev => {
+      const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
+      if (emptyIndex !== -1) {
+        const next = [...prev];
+        next[emptyIndex] = copy;
+        return next;
+      }
+      if (prev.length >= 6) {
+        toast.error('Maximum of 6 comparisons allowed.');
+        return prev;
+      }
+      return [...prev, copy];
+    });
+    setShowImportMenu(false);
+  };
 
   const handleImportWatchlistItem = (item: WatchlistItem) => {
     const newL = newListing(
@@ -744,19 +815,28 @@ export default function PriceComparison({
 
   // ─── Ranking & scoring ────────────────────────────────────────────────────
 
-  const scores = computeScores(listings, settings);
+  const deltas = mode === 'compare' ? computeComparisonDeltas(listings) : [];
+
+  const getScore = (id: string) => {
+    const l = listings.find(x => x.id === id);
+    return l?.assessment?.totalScore ?? null;
+  };
+
+  const getRank = (id: string) => {
+    return deltas.find(d => d.listingId === id)?.rank;
+  };
+
 
   const sortedIds = [...listings]
     .filter((l) => landedCostZMW(l, settings) !== null)
     .sort((a, b) => {
-      if (sortBy === 'score')   return (scores[b.id] ?? -1) - (scores[a.id] ?? -1);
+      if (sortBy === 'score')   return (getScore(b.id) ?? -1) - (getScore(a.id) ?? -1);
       if (sortBy === 'cost')    return (landedCostZMW(a, settings) ?? Infinity) - (landedCostZMW(b, settings) ?? Infinity);
       return (Number(a.mileageKm) || Infinity) - (Number(b.mileageKm) || Infinity);
     })
     .map((l) => l.id);
 
-  const rankedScores: Record<string, number> = {};
-  sortedIds.forEach((id, idx) => { rankedScores[id] = idx + 1; });
+  
 
   const hasAnyResults = listings.some((l) => landedCostZMW(l, settings) !== null);
 
@@ -800,7 +880,21 @@ export default function PriceComparison({
             Compare the same model from multiple markets — all costs converted to ZMW, with ZRA duty, freight, and inspection fees factored in.
           </p>
         </div>
-        <div className="flex gap-2 flex-shrink-0 relative">
+        <div className="flex gap-1 p-1 bg-[color:var(--surface-soft)] rounded-xl mr-2">
+            <button 
+              onClick={() => setMode('assess')} 
+              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${mode === 'assess' ? 'bg-white text-black shadow-sm' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+            >
+              Value Assessment
+            </button>
+            <button 
+              onClick={() => setMode('compare')} 
+              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${mode === 'compare' ? 'bg-white text-black shadow-sm' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)]'}`}
+            >
+              Compare
+            </button>
+          </div>
+          <div className="flex gap-2 flex-shrink-0 relative">
           <button
             onClick={() => setSettingsOpen((o) => !o)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors ${settingsOpen ? 'bw-active' : 'btn-ghost'}`}
@@ -825,6 +919,21 @@ export default function PriceComparison({
                   exit={{ opacity: 0, y: 8 }}
                   className="absolute right-0 top-full mt-2 w-64 bg-[color:var(--surface)] border border-[color:var(--border-strong)] shadow-xl rounded-xl p-2 z-50 max-h-64 overflow-y-auto"
                 >
+                  {mode === 'compare' && assessListings.filter(l => l.assessment).length > 0 && (
+                    <div className="mb-2 pb-2 border-b border-[color:var(--border)]">
+                      <p className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase px-2 py-1 mb-1">From Value Assessment</p>
+                      {assessListings.filter(l => l.assessment).map(l => (
+                        <button
+                          key={l.id}
+                          onClick={() => handleImportFromAssessment(l)}
+                          className="w-full text-left px-2 py-2 text-xs font-medium text-[color:var(--text)] hover:bg-[color:var(--surface-soft)] rounded-lg flex flex-col gap-0.5"
+                        >
+                          <span className="font-bold truncate">{l.description || 'Unnamed Listing'}</span>
+                          <span className="text-[10px] text-[color:var(--text-muted)] truncate">{zmwFormat(landedCostZMW(l, settings) || 0)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                   <p className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase px-2 py-1 mb-1">Select from Watchlist</p>
                   {watchlist && watchlist.length > 0 ? (
                     watchlist.map(item => (
@@ -976,8 +1085,8 @@ export default function PriceComparison({
           {listings.map((l, idx) => {
             const meta      = COUNTRY_META[l.origin];
             const landed    = landedCostZMW(l, settings);
-            const score     = scores[l.id];
-            const rank      = rankedScores[l.id];
+            const score     = getScore(l.id);
+            const rank      = getRank(l.id);
             const priceZMW  = l.listingPrice !== '' ? toZMW(Number(l.listingPrice), l.currency, settings) : null;
             const isBest    = rank === 1 && hasAnyResults;
 
