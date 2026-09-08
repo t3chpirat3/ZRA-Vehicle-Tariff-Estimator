@@ -1,5 +1,8 @@
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
+import { GoogleGenAI } from '@google/genai';
+
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const kv = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
@@ -9,9 +12,6 @@ const kv = new Redis({
 const kvConfigured = !!((process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) || 
                        (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN));
 
-import { GoogleGenAI } from '@google/genai';
-
-const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const SYSTEM_PROMPT = `You are an expert automotive spec resolver for the Zambian used car import market.
 Users will describe a vehicle using local Zambian slang, Japanese Domestic Market names, engine codes, or common nicknames.

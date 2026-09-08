@@ -1,15 +1,15 @@
 import { authenticate } from '../_lib/auth.js';
 import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
+import { GoogleGenAI } from '@google/genai';
+
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const kv = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
   token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
 });
-import { Ratelimit } from '@upstash/ratelimit';
 
-import { GoogleGenAI } from '@google/genai';
-
-const GEMINI_MODEL = 'gemini-2.5-flash';
 
 const SYSTEM_PROMPT = `You are a shipping schedule parser for the Zambian vehicle import market.
 
