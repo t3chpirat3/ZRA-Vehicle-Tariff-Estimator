@@ -115,10 +115,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('[FatalError] compare-insight missing GEMINI_API_KEY env variable');
-    return res.status(500).json({ 
-      error: 'Something went wrong. Please try again later.',
-      details: 'Missing GEMINI_API_KEY env variable'
-    });
+    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 
   const userMessage = [
@@ -150,10 +147,7 @@ export default async function handler(req, res) {
 
     if (!raw || typeof raw !== 'string') {
       console.error(`[FatalError] compare-insight empty or non-string response from Gemini for IP: ${ip}`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: 'Empty response from Gemini'
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     let parsed;
@@ -161,10 +155,7 @@ export default async function handler(req, res) {
       parsed = JSON.parse(raw);
     } catch {
       console.error(`[SchemaValidation] compare-insight non-JSON response from Gemini for IP: ${ip}. Raw: ${raw.slice(0, 120)}`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: `Non-JSON response from Gemini. Raw: ${raw.slice(0, 120)}`
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     const isValidSchema =
@@ -174,10 +165,7 @@ export default async function handler(req, res) {
 
     if (!isValidSchema) {
       console.error(`[SchemaValidation] compare-insight invalid output schema from Gemini for IP: ${ip}.`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: `Invalid output schema from Gemini: ${JSON.stringify(parsed)}`
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     const verdict = parsed.verdict.trim().slice(0, 600);
@@ -186,19 +174,13 @@ export default async function handler(req, res) {
 
     if (!verdict) {
       console.error(`[SchemaValidation] compare-insight empty verdict after sanitization for IP: ${ip}`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: 'Empty verdict after sanitization'
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     return res.status(200).json({ verdict, tips, flags });
 
   } catch (error) {
     console.error(`[FatalError] compare-insight unhandled exception for IP: ${ip}`, error);
-    return res.status(500).json({ 
-      error: 'Something went wrong. Please try again later.',
-      details: error?.message || String(error)
-    });
+    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 }

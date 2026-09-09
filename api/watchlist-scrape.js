@@ -257,10 +257,7 @@ You must output in JSON format matching this schema:
     const raw = aiResult.text;
     if (!raw) {
       console.error('Empty response from Gemini in watchlist-scrape');
-      return res.status(500).json({ 
-        error: 'Failed to extract listing metadata',
-        details: 'Empty response from Gemini'
-      });
+      return res.status(500).json({ error: 'Failed to extract listing metadata' });
     }
 
     let parsed;
@@ -268,10 +265,7 @@ You must output in JSON format matching this schema:
       parsed = JSON.parse(raw);
     } catch (e) {
       console.error('JSON parse error from Gemini in watchlist-scrape:', raw);
-      return res.status(500).json({
-        error: 'Failed to extract listing metadata',
-        details: `JSON parse error: ${e.message}. Raw: ${raw.slice(0, 100)}`
-      });
+      return res.status(500).json({ error: 'Failed to extract listing metadata' });
     }
 
     if (checkOnly) {
@@ -305,9 +299,6 @@ You must output in JSON format matching this schema:
 
   } catch (err) {
     console.error("API error in watchlist-scrape:", err);
-    return res.status(500).json({ 
-      error: 'Failed to process listing. Please try again.',
-      details: err?.message || String(err)
-    });
+    return res.status(500).json({ error: 'Failed to process listing. Please try again.' });
   }
 }

@@ -90,10 +90,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('[FatalError] enhance-discovery missing GEMINI_API_KEY env variable');
-    return res.status(500).json({ 
-      error: 'Server configuration error.',
-      details: 'Missing GEMINI_API_KEY env variable'
-    });
+    return res.status(500).json({ error: 'Server configuration error.' });
   }
 
   const safeMessage = [
@@ -124,10 +121,7 @@ export default async function handler(req, res) {
 
     if (!raw || typeof raw !== 'string') {
       console.error(`[FatalError] enhance-discovery empty or non-string response from Gemini for IP: ${ip}`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: 'Empty response from Gemini'
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     let parsed;
@@ -135,10 +129,7 @@ export default async function handler(req, res) {
       parsed = JSON.parse(raw);
     } catch {
       console.error(`[SchemaValidation] enhance-discovery non-JSON response from Gemini for IP: ${ip}. Raw: ${raw.slice(0, 120)}`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: `Non-JSON response from Gemini. Raw: ${raw.slice(0, 120)}`
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     const isValidSchema =
@@ -148,10 +139,7 @@ export default async function handler(req, res) {
 
     if (!isValidSchema) {
       console.error(`[SchemaValidation] enhance-discovery invalid output schema from Gemini for IP: ${ip}.`);
-      return res.status(500).json({ 
-        error: 'Something went wrong. Please try again later.',
-        details: `Invalid output schema from Gemini: ${JSON.stringify(parsed)}`
-      });
+      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
     }
 
     const summary = parsed.summary.trim().slice(0, 800);
@@ -170,9 +158,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error(`[FatalError] enhance-discovery unhandled exception for IP: ${ip}`, error);
-    return res.status(500).json({ 
-      error: 'Something went wrong. Please try again later.',
-      details: error?.message || String(error)
-    });
+    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 }
