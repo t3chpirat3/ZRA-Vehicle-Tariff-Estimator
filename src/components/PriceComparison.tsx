@@ -1538,15 +1538,23 @@ export default function PriceComparison({
             </div>
 
             <div className="divide-y divide-[color:var(--border)]">
-              {sortedIds.map((id, idx) => {
-                const l      = listings.find((ll) => ll.id === id)!;
-                const meta   = COUNTRY_META[l.origin];
-                const landed = landedCostZMW(l, settings)!;
-                const score  = scores[id];
-                const maxL   = Math.max(...sortedIds.map((sid) => landedCostZMW(listings.find((ll) => ll.id === sid)!, settings) ?? 0));
+              {(() => {
+                const sortedListings = [...listings]
+                  .filter((l) => landedCostZMW(l, settings) !== null)
+                  .sort((a, b) => {
+                    if (sortBy === 'score')   return (b.assessment?.totalScore ?? -1) - (a.assessment?.totalScore ?? -1);
+                    if (sortBy === 'cost')    return (landedCostZMW(a, settings) ?? Infinity) - (landedCostZMW(b, settings) ?? Infinity);
+                    return (Number(a.mileageKm) || Infinity) - (Number(b.mileageKm) || Infinity);
+                  });
+                const maxL = Math.max(...sortedListings.map(l => landedCostZMW(l, settings) ?? 0));
+                
+                return sortedListings.map((l, idx) => {
+                  const meta   = COUNTRY_META[l.origin];
+                  const landed = landedCostZMW(l, settings)!;
+                  const score  = l.assessment?.totalScore ?? null;
 
                 return (
-                  <div key={id} className={`px-5 py-3.5 flex items-center gap-4 ${idx === 0 ? 'bg-[color:var(--primary-soft)]' : ''}`}>
+                  <div key={l.id} className={`px-5 py-3.5 flex items-center gap-4 ${idx === 0 ? 'bg-[color:var(--primary-soft)]' : ''}`}>
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-black ${
                       idx === 0 ? 'bg-[color:var(--primary)] text-white' : 'bg-[color:var(--surface-soft)] text-[color:var(--text-muted)] border border-[color:var(--border-strong)]'
                     }`}>{idx + 1}</div>
@@ -1554,7 +1562,7 @@ export default function PriceComparison({
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm">{meta.flag}</span>
                         <p className="text-xs font-extrabold text-[color:var(--text)] truncate">
-                          {l.description || `Listing ${listings.findIndex((ll) => ll.id === id) + 1}`}
+                          {l.description || `Listing ${listings.findIndex((ll) => ll.id === l.id) + 1}`}
                         </p>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5">
@@ -1580,7 +1588,8 @@ export default function PriceComparison({
                     <ScoreBadge score={score} rank={idx + 1} />
                   </div>
                 );
-              })}
+                });
+              })()}
             </div>
           </motion.div>
         )}
