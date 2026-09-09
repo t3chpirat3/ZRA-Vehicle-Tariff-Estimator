@@ -367,21 +367,28 @@ async function silentResolveSpecs(description: string): Promise<SilentSpecs> {
 async function fetchCompareInsight(
   listings: Listing[],
   s: ComparisonSettings,
+  mode: 'assess' | 'compare',
+  deltas: ComparisonDelta[],
 ): Promise<AIInsight | null> {
   const payload = listings
     .filter((l) => landedCostZMW(l, s) !== null)
-    .map((l) => ({
-      description: l.description || `Listing from ${COUNTRY_META[l.origin].label}`,
-      origin: COUNTRY_META[l.origin].label,
-      listingPriceZMW: l.listingPrice !== '' ? toZMW(Number(l.listingPrice), l.currency, s) : null,
-      freightZMW: (Number(l.freightUSD) || 0) * s.usdToZmw,
-      inspectionZMW: (Number(l.inspectionUSD) || 0) * s.usdToZmw,
-      dutyZMW: l.dutyZMW,
-      totalLandedZMW: landedCostZMW(l, s),
-      mileageKm: l.mileageKm !== '' ? Number(l.mileageKm) : null,
-      trimTier: l.trimTier,
-      trimLabel: TRIM_LABELS[l.trimTier],
-    }));
+    .map((l) => {
+      const delta = deltas.find(d => d.listingId === l.id);
+      return {
+        description: l.description || `Listing from ${COUNTRY_META[l.origin].label}`,
+        origin: COUNTRY_META[l.origin].label,
+        listingPriceZMW: l.listingPrice !== '' ? toZMW(Number(l.listingPrice), l.currency, s) : null,
+        freightZMW: (Number(l.freightUSD) || 0) * s.usdToZmw,
+        inspectionZMW: (Number(l.inspectionUSD) || 0) * s.usdToZmw,
+        dutyZMW: l.dutyZMW,
+        totalLandedZMW: landedCostZMW(l, s),
+        mileageKm: l.mileageKm !== '' ? Number(l.mileageKm) : null,
+        trimTier: l.trimTier,
+        trimLabel: TRIM_LABELS[l.trimTier],
+        costDeltaZMW: delta?.costDeltaZMW,
+        rank: delta?.rank,
+      };
+    });
 
   if (payload.length < 1) return null;
 
@@ -389,7 +396,7 @@ async function fetchCompareInsight(
     const res = await fetch(getApiUrl('/api/compare-insight'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ listings: payload }),
+      body: JSON.stringify({ listings: payload, mode }),
     });
     if (!res.ok) return null;
     const data = await res.json();
@@ -766,8 +773,9 @@ export default function PriceComparison({
     if (scored.length < 1) { setAiInsight(null); return; }
 
     // Build a fingerprint of what the AI would see — only re-call if changed
-    const fingerprint = JSON.stringify(
-      scored.map((l) => ({
+    const fingerprint = JSON.stringify({
+      mode,
+      listings: scored.map((l) => ({
         d: l.description,
         o: l.origin,
         p: l.listingPrice,
@@ -777,21 +785,22 @@ export default function PriceComparison({
         f: l.freightUSD,
         i: l.inspectionUSD,
         duty: l.dutyZMW,
-      })),
-    );
+      }))
+    });
     if (fingerprint === lastAiPayload.current) return;
 
     if (aiDebounceRef.current) clearTimeout(aiDebounceRef.current);
     aiDebounceRef.current = setTimeout(async () => {
       lastAiPayload.current = fingerprint;
       setAiLoading(true);
-      const result = await fetchCompareInsight(listings, settings);
+      const currentDeltas = mode === 'compare' ? computeComparisonDeltas(listings, settings) : [];
+      const result = await fetchCompareInsight(listings, settings, mode, currentDeltas);
       setAiLoading(false);
       if (result) setAiInsight(result);
     }, 2200); // 2.2 s debounce — fires only after user stops editing
 
     return () => { if (aiDebounceRef.current) clearTimeout(aiDebounceRef.current); };
-  }, [listings, settings]);
+  }, [listings, settings, mode]);
 
   const updateListing = useCallback((id: string, patch: Partial<Listing>) => {
     setListings((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)));
