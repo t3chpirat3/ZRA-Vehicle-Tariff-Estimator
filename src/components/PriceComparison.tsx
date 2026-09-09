@@ -696,21 +696,43 @@ export default function PriceComparison({
 
   useEffect(() => {
     // Automatically assess listings when their inputs change
-    setAssessListings(prev => prev.map(l => {
-      const newScore = computeAbsoluteScore(l, settings);
-      if (!l.assessment && newScore) return { ...l, assessment: newScore };
-      if (l.assessment && !newScore) return { ...l, assessment: null };
-      if (l.assessment && newScore && l.assessment.totalScore !== newScore.totalScore) return { ...l, assessment: newScore };
-      return l;
-    }));
+    setAssessListings(prev => {
+      let changed = false;
+      const next = prev.map(l => {
+        const newScore = computeAbsoluteScore(l, settings);
+        if (!l.assessment && newScore) { changed = true; return { ...l, assessment: newScore }; }
+        if (l.assessment && !newScore) { changed = true; return { ...l, assessment: null }; }
+        if (l.assessment && newScore && (
+          l.assessment.totalScore !== newScore.totalScore ||
+          l.assessment.components.mileage !== newScore.components.mileage ||
+          l.assessment.components.cost !== newScore.components.cost ||
+          l.assessment.components.trim !== newScore.components.trim
+        )) { 
+          changed = true; return { ...l, assessment: newScore }; 
+        }
+        return l;
+      });
+      return changed ? next : prev;
+    });
     
-    setCompareListings(prev => prev.map(l => {
-      const newScore = computeAbsoluteScore(l, settings);
-      if (!l.assessment && newScore) return { ...l, assessment: newScore };
-      if (l.assessment && !newScore) return { ...l, assessment: null };
-      if (l.assessment && newScore && l.assessment.totalScore !== newScore.totalScore) return { ...l, assessment: newScore };
-      return l;
-    }));
+    setCompareListings(prev => {
+      let changed = false;
+      const next = prev.map(l => {
+        const newScore = computeAbsoluteScore(l, settings);
+        if (!l.assessment && newScore) { changed = true; return { ...l, assessment: newScore }; }
+        if (l.assessment && !newScore) { changed = true; return { ...l, assessment: null }; }
+        if (l.assessment && newScore && (
+          l.assessment.totalScore !== newScore.totalScore ||
+          l.assessment.components.mileage !== newScore.components.mileage ||
+          l.assessment.components.cost !== newScore.components.cost ||
+          l.assessment.components.trim !== newScore.components.trim
+        )) { 
+          changed = true; return { ...l, assessment: newScore }; 
+        }
+        return l;
+      });
+      return changed ? next : prev;
+    });
   }, [assessListings, compareListings, settings]);
 
   // ─── AI insight trigger (debounced, runs whenever listings or settings change) ─
