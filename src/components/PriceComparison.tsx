@@ -1156,7 +1156,7 @@ export default function PriceComparison({
                   <div className="flex items-center gap-2">
                     <span className="text-base">{meta.flag}</span>
                     <span className="text-[11px] font-extrabold text-[color:var(--text)] uppercase tracking-wide">
-                      Listing {idx + 1}
+                      {mode === 'assess' ? 'Vehicle Details' : `Listing ${idx + 1}`}
                     </span>
                     {isBest && (
                       <span className="text-[9px] font-extrabold text-[color:var(--primary-hover)] bg-[color:var(--surface)] border border-[color:var(--primary-border)] px-1.5 py-0.5 rounded-md uppercase tracking-wide">
@@ -1198,6 +1198,33 @@ export default function PriceComparison({
                         title="Save to Watchlist"
                       >
                         <Bookmark className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {mode === 'assess' && (
+                      <button
+                        onClick={() => {
+                          const copy: Listing = { ...l, id: `l-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` };
+                          setCompareListings(prev => {
+                            const emptyIndex = prev.findIndex(item => !item.description.trim() && item.listingPrice === '');
+                            if (emptyIndex !== -1) {
+                              const next = [...prev];
+                              next[emptyIndex] = copy;
+                              return next;
+                            }
+                            if (prev.length >= 6) {
+                              toast.error('Maximum of 6 comparisons allowed.');
+                              return prev;
+                            }
+                            return [...prev, copy];
+                          });
+                          setMode('compare');
+                          toast.success('Vehicle moved to Compare tab');
+                        }}
+                        className="text-[10px] font-bold text-[color:var(--primary)] bg-[color:var(--primary-soft)] hover:bg-[color:var(--primary)] hover:text-white transition-colors px-2.5 py-1 rounded-lg ml-1 flex items-center gap-1"
+                        title="Compare this vehicle"
+                      >
+                        <BarChart3 className="w-3 h-3" />
+                        Compare
                       </button>
                     )}
                     {listings.length > 1 && (
