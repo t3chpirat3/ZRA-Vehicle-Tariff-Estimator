@@ -265,28 +265,39 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number): Calcula
 }
 
 function computeScores(listings: Listing[], s: ComparisonSettings): Record<string, number | null> {
-  const costs    = listings.map((l) => landedCostZMW(l, s) ?? Infinity);
-  const mileages = listings.map((l) => (l.mileageKm !== '' ? Number(l.mileageKm) : Infinity));
-  const trims    = listings.map((l) => l.trimTier);
-
-  const validCosts = costs.filter((c) => c !== Infinity);
-  const validMiles = mileages.filter((m) => m !== Infinity);
-
-  const minCost = validCosts.length ? Math.min(...validCosts) : 0;
-  const maxCost = validCosts.length ? Math.max(...validCosts) : 0;
-  const minMile = validMiles.length ? Math.min(...validMiles) : 0;
-  const maxMile = validMiles.length ? Math.max(...validMiles) : 0;
-
   const result: Record<string, number | null> = {};
-  listings.forEach((l, i) => {
-    const cost = costs[i];
-    const mile = mileages[i];
-    if (cost === Infinity) { result[l.id] = null; return; }
-    const costScore = maxCost === minCost ? 50 : ((maxCost - cost) / (maxCost - minCost)) * 100;
-    const mileScore = mile === Infinity ? 50 : maxMile === minMile ? 50 : ((maxMile - mile) / (maxMile - minMile)) * 100;
-    const trimScore = ((trims[i] - 1) / 3) * 100;
-    result[l.id] = Math.round(costScore * 0.5 + mileScore * 0.3 + trimScore * 0.2);
+  
+  const getTrimScore = (trim: number) => {
+    if (trim === 1) return 40;
+    if (trim === 2) return 60;
+    if (trim === 3) return 80;
+    return 100;
+  };
+
+  const getMileScore = (mileageStr: string | number) => {
+    const m = Number(mileageStr);
+    if (!m) return 50; 
+    return Math.max(0, Math.min(100, 100 - (m / 150000) * 100));
+  };
+
+  const getAgeScore = (year: number | string) => {
+    const y = Number(year);
+    if (!y || y < 1990) return 50; 
+    const currentYear = new Date().getFullYear();
+    const age = Math.max(0, currentYear - y);
+    return Math.max(0, Math.min(100, 100 - (age / 15) * 100));
+  };
+
+  listings.forEach((l) => {
+    if ((landedCostZMW(l, s) ?? Infinity) === Infinity) { result[l.id] = null; return; }
+    
+    const trimScore = getTrimScore(l.trimTier);
+    const mileScore = getMileScore(l.mileageKm);
+    const ageScore = getAgeScore(l.year);
+
+    result[l.id] = Math.round(mileScore * 0.40 + ageScore * 0.35 + trimScore * 0.25);
   });
+  
   return result;
 }
 
@@ -1253,16 +1264,16 @@ export default function PriceComparison({
                     </div>
                   )}
 
-                  {/* Value Score */}
+                  {/* Spec & Condition */}
                   <div className="flex items-center justify-between pt-1">
                     <div className="flex items-center gap-1.5">
                       <TrendingUp className="w-3.5 h-3.5 text-[color:var(--text-muted)]" />
-                      <span className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase tracking-wide">Value Score</span>
+                      <span className="text-[10px] font-bold text-[color:var(--text-muted)] uppercase tracking-wide">Spec & Condition</span>
                       <div className="relative group">
                         <Info className="w-3 h-3 text-[color:var(--text-muted)] cursor-default" />
                         <div className="absolute bottom-full left-0 mb-1.5 hidden group-hover:block z-20 bg-slate-800 text-white text-[10px] font-medium px-3 py-2 rounded-xl whitespace-nowrap shadow-lg max-w-[240px] leading-relaxed">
-                          Cost (50%) + Mileage (30%) + Trim (20%).<br />
-                          Relative score across all listings.
+                          Mileage (40%) + Age (35%) + Trim (25%).<br />
+                          Absolute score independent of price.
                         </div>
                       </div>
                     </div>
@@ -1320,7 +1331,7 @@ export default function PriceComparison({
                       sortBy === opt ? 'bw-active' : 'text-[color:var(--text-muted)] hover:text-[color:var(--text)] hover:bg-[color:var(--surface-soft)]'
                     }`}
                   >
-                    {opt === 'score' ? 'Value' : opt === 'cost' ? 'Price' : 'Mileage'}
+                    {opt === 'score' ? 'Quality' : opt === 'cost' ? 'Price' : 'Mileage'}
                   </button>
                 ))}
               </div>
@@ -1536,7 +1547,7 @@ export default function PriceComparison({
                         ))}
                       </tr>
                       <tr className="hover:bg-[color:var(--surface-soft)] transition-colors">
-                        <td className="px-4 py-3 font-bold text-[color:var(--text)]">Value Score</td>
+                        <td className="px-4 py-3 font-bold text-[color:var(--text)]">Spec & Condition</td>
                         {listings.map((l) => (
                           <td key={l.id} className="px-4 py-3 text-right">
                             <span className={`font-extrabold ${
