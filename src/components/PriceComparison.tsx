@@ -115,11 +115,14 @@ interface AIInsight {
 
 const SAVED_COMPARISONS_KEY = 'zra_saved_comparisons_v1';
 
+type ComparisonMode = 'assess' | 'compare';
+
 interface SavedComparison {
   id: string;
   name: string;
   savedAt: string;
   listings: Listing[];
+  mode?: ComparisonMode;
 }
 
 // ─── Country defaults ───────────────────────────────────────────────────────
@@ -518,7 +521,6 @@ export default function PriceComparison({
   onSaveToWatchlist,
   clearImportedListing
 }: PriceComparisonProps = {}) {
-  type ComparisonMode = 'assess' | 'compare';
   const [mode, setMode] = useState<ComparisonMode>('assess');
   const [assessListings, setAssessListings] = useState<Listing[]>([newListing('japan')]);
   const [compareListings, setCompareListings] = useState<Listing[]>([newListing('japan'), newListing('southafrica')]);
@@ -551,7 +553,7 @@ export default function PriceComparison({
   }, []);
 
   const handleSaveComparison = () => {
-    const name = window.prompt('Enter a name for this comparison:');
+    const name = window.prompt('Enter a name for this save:');
     if (!name) return;
     
     const newSaved: SavedComparison = {
@@ -559,6 +561,7 @@ export default function PriceComparison({
       name,
       savedAt: new Date().toISOString(),
       listings,
+      mode,
     };
     
     const updated = [newSaved, ...savedComparisons];
@@ -566,13 +569,26 @@ export default function PriceComparison({
     localStorage.setItem(SAVED_COMPARISONS_KEY, JSON.stringify(updated));
     posthog.capture('comparison_saved', {
       listing_count: listings.length,
+      mode,
       completed_listing_count: listings.filter((listing) => landedCostZMW(listing, settings) !== null).length,
     });
-    toast.success('Comparison saved successfully!');
+    toast.success('Saved successfully!');
   };
 
   const loadComparison = (comp: SavedComparison) => {
-    setListings(comp.listings);
+    if (comp.mode) setMode(comp.mode);
+    // Legacy saves default to 'compare' mode if multiple listings
+    else if (comp.listings.length > 1) setMode('compare');
+    else setMode('assess');
+    
+    // We update the active array directly via the alias `setListings` 
+    // but the mode state might batch update, so let's be explicit just in case
+    if (comp.mode === 'assess' || (!comp.mode && comp.listings.length <= 1)) {
+      setAssessListings(comp.listings);
+    } else {
+      setCompareListings(comp.listings);
+    }
+    
     setShowSavedMenu(false);
     toast.success(`Loaded "${comp.name}"`);
   };
@@ -604,6 +620,9 @@ export default function PriceComparison({
       }
       
       setListings(prev => {
+        if (mode === 'assess') {
+          return [newL];
+        }
         const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
         if (emptyIndex !== -1) {
           const next = [...prev];
@@ -638,6 +657,9 @@ export default function PriceComparison({
       newL.inspectionUSD = 0;
     }
     setListings(prev => {
+      if (mode === 'assess') {
+        return [newL];
+      }
       const emptyIndex = prev.findIndex(l => !l.description.trim() && l.listingPrice === '' && l.mileageKm === '');
       if (emptyIndex !== -1) {
         const next = [...prev];
@@ -776,6 +798,7 @@ export default function PriceComparison({
   }, []);
 
   const addListing = () => {
+    if (mode === 'assess') return;
     if (listings.length >= 6) return;
     setListings((prev) => [...prev, newListing()]);
   };
@@ -1016,14 +1039,16 @@ export default function PriceComparison({
             </AnimatePresence>
           </div>
 
-          <button
-            onClick={addListing}
-            disabled={listings.length >= 6}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-extrabold btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Add Listing
-          </button>
+          {mode === 'compare' && (
+            <button
+              onClick={addListing}
+              disabled={listings.length >= 6}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-extrabold btn-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add Listing
+            </button>
+          )}
         </div>
         </div>
       </div>
@@ -1435,7 +1460,7 @@ export default function PriceComparison({
         </AnimatePresence>
 
         {/* Placeholder add-card */}
-        {listings.length < 6 && (
+        {mode === 'compare' && listings.length < 6 && (
           <motion.button
             layout
             onClick={addListing}
@@ -1727,7 +1752,7 @@ export default function PriceComparison({
 
       {/* ── Sticky Action Bar ── */}
       <AnimatePresence>
-        {listings.length >= 2 && (
+        {mode === 'compare' && listings.length >= 2 && (
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
