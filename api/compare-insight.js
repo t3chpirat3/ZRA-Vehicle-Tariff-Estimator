@@ -7,7 +7,7 @@ const kv = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
 });
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 
 const SYSTEM_PROMPT = `You are a sharp, practical used-car import adviser for buyers in Zambia.
 You understand the total cost of importing vehicles from Japan, Singapore, UAE, South Africa, and the UK — including shipping, JEVIC/ATJ/EAA inspection fees, ZRA customs duty, and RTSA registration.
@@ -141,7 +141,7 @@ export default async function handler(req, res) {
         temperature: 0.4,
         maxOutputTokens: 1024,
         thinkingConfig: {
-          thinkingBudget: 0,
+          thinkingLevel: 'minimal',
         },
       },
     });

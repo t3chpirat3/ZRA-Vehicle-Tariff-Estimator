@@ -7,7 +7,7 @@ const kv = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN,
 });
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 
 const SYSTEM_PROMPT = `You are a friendly, knowledgeable car-buying adviser for the Zambian used-import market.
 You speak plainly to ordinary buyers (assume non-technical), and you understand Japanese-import culture, parts availability, and what "repairability" means to a Zambian owner (how easy it is to find parts and a mechanic who knows the engine).
@@ -115,7 +115,7 @@ export default async function handler(req, res) {
         temperature: 0.5,
         maxOutputTokens: 1024,
         thinkingConfig: {
-          thinkingBudget: 0,
+          thinkingLevel: 'minimal',
         },
       },
     });

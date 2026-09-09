@@ -2,7 +2,7 @@ import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 import { GoogleGenAI } from '@google/genai';
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 
 const kv = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
@@ -249,7 +249,7 @@ You must output in JSON format matching this schema:
         responseMimeType: 'application/json',
         temperature: 0.1,
         thinkingConfig: {
-          thinkingBudget: 0,
+          thinkingLevel: 'minimal',
         },
       },
     });
