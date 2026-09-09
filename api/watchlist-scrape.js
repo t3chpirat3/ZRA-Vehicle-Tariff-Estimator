@@ -248,10 +248,31 @@ You must output in JSON format matching this schema:
         systemInstruction: 'You are a helpful assistant. You must always output valid JSON.',
         responseMimeType: 'application/json',
         temperature: 0.1,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     });
 
-    const parsed = JSON.parse(aiResult.text);
+    const raw = aiResult.text;
+    if (!raw) {
+      console.error('Empty response from Gemini in watchlist-scrape');
+      return res.status(500).json({ 
+        error: 'Failed to extract listing metadata',
+        details: 'Empty response from Gemini'
+      });
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      console.error('JSON parse error from Gemini in watchlist-scrape:', raw);
+      return res.status(500).json({
+        error: 'Failed to extract listing metadata',
+        details: `JSON parse error: ${e.message}. Raw: ${raw.slice(0, 100)}`
+      });
+    }
 
     if (checkOnly) {
       return res.status(200).json({
@@ -283,7 +304,10 @@ You must output in JSON format matching this schema:
     });
 
   } catch (err) {
-    console.error("API error:", err);
-    return res.status(500).json({ error: 'Failed to process listing. Please try again.' });
+    console.error("API error in watchlist-scrape:", err);
+    return res.status(500).json({ 
+      error: 'Failed to process listing. Please try again.',
+      details: err?.message || String(err)
+    });
   }
 }

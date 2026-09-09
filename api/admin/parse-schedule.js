@@ -123,7 +123,10 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('Server configuration error: Missing GEMINI_API_KEY');
-    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({ 
+      error: 'Something went wrong. Please try again later.',
+      details: 'Missing GEMINI_API_KEY env var'
+    });
   }
 
   try {
@@ -137,6 +140,9 @@ export default async function handler(req, res) {
         responseMimeType: 'application/json',
         temperature: 0.1,
         maxOutputTokens: 8192,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     });
 
@@ -144,7 +150,10 @@ export default async function handler(req, res) {
 
     if (!raw) {
       console.error('[ParseSchedule] Empty response from Gemini');
-      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+      return res.status(500).json({ 
+        error: 'Something went wrong. Please try again later.',
+        details: 'Empty response from Gemini'
+      });
     }
 
     let parsed;
@@ -152,7 +161,10 @@ export default async function handler(req, res) {
       parsed = JSON.parse(raw);
     } catch (parseErr) {
       console.error('[ParseSchedule] Failed to parse Gemini JSON response:', raw);
-      return res.status(500).json({ error: 'Failed to parse AI response. Please try again.' });
+      return res.status(500).json({ 
+        error: 'Failed to parse AI response. Please try again.',
+        details: `JSON parse error: ${parseErr.message}. Raw: ${raw.slice(0, 100)}`
+      });
     }
 
     // Handle explicit error from LLM
@@ -182,6 +194,9 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('[FatalError] Parse schedule error:', error);
-    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({ 
+      error: 'Something went wrong. Please try again later.',
+      details: error?.message || String(error)
+    });
   }
 }

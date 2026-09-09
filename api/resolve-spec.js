@@ -165,7 +165,10 @@ export default async function handler(req, res) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('Server configuration error: Missing GEMINI_API_KEY');
-    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({ 
+      error: 'Something went wrong. Please try again later.',
+      details: 'Missing GEMINI_API_KEY env var'
+    });
   }
 
   try {
@@ -178,17 +181,32 @@ export default async function handler(req, res) {
         systemInstruction: SYSTEM_PROMPT,
         responseMimeType: 'application/json',
         temperature: 0.1,
-        maxOutputTokens: 512,
+        maxOutputTokens: 1024,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     });
 
     const raw = response.text;
     if (!raw) {
       console.error('Empty response from Gemini resolver');
-      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+      return res.status(500).json({ 
+        error: 'Something went wrong. Please try again later.',
+        details: 'Empty response from Gemini'
+      });
     }
 
-    const parsed = JSON.parse(raw);
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      console.error('JSON parse error from Gemini resolver:', raw);
+      return res.status(500).json({
+        error: 'Something went wrong. Please try again later.',
+        details: `JSON parse error: ${e.message}. Raw: ${raw.slice(0, 100)}`
+      });
+    }
     
     // Explicit error returned by LLM
     if (parsed.error) {
@@ -209,8 +227,11 @@ export default async function handler(req, res) {
       ['high', 'medium', 'low'].includes(confidence);
 
     if (!isValidSchema) {
-      console.error(`[SchemaValidation] Invalid LLM response schema for query from IP: ${ip}`);
-      return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+      console.error(`[SchemaValidation] Invalid LLM response schema for query from IP: ${ip}`, parsed);
+      return res.status(500).json({ 
+        error: 'Something went wrong. Please try again later.',
+        details: `Invalid schema returned by LLM: ${JSON.stringify(parsed)}`
+      });
     }
 
     const safeStr = (s) => (typeof s === 'string' ? s.slice(0, 100).trim() : '');
@@ -230,6 +251,9 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error(`[FatalError] Gemini API Error in resolve-spec:`, error);
-    return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+    return res.status(500).json({ 
+      error: 'Something went wrong. Please try again later.',
+      details: error?.message || String(error)
+    });
   }
 }
