@@ -179,9 +179,6 @@ export default async function handler(req, res) {
         responseMimeType: 'application/json',
         temperature: 0.1,
         maxOutputTokens: 1024,
-        thinkingConfig: {
-          thinkingLevel: 'minimal',
-        },
       },
     });
 
@@ -238,7 +235,8 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error(`[FatalError] Gemini API Error in resolve-spec:`, error);
+    const errMsg = error?.message || String(error);
+    console.error(`[FatalError] Gemini API Error in resolve-spec: ${errMsg}`);
     return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
   }
 }

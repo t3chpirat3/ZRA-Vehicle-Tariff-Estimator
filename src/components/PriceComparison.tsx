@@ -300,8 +300,9 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number, manualYe
 }
 
 function computeAbsoluteScore(l: Listing, s: ComparisonSettings): AssessedResult | null {
-  const landed = landedCostZMW(l, s);
-  if (landed === null) return null;
+  // Score can be computed even without a price — only requires at least one meaningful input
+  const hasMeaningfulInput = l.mileageKm !== '' || l.year !== '' || l.resolvedSpecs !== null;
+  if (!hasMeaningfulInput) return null;
 
   const getTrimScore = (trim: number) => {
     if (trim === 1) return 40;
@@ -316,8 +317,6 @@ function computeAbsoluteScore(l: Listing, s: ComparisonSettings): AssessedResult
     return Math.max(0, Math.min(100, 100 - (m / 150000) * 100));
   };
 
-  // We are retaining getAgeScore as the stand-in for the "patched getCostScore" the user mentioned, 
-  // since cost is highly context-dependent and they want an absolute measure.
   const getAgeScore = (year: number | string) => {
     const y = Number(year);
     if (!y || y < 1990) return 50; 
