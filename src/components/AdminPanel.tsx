@@ -18,6 +18,7 @@ import FxOverrideManager from './admin/FxOverrideManager';
 import TaxRatesManager from './admin/TaxRatesManager';
 import AgentsManager from './admin/AgentsManager';
 import InlandRatesManager from './admin/InlandRatesManager';
+import TpaManager from './admin/TpaManager';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function formatDateForInput(isoString: string): string {
@@ -49,7 +50,7 @@ export default function AdminPanel() {
   const [parsedResults, setParsedResults] = useState<Partial<VesselSchedule>[]>([]);
   const [parseError, setParseError] = useState('');
 
-  const [activeTab, setActiveTab] = useState<'schedules' | 'directories' | 'fx' | 'tax' | 'agents' | 'inland'>('schedules');
+  const [activeTab, setActiveTab] = useState<'schedules' | 'directories' | 'fx' | 'tax' | 'agents' | 'inland' | 'tpa'>('schedules');
 
   // ── Auth ─────────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -375,6 +376,12 @@ export default function AdminPanel() {
         >
           Inland Logistics
         </button>
+        <button
+          onClick={() => setActiveTab('tpa')}
+          className={`px-6 py-3 text-sm font-bold border-b-2 transition-colors ${activeTab === 'tpa' ? 'border-[color:var(--primary)] text-[color:var(--primary)]' : 'border-transparent text-slate-500 hover:text-[color:var(--text-muted)]'}`}
+        >
+          TPA Daily List
+        </button>
       </div>
 
       {activeTab === 'directories' ? (
@@ -387,6 +394,8 @@ export default function AdminPanel() {
         <AgentsManager />
       ) : activeTab === 'inland' ? (
         <InlandRatesManager />
+      ) : activeTab === 'tpa' ? (
+        <TpaManager apiFetch={apiFetch} />
       ) : (
         <div className="space-y-8 animate-fadeIn">
           {/* Schedule Manager */}

@@ -28,7 +28,9 @@ import {
   Loader2,
   Compass,
   Container,
+  ClipboardList,
 } from 'lucide-react';
+import TpaShippingList from './TpaShippingList';
 import {
   VesselSchedule,
   SHIPPING_ROUTES,
@@ -381,7 +383,7 @@ function ForwarderCard({ forwarder }: { forwarder: FreightForwarder; key?: React
 
 // ── Main Component ─────────────────────────────────────────────────────────────
 
-type ActiveSection = 'schedules' | 'routes' | 'ports' | 'guide' | 'directory';
+type ActiveSection = 'schedules' | 'routes' | 'ports' | 'guide' | 'directory' | 'tpa-list';
 
 export default function ShippingSchedule() {
   const [activeSection, setActiveSection] = useState<ActiveSection>('schedules');
@@ -432,6 +434,7 @@ export default function ShippingSchedule() {
     { id: 'ports', label: 'Ports', icon: <Anchor className="w-4 h-4" /> },
     { id: 'guide', label: 'Own Shipping', icon: <Compass className="w-4 h-4" /> },
     { id: 'directory', label: 'Agents & Forwarders', icon: <Container className="w-4 h-4" /> },
+    { id: 'tpa-list', label: 'TPA Daily List', icon: <ClipboardList className="w-4 h-4" /> },
   ];
 
   return (
@@ -681,6 +684,13 @@ export default function ShippingSchedule() {
               Always conduct your own due diligence and get references before committing to any shipping arrangement.
             </span>
           </div>
+        </div>
+      )}
+
+      {/* ── Section: TPA Daily List ───────────────────────────────────────── */}
+      {activeSection === 'tpa-list' && (
+        <div className="animate-fadeIn">
+          <TpaShippingList />
         </div>
       )}
     </div>
