@@ -370,7 +370,16 @@ async function silentResolveSpecs(description: string): Promise<SilentSpecs> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query: description }),
   });
-  if (!res.ok) throw new Error(`${res.status}`);
+  
+  if (!res.ok) {
+    let msg = `API Error ${res.status}`;
+    try {
+      const errData = await res.json();
+      if (errData.error) msg = errData.error;
+    } catch {}
+    throw new Error(msg);
+  }
+  
   const data = await res.json();
   if (data.error) throw new Error(data.error);
   return { engineCC: data.engineCC, bodyType: data.bodyType, fuelType: data.fuelType, ageBracket: data.ageBracket, confidence: data.confidence };
@@ -878,8 +887,9 @@ export default function PriceComparison({
             dutyZMW = result?.total ?? null;
           }
           updateListing(id, { specStatus: 'resolved', resolvedSpecs: specs, dutyZMW });
-        } catch (err) {
+        } catch (err: any) {
           console.error("Spec resolution failed:", err);
+          toast.error(err.message || 'Failed to resolve specs');
           updateListing(id, { specStatus: 'error', resolvedSpecs: null });
         }
       }, 500);
