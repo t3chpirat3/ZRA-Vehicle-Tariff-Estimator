@@ -285,12 +285,12 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number, manualYe
     cat,
     type,
     fuel: specs.fuelType as FuelType,
-    busFuel: '',
+    busFuel: specs.fuelType as FuelType,
     engine: ccToEngineBucket(specs.engineCC),
     cifEngine: String(specs.engineCC),
-    weight: '',
-    seats: '',
-    vdp: '',
+    weight: '3', // Default 3 tonnes for trucks
+    seats: '16', // Default 16 seats for buses
+    vdp: '0-250', // Default 0-250cc for motorcycles
     cifUSD,
     fx,
     hpCC: '',
@@ -878,7 +878,8 @@ export default function PriceComparison({
             dutyZMW = result?.total ?? null;
           }
           updateListing(id, { specStatus: 'resolved', resolvedSpecs: specs, dutyZMW });
-        } catch {
+        } catch (err) {
+          console.error("Spec resolution failed:", err);
           updateListing(id, { specStatus: 'error', resolvedSpecs: null });
         }
       }, 500);
