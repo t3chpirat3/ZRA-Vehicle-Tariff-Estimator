@@ -252,7 +252,7 @@ function landedCostZMW(l: Listing, s: ComparisonSettings): number | null {
   return priceZMW + freightZMW + inspZMW + dutyZMW + rtsaZMW;
 }
 
-function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number): CalculatorState {
+function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number, manualYear?: number | string): CalculatorState {
   const ccToEngineBucket = (cc: number): string => {
     if (cc <= 1000) return '1000';
     if (cc <= 1500) return '1500';
@@ -268,8 +268,20 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number): Calcula
     specs.bodyType === 'truck' ? 'double-cab' :
     (specs.bodyType === 'motorcycle' || specs.bodyType === 'bus') ? '' :
     specs.bodyType as MotorCarType;
+
+  let finalAgeBracket = specs.ageBracket as VehicleAge;
+  if (manualYear) {
+    const y = Number(manualYear);
+    if (y && y >= 1990) {
+      const age = new Date().getFullYear() - y;
+      if (age < 2) finalAgeBracket = '0-2';
+      else if (age < 5) finalAgeBracket = '2-5';
+      else finalAgeBracket = '5+';
+    }
+  }
+
   return {
-    age: specs.ageBracket as VehicleAge,
+    age: finalAgeBracket,
     cat,
     type,
     fuel: specs.fuelType as FuelType,
@@ -802,9 +814,9 @@ export default function PriceComparison({
     return () => { if (aiDebounceRef.current) clearTimeout(aiDebounceRef.current); };
   }, [listings, settings, mode]);
 
-  const updateListing = useCallback((id: string, patch: Partial<Listing>) => {
+  const updateListing = (id: string, patch: Partial<Listing>) => {
     setListings((prev) => prev.map((l) => (l.id === id ? { ...l, ...patch } : l)));
-  }, []);
+  };
 
   const addListing = () => {
     if (mode === 'assess') return;
@@ -836,7 +848,7 @@ export default function PriceComparison({
       const freightUSD = Number(l.freightUSD) || 0;
       const inspUSD    = Number(l.inspectionUSD) || 0;
       const cifUSD     = priceUSD + freightUSD + inspUSD;
-      const calcState  = buildCalcState(l.resolvedSpecs, cifUSD, settings.usdToZmw);
+      const calcState  = buildCalcState(l.resolvedSpecs, cifUSD, settings.usdToZmw, l.year);
       const result     = calculateDuty(calcState);
       updateListing(id, { dutyZMW: result?.total ?? null });
     },
@@ -861,7 +873,7 @@ export default function PriceComparison({
             const freightUSD = Number(l.freightUSD) || 0;
             const inspUSD    = Number(l.inspectionUSD) || 0;
             const cifUSD     = priceUSD + freightUSD + inspUSD;
-            const calcState  = buildCalcState(specs, cifUSD, settings.usdToZmw);
+            const calcState  = buildCalcState(specs, cifUSD, settings.usdToZmw, l.year);
             const result     = calculateDuty(calcState);
             dutyZMW = result?.total ?? null;
           }
@@ -1356,7 +1368,12 @@ export default function PriceComparison({
                         max={new Date().getFullYear()}
                         value={l.year}
                         placeholder="e.g. 2014"
-                        onChange={(e) => updateListing(l.id, { year: e.target.value === '' ? '' : parseInt(e.target.value) })}
+                        onChange={(e) => {
+                          const patch = { year: e.target.value === '' ? '' : parseInt(e.target.value) };
+                          updateListing(l.id, patch);
+                          const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
+                          recomputeDuty(l.id, nextListings);
+                        }}
                         className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-bold outline-none focus:ring-2 focus:ring-[color:var(--primary)] bg-[color:var(--surface-soft)] text-[color:var(--text)] placeholder:text-slate-400"
                       />
                     </div>
