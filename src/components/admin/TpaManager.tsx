@@ -152,7 +152,7 @@ export default function TpaManager({ apiFetch }: TpaManagerProps) {
     if (!payload) return;
     setPublishing(true);
     try {
-      const res = await apiFetch('/api/admin/tpa-shipping', {
+      const res = await apiFetch('/api/tpa-shipping', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
@@ -175,7 +175,7 @@ export default function TpaManager({ apiFetch }: TpaManagerProps) {
   const handleClearLatest = async () => {
     if (!confirm('Remove the current "latest" TPA payload from KV? The date-specific archive copy will remain.')) return;
     try {
-      const res = await apiFetch('/api/admin/tpa-shipping', { method: 'DELETE', body: JSON.stringify({}) });
+      const res = await apiFetch('/api/tpa-shipping', { method: 'DELETE', body: JSON.stringify({}) });
       if (!res.ok) throw new Error((await res.json()).error);
       setPublished(null);
       toast.success('Latest TPA payload cleared');
