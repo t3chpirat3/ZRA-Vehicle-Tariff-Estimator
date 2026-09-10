@@ -692,18 +692,18 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
   };
 
   // Custom datasets mapping
-  const motorCarTypes: { v: MotorCarType; l: string }[] = [
-    { v: 'sedan', l: 'Sedan' },
-    { v: 'hatchback', l: 'Hatchback' },
-    { v: 'station', l: 'Station Wagon' },
-    { v: 'suv', l: 'SUV / 4x4' },
+  const motorCarTypes: { v: MotorCarType; l: string; hint: string }[] = [
+    { v: 'sedan', l: 'Sedan', hint: 'Corolla, Civic, Camry' },
+    { v: 'hatchback', l: 'Hatchback', hint: 'Fit, Swift, Yaris, Polo' },
+    { v: 'station', l: 'Station Wagon', hint: 'Fielder, Allion, Runx' },
+    { v: 'suv', l: 'Enclosed SUV', hint: 'Fortuner, Prado, Rav4, CRV' },
   ];
 
-  const goodsVehicleTypes: { v: GoodsVehicleType; l: string }[] = [
-    { v: 'single-cab', l: 'Single Cab' },
-    { v: 'double-cab', l: 'Double Cab' },
-    { v: 'panel-van', l: 'Panel Van' },
-    { v: 'truck', l: 'Truck' },
+  const goodsVehicleTypes: { v: GoodsVehicleType; l: string; hint: string }[] = [
+    { v: 'single-cab', l: 'Single Cab', hint: 'Hilux S/C, D-Max S/C' },
+    { v: 'double-cab', l: 'Double Cab', hint: 'Hilux, Ranger, Navara, D-Max' },
+    { v: 'panel-van', l: 'Panel Van', hint: 'Hiace Van, Transit, NV350' },
+    { v: 'truck', l: 'Large Truck / Lorry', hint: 'Tipper, flatbed, cargo trucks' },
   ];
 
   const motorcycleVDPOptions =
@@ -935,13 +935,13 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
             <SpecResolver onSpecsResolved={handleSpecsResolved} />
 
             <div className="text-center">
-              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'What type of vehicle is it?'}</h3>
-              <p className="text-xs text-slate-500 font-medium font-sans">{'Not sure which one fits? Use the Spec Resolver below.'}</p>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'How is your vehicle classified?'}</h3>
+              <p className="text-xs text-slate-500 font-medium font-sans">{'Pick the ZRA category that matches your vehicle — Hilux, Ranger, D-Max = Pickup / Bakkie.'}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
               {[
-                { id: 'motor-car', label: 'Car / SUV', icon: Car, hint: 'Sedan, hatchback, SUV, 4×4' },
-                { id: 'goods-vehicle', label: 'Pickup / Truck', icon: Truck, hint: 'Hilux, D-Max, cargo trucks' },
+                { id: 'motor-car', label: 'Car / Enclosed SUV', icon: Car, hint: 'Sedan, hatchback, Prado, Fortuner, Rav4' },
+                { id: 'goods-vehicle', label: 'Pickup / Bakkie', icon: Truck, hint: 'Hilux, Ranger, D-Max, Navara, L200' },
                 { id: 'bus', label: 'Bus / Minibus', icon: Users, hint: 'Coaster, Rosa, passenger buses' },
                 { id: 'motorcycle', label: 'Motorcycle / Scooter', icon: Compass, hint: 'Bikes, scooters, two-wheelers' },
               ].map((opt) => {
@@ -977,8 +977,14 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
         return (
           <div className="w-full flex flex-col justify-center max-w-md mx-auto space-y-4">
             <div className="text-center">
-              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">{'Select vehicle body style'}</h3>
-              <p className="text-xs text-slate-500 font-medium">{'Choose the one that best describes the shape of your vehicle.'}</p>
+              <h3 className="font-extrabold text-[color:var(--text)] text-base md:text-lg">
+                {state.cat === 'goods-vehicle' ? 'What cab / body style is it?' : 'Select vehicle body style'}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium">
+                {state.cat === 'goods-vehicle'
+                  ? 'Most pickups/bakkies are Double Cab. Single Cab has one row of seats.'
+                  : 'Choose the one that best describes the shape of your vehicle.'}
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-3 py-2">
               {listTypes.map((opt) => {
@@ -988,13 +994,16 @@ export default function Calculator({ onSaveToWatchlist, onNavigate }: Calculator
                     key={opt.v}
                     type="button"
                     onClick={() => selectType(opt.v)}
-                    className={`p-3.5 border rounded-2xl font-bold font-sans text-xs transition-all cursor-pointer text-center flex items-center justify-center ${
+                    className={`p-3.5 border rounded-2xl font-sans text-xs transition-all cursor-pointer text-left flex flex-col gap-0.5 ${
                       isSelected
                         ? 'bw-active'
                         : 'border-[color:var(--border)] bg-[color:var(--surface-soft)] hover:border-[color:var(--border-strong)] hover:bg-[color:var(--surface-soft)] text-[color:var(--text-muted)]'
                     }`}
                   >
-                    {opt.l}
+                    <span className="font-bold leading-tight">{opt.l}</span>
+                    <span className={`text-[10px] leading-tight ${isSelected ? 'text-[color:var(--primary-hover)]' : 'text-slate-400'}`}>
+                      {opt.hint}
+                    </span>
                   </button>
                 );
               })}
