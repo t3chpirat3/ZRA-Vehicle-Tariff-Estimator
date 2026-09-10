@@ -285,7 +285,7 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number, manualYe
     cat,
     type,
     fuel: specs.fuelType as FuelType,
-    busFuel: specs.fuelType as FuelType,
+    busFuel: (specs.bodyType === 'bus' && specs.fuelType === 'diesel') ? 'gas-diesel' as FuelType : specs.fuelType as FuelType,
     engine: ccToEngineBucket(specs.engineCC),
     cifEngine: String(specs.engineCC),
     weight: '3', // Default 3 tonnes for trucks
