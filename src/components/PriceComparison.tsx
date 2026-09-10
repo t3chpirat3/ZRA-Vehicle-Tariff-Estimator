@@ -843,8 +843,8 @@ export default function PriceComparison({
     (id: string, patchedListings?: Listing[]) => {
       const source = patchedListings ?? listingsRef.current;
       const l = source.find((ll) => ll.id === id);
-      if (!l || !l.resolvedSpecs || l.listingPrice === '') return;
-      const priceUSD   = toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw;
+      if (!l || !l.resolvedSpecs) return;
+      const priceUSD   = l.listingPrice !== '' ? toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw : 0;
       const freightUSD = Number(l.freightUSD) || 0;
       const inspUSD    = Number(l.inspectionUSD) || 0;
       const cifUSD     = priceUSD + freightUSD + inspUSD;
@@ -868,8 +868,8 @@ export default function PriceComparison({
           const currentListings = listingsRef.current;
           const l = currentListings.find((ll) => ll.id === id);
           let dutyZMW: number | null = null;
-          if (l && l.listingPrice !== '') {
-            const priceUSD   = toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw;
+          if (l) {
+            const priceUSD   = l.listingPrice !== '' ? toZMW(Number(l.listingPrice), l.currency, settings) / settings.usdToZmw : 0;
             const freightUSD = Number(l.freightUSD) || 0;
             const inspUSD    = Number(l.inspectionUSD) || 0;
             const cifUSD     = priceUSD + freightUSD + inspUSD;
@@ -1273,7 +1273,7 @@ export default function PriceComparison({
                       type="text"
                       value={l.description}
                       placeholder="e.g. 2014 Toyota RAV4 2.0 GX Petrol"
-                      maxLength={120}
+                      maxLength={100}
                       onChange={(e) => updateListing(l.id, { description: e.target.value, specStatus: 'idle', resolvedSpecs: null, dutyZMW: null })}
                       onBlur={(e) => handleDescriptionBlur(l.id, e.target.value)}
                       className="w-full border border-[color:var(--border-strong)] rounded-xl px-3 py-2 text-xs font-medium outline-none focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] bg-[color:var(--surface-soft)] placeholder:text-slate-400 text-[color:var(--text)]"
