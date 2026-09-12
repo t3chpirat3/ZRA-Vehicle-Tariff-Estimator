@@ -130,7 +130,7 @@ function flagEmoji(flag: string): string {
 
 // ── Vessel Card ────────────────────────────────────────────────────────────
 
-function VesselCard({ vessel }: { vessel: VesselPosition }) {
+function VesselCard({ vessel, key }: { vessel: VesselPosition; key?: React.Key }) {
   const isLive = vessel.status === 'live';
 
   return (

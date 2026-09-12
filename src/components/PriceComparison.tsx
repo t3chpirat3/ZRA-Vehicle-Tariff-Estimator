@@ -285,7 +285,7 @@ function buildCalcState(specs: SilentSpecs, cifUSD: number, fx: number, manualYe
     cat,
     type,
     fuel: specs.fuelType as FuelType,
-    busFuel: (specs.bodyType === 'bus' && specs.fuelType === 'diesel') ? 'gas-diesel' as FuelType : specs.fuelType as FuelType,
+    busFuel: (specs.bodyType === 'bus' && specs.fuelType === 'diesel') ? 'gas-diesel' as any : specs.fuelType as any,
     engine: ccToEngineBucket(specs.engineCC),
     cifEngine: String(specs.engineCC),
     weight: '3', // Default 3 tonnes for trucks
@@ -1347,7 +1347,7 @@ export default function PriceComparison({
                         value={l.listingPrice}
                         placeholder="0"
                         onChange={(e) => {
-                          const patch = { listingPrice: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          const patch = { listingPrice: (e.target.value === '' ? '' : parseFloat(e.target.value)) as number | "" };
                           updateListing(l.id, patch);
                           const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
                           recomputeDuty(l.id, nextListings);
@@ -1379,7 +1379,7 @@ export default function PriceComparison({
                         value={l.year}
                         placeholder="e.g. 2014"
                         onChange={(e) => {
-                          const patch = { year: e.target.value === '' ? '' : parseInt(e.target.value) };
+                          const patch = { year: (e.target.value === '' ? '' : parseInt(e.target.value)) as number | "" };
                           updateListing(l.id, patch);
                           const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
                           recomputeDuty(l.id, nextListings);
@@ -1413,7 +1413,7 @@ export default function PriceComparison({
                         placeholder="0"
                         disabled={l.currency === 'ZMW'}
                         onChange={(e) => {
-                          const patch = { freightUSD: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          const patch = { freightUSD: (e.target.value === '' ? '' : parseFloat(e.target.value)) as number | "" };
                           updateListing(l.id, patch);
                           const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
                           recomputeDuty(l.id, nextListings);
@@ -1430,7 +1430,7 @@ export default function PriceComparison({
                         placeholder="0"
                         disabled={l.currency === 'ZMW'}
                         onChange={(e) => {
-                          const patch = { inspectionUSD: e.target.value === '' ? '' : parseFloat(e.target.value) };
+                          const patch = { inspectionUSD: (e.target.value === '' ? '' : parseFloat(e.target.value)) as number | "" };
                           updateListing(l.id, patch);
                           const nextListings = listings.map(listing => listing.id === l.id ? { ...listing, ...patch } : listing);
                           recomputeDuty(l.id, nextListings);
@@ -1787,20 +1787,6 @@ export default function PriceComparison({
                           <td key={l.id} className="px-4 py-3 text-right">
                             <span className="font-bold text-[color:var(--text)]">
                               {l.mileageKm !== '' ? `${Number(l.mileageKm).toLocaleString()} km` : '—'}
-                            </span>
-                          </td>
-                        ))}
-                      </tr>
-                      <tr className="hover:bg-[color:var(--surface-soft)] transition-colors">
-                        <td className="px-4 py-3 font-bold text-[color:var(--text)]">Spec & Condition</td>
-                        {listings.map((l) => (
-                          <td key={l.id} className="px-4 py-3 text-right">
-                            <span className={`font-extrabold ${
-                              scores[l.id] !== null && scores[l.id]! >= 70 ? 'text-emerald-600' :
-                              scores[l.id] !== null && scores[l.id]! >= 45 ? 'text-[color:var(--primary-hover)]' :
-                              'text-[color:var(--text-muted)]'
-                            }`}>
-                              {scores[l.id] !== null ? `${scores[l.id]}/100` : '—'}
                             </span>
                           </td>
                         ))}

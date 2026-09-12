@@ -20,7 +20,7 @@
 
 import { VehicleModel } from '../data/vehiclesData';
 
-export type MarketRegion = 'Japan' | 'South Africa' | 'Singapore' | 'UAE' | 'Korea';
+export type MarketRegion = 'Japan' | 'South Africa' | 'Singapore' | 'UAE' | 'Korea' | 'UK' | 'Thailand';
 
 export interface MarketplaceLink {
   name: string;

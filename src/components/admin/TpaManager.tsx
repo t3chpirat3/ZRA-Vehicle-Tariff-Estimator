@@ -121,10 +121,10 @@ export default function TpaManager({ apiFetch }: TpaManagerProps) {
         const raw = JSON.parse(e.target?.result as string);
         const result = validatePayload(raw);
         if (!result.ok) {
-          setParseError(result.error);
+          setParseError((result as any).error);
           return;
         }
-        setPayload(result.payload);
+        setPayload((result as any).payload);
       } catch {
         setParseError('Could not parse JSON — make sure the file is valid JSON.');
       }

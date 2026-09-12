@@ -233,7 +233,7 @@ function ExpectedArrivalsSection({ arrivals }: { arrivals: TpaExpectedArrival[] 
 // Tab 2: Ships at Berth
 // ---------------------------------------------------------------------------
 
-function BerthCard({ pivot }: { pivot: TpaBerthPivot }) {
+function BerthCard({ pivot, key }: { pivot: TpaBerthPivot; key?: React.Key }) {
   const hasEtf = pivot.etfDays.length > 0;
 
   return (
