@@ -16,6 +16,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
 import PriceComparison from './components/PriceComparison';
 import FaqSection from './components/FaqSection';
+import FleetTracker from './components/FleetTracker';
 import { WatchlistItem } from './types';
 import { Shield, Menu, X, WifiOff, Moon, Sun } from 'lucide-react';
 import { useNetworkStatus } from './hooks/useNetworkStatus';
@@ -89,7 +90,7 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'buyers-guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin'>('calc');
+  const [activeTab, setActiveTab] = useState<'calc' | 'discover' | 'watchlist' | 'agents' | 'guide' | 'buyers-guide' | 'compare' | 'privacy' | 'terms' | 'logistics' | 'admin' | 'fleet'>('calc');
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
   const isOffline = useNetworkStatus();
   
@@ -235,6 +236,7 @@ export default function App() {
     { id: 'guide', label: 'Import Guide' },
     { id: 'buyers-guide', label: 'Buyer\'s Guide' },
     { id: 'logistics', label: 'Logistics' },
+    { id: 'fleet', label: '🛳 Fleet Tracker' },
   ];
 
   return (
@@ -473,6 +475,11 @@ export default function App() {
           {activeTab === 'logistics' && (
             <div className="animate-fadeIn">
               <Logistics />
+            </div>
+          )}
+          {activeTab === 'fleet' && (
+            <div className="animate-fadeIn">
+              <FleetTracker />
             </div>
           )}
           {activeTab === 'admin' && (
