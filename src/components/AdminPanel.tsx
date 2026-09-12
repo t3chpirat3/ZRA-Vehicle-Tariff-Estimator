@@ -231,9 +231,9 @@ export default function AdminPanel() {
     setIsParsing(true);
     setParseError('');
     try {
-      const res = await apiFetch('/api/admin/parse-schedule', {
+      const res = await apiFetch('/api/ai', {
         method: 'POST',
-        body: JSON.stringify({ text: pdfText }),
+        body: JSON.stringify({ action: 'parse-schedule', text: pdfText }),
       });
       
       const data = await res.json();

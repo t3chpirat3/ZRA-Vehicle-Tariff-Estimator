@@ -82,13 +82,14 @@ export async function enhanceWithAI(
   shortlist: ScoredVehicle[],
 ): Promise<AIInsight | null> {
   try {
-    const response = await fetch(getApiUrl('/api/enhance-discovery'), {
+    const response = await fetch(getApiUrl('/api/ai'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userMessage: buildUserMessage(profile, shortlist)
+        action: 'enhance-discovery',
+        userMessage: buildUserMessage(profile, shortlist),
       }),
     });
 

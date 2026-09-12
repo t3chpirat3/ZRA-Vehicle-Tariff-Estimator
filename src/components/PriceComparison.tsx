@@ -364,10 +364,10 @@ function computeComparisonDeltas(listings: Listing[], settings: ComparisonSettin
 // ─── Silent API calls ────────────────────────────────────────────────────────
 
 async function silentResolveSpecs(description: string): Promise<SilentSpecs> {
-  const res = await fetch(getApiUrl('/api/resolve-spec'), {
+  const res = await fetch(getApiUrl('/api/ai'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query: description }),
+    body: JSON.stringify({ action: 'resolve-spec', query: description }),
   });
   
   if (!res.ok) {
@@ -413,11 +413,11 @@ async function fetchCompareInsight(
   if (payload.length < 1) return null;
 
   try {
-    const res = await fetch(getApiUrl('/api/compare-insight'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ listings: payload, mode }),
-    });
+    const res = await fetch(getApiUrl('/api/ai'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'compare-insight', listings: payload, mode }),
+  });
     if (!res.ok) return null;
     const data = await res.json();
     if (!data.verdict) return null;

@@ -35,7 +35,7 @@ interface SpecResolverProps {
 
 // The frontend calls our secure backend function instead of the AI API directly.
 // This ensures our API key is never exposed to the client.
-const LOCAL_API_URL = getApiUrl('/api/resolve-spec');
+const LOCAL_API_URL = getApiUrl('/api/ai');
 
 async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
   const response = await fetch(LOCAL_API_URL, {
@@ -43,7 +43,7 @@ async function resolveVehicleSpecs(query: string): Promise<ResolvedSpecs> {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ action: 'resolve-spec', query }),
   });
 
   if (!response.ok) {

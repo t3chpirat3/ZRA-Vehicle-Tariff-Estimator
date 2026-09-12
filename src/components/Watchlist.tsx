@@ -110,10 +110,10 @@ export default function Watchlist({
       let newItem: WatchlistItem;
       
       if (url.trim()) {
-        const res = await fetch('/api/watchlist-scrape', {
+        const res = await fetch('/api/ai', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: url.trim(), notes, listingPrice })
+          body: JSON.stringify({ action: 'watchlist-scrape', url: url.trim(), notes, listingPrice })
         });
 
         if (!res.ok) {
@@ -236,10 +236,10 @@ export default function Watchlist({
       let reason = 'Verification check completed.';
 
       if (item.url) {
-        const res = await fetch('/api/watchlist-scrape', {
+        const res = await fetch('/api/ai', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: item.url, checkOnly: true })
+          body: JSON.stringify({ action: 'watchlist-scrape', url: item.url, checkOnly: true })
         });
 
         if (!res.ok) throw new Error('Check failed');
@@ -308,10 +308,10 @@ export default function Watchlist({
     setResolvingIds(prev => ({ ...prev, [item.id]: true }));
     try {
       const q = `${item.make} ${item.model} ${item.year} ${item.description || ''}`.trim();
-      const res = await fetch('/api/resolve-spec', {
+      const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q })
+        body: JSON.stringify({ action: 'resolve-spec', query: q }),
       });
       if (!res.ok) throw new Error('Spec resolution failed');
       const data = await res.json();
