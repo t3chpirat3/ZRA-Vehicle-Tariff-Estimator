@@ -29,8 +29,10 @@ import {
   Compass,
   Container,
   ClipboardList,
+  Navigation,
 } from 'lucide-react';
 import TpaShippingList from './TpaShippingList';
+import FleetTracker from './FleetTracker';
 import {
   VesselSchedule,
   SHIPPING_ROUTES,
@@ -383,7 +385,7 @@ function ForwarderCard({ forwarder }: { forwarder: FreightForwarder; key?: React
 
 // ── Main Component ─────────────────────────────────────────────────────────────
 
-type ActiveSection = 'schedules' | 'routes' | 'ports' | 'guide' | 'directory' | 'tpa-list';
+type ActiveSection = 'schedules' | 'routes' | 'ports' | 'guide' | 'directory' | 'tpa-list' | 'fleet-tracker';
 
 export default function ShippingSchedule() {
   const [activeSection, setActiveSection] = useState<ActiveSection>('schedules');
@@ -435,6 +437,7 @@ export default function ShippingSchedule() {
     { id: 'guide', label: 'Own Shipping', icon: <Compass className="w-4 h-4" /> },
     { id: 'directory', label: 'Agents & Forwarders', icon: <Container className="w-4 h-4" /> },
     { id: 'tpa-list', label: 'TPA Daily List', icon: <ClipboardList className="w-4 h-4" /> },
+    { id: 'fleet-tracker', label: 'Fleet Tracker', icon: <Navigation className="w-4 h-4" /> },
   ];
 
   return (
@@ -691,6 +694,13 @@ export default function ShippingSchedule() {
       {activeSection === 'tpa-list' && (
         <div className="animate-fadeIn">
           <TpaShippingList />
+        </div>
+      )}
+
+      {/* ── Section: Fleet Tracker ────────────────────────────────────────── */}
+      {activeSection === 'fleet-tracker' && (
+        <div className="animate-fadeIn">
+          <FleetTracker />
         </div>
       )}
     </div>
